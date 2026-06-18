@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agentix Labs — Build Smarter Businesses with AI Agents</title>
-  <meta name="description" content="Agentix Labs creates intelligent AI solutions that automate customer communication and business operations using AI agents." />
+  <title>Agentix — Build Smarter Businesses with AI Agents</title>
+  <meta name="description" content="Agentix creates intelligent AI solutions that automate customer communication and business operations using AI agents." />
+  <meta property="og:title" content="Agentix — Build Smarter Businesses with AI Agents" />
+  <meta property="og:description" content="Agentix creates intelligent AI solutions that automate customer communication and business operations using AI agents." />
+  <meta property="og:type" content="website" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Agentix",
+    "description": "AI Automation Solutions",
+    "url": "https://agentix.ai"
+  }
+  </script>
 
   <style>
     /* ============================================================
@@ -43,6 +55,8 @@
       line-height: 1.65;
       overflow-x: hidden;
     }
+    /* RTL base */
+    html[dir="rtl"] body { font-family: 'Segoe UI', 'Arial', system-ui, sans-serif; }
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
     button { cursor: pointer; border: none; background: none; font: inherit; }
@@ -62,6 +76,7 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
+      will-change: transform;
     }
 
     /* ============================================================
@@ -75,62 +90,118 @@
     section { position: relative; z-index: 1; }
 
     /* ============================================================
+       LANGUAGE TRANSITION OVERLAY
+    ============================================================ */
+    #lang-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(5,3,13,0.96);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #lang-overlay.active { opacity: 1; pointer-events: all; }
+    #lang-overlay .lang-spinner {
+      width: 44px; height: 44px;
+      border: 3px solid var(--border);
+      border-top-color: var(--purple-glow);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    /* ============================================================
        NAVBAR
     ============================================================ */
     #navbar {
       position: fixed;
       top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 0 32px;
+      z-index: 1000;
+      padding: 0 28px;
       height: 68px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: rgba(5, 3, 13, 0.7);
       backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border);
       transition: background var(--transition);
+      gap: 16px;
     }
     .nav-logo {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 700;
       letter-spacing: -0.3px;
+      flex-shrink: 0;
+      text-decoration: none;
+      color: var(--white);
     }
-    .nav-logo .logo-icon {
-      width: 34px; height: 34px;
-      background: linear-gradient(135deg, var(--purple-core), var(--neon));
-      border-radius: 8px;
-      display: grid;
-      place-items: center;
-      font-size: 1rem;
-      box-shadow: 0 0 18px rgba(139,61,255,0.55);
+    /* NEW SVG LOGO ICON */
+    .logo-svg-wrap {
+      width: 36px; height: 36px;
+      flex-shrink: 0;
     }
-    .nav-logo span { color: var(--purple-glow); }
+    .nav-logo .brand-accent { color: var(--purple-glow); }
     .nav-links {
       display: flex;
-      gap: 32px;
+      gap: 28px;
       list-style: none;
+      flex: 1;
+      justify-content: center;
     }
     .nav-links a {
-      font-size: 0.88rem;
+      font-size: 0.875rem;
       font-weight: 500;
       color: var(--muted);
       letter-spacing: 0.02em;
       transition: color var(--transition);
+      white-space: nowrap;
     }
     .nav-links a:hover { color: var(--white); }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    /* Language switcher */
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 10px;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      transition: all var(--transition);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .lang-switcher:hover { border-color: var(--purple-glow); color: var(--white); }
+    .lang-switcher .lang-globe { font-size: 1rem; }
+    .lang-switcher .lang-code { letter-spacing: 0.04em; }
+
     .nav-cta {
-      padding: 9px 22px;
+      padding: 9px 20px;
       border-radius: var(--radius-btn);
       background: linear-gradient(135deg, var(--purple-core), var(--neon));
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 600;
       color: #fff;
       box-shadow: 0 0 20px rgba(139,61,255,0.45);
       transition: box-shadow var(--transition), transform var(--transition);
+      white-space: nowrap;
     }
     .nav-cta:hover { box-shadow: 0 0 36px rgba(191,95,255,0.7); transform: translateY(-1px); }
 
@@ -139,43 +210,108 @@
       display: none;
       flex-direction: column;
       gap: 5px;
-      padding: 4px;
+      padding: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background var(--transition);
+      z-index: 1002;
     }
+    .nav-hamburger:hover { background: rgba(139,61,255,0.12); }
     .nav-hamburger span {
       display: block;
-      width: 24px; height: 2px;
+      width: 22px; height: 2px;
       background: var(--purple-glow);
       border-radius: 2px;
-      transition: var(--transition);
+      transition: all 0.3s ease;
+      transform-origin: center;
     }
-    @media (max-width: 768px) {
-      .nav-links, .nav-cta { display: none; }
-      .nav-hamburger { display: flex; }
-      .mobile-menu {
-        display: flex !important;
-        flex-direction: column;
-        gap: 20px;
-        position: fixed;
-        top: 68px; left: 0; right: 0;
-        background: rgba(5,3,13,0.97);
-        padding: 32px 24px;
-        border-bottom: 1px solid var(--border);
-        z-index: 99;
-        animation: slideDown 0.3s ease;
-      }
-      .mobile-menu a {
-        font-size: 1.1rem;
-        font-weight: 500;
-        color: var(--muted);
-        display: block;
-      }
-      .mobile-menu a:hover { color: var(--white); }
-    }
-    .mobile-menu { display: none; }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      position: fixed;
+      top: 68px; left: 0; right: 0;
+      background: rgba(5,3,13,0.98);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      z-index: 999;
+      padding: 0 24px;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1), padding 0.38s ease;
+    }
+    .mobile-menu.open {
+      max-height: 520px;
+      padding: 24px 24px 28px;
+    }
+    .mobile-menu a {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--muted);
+      display: block;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(148,85,255,0.1);
+      transition: color var(--transition), padding-left var(--transition);
+    }
+    html[dir="rtl"] .mobile-menu a { padding-right: 0; }
+    .mobile-menu a:hover { color: var(--white); padding-left: 6px; }
+    html[dir="rtl"] .mobile-menu a:hover { padding-left: 0; padding-right: 6px; }
+    .mobile-menu a:last-of-type { border-bottom: none; }
+    .mobile-menu .mobile-lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 10px 18px;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all var(--transition);
+      width: fit-content;
+    }
+    .mobile-menu .mobile-lang-btn:hover { border-color: var(--purple-glow); color: var(--white); }
+    .mobile-menu .mobile-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 12px;
+      padding: 12px 28px;
+      border-radius: var(--radius-btn);
+      background: linear-gradient(135deg, var(--purple-core), var(--neon));
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(139,61,255,0.4);
+    }
+
+    /* Mobile overlay backdrop */
+    #menu-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 998;
+      background: transparent;
+    }
+    #menu-overlay.active { display: block; }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+    @media (max-width: 480px) {
+      .lang-switcher .lang-code { display: none; }
     }
 
     /* ============================================================
@@ -222,12 +358,13 @@
       50%       { opacity: 0.3; }
     }
     .hero-title {
-      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
       font-weight: 800;
       line-height: 1.12;
       letter-spacing: -0.03em;
       margin-bottom: 24px;
     }
+    html[dir="rtl"] .hero-title { letter-spacing: 0; }
     .hero-title .gradient-text {
       background: linear-gradient(90deg, var(--purple-mid), var(--neon), var(--cyan-trace));
       -webkit-background-clip: text;
@@ -235,7 +372,7 @@
       background-clip: text;
     }
     .hero-sub {
-      font-size: 1.12rem;
+      font-size: 1.08rem;
       color: var(--muted);
       max-width: 500px;
       margin-bottom: 40px;
@@ -243,14 +380,14 @@
     }
     .hero-buttons {
       display: flex;
-      gap: 16px;
+      gap: 14px;
       flex-wrap: wrap;
     }
     .btn-primary {
-      padding: 14px 32px;
+      padding: 13px 30px;
       border-radius: var(--radius-btn);
       background: linear-gradient(135deg, var(--purple-core), var(--neon));
-      font-size: 0.95rem;
+      font-size: 0.93rem;
       font-weight: 600;
       color: #fff;
       box-shadow: 0 0 28px rgba(139,61,255,0.5);
@@ -261,11 +398,11 @@
     }
     .btn-primary:hover { box-shadow: 0 0 48px rgba(191,95,255,0.75); transform: translateY(-2px); }
     .btn-secondary {
-      padding: 14px 32px;
+      padding: 13px 30px;
       border-radius: var(--radius-btn);
       border: 1px solid var(--border);
       background: var(--glass);
-      font-size: 0.95rem;
+      font-size: 0.93rem;
       font-weight: 600;
       color: var(--white);
       backdrop-filter: blur(8px);
@@ -277,21 +414,21 @@
     .btn-secondary:hover { border-color: var(--purple-glow); background: rgba(139,61,255,0.12); transform: translateY(-2px); }
     .hero-stats {
       display: flex;
-      gap: 36px;
-      margin-top: 52px;
-      padding-top: 36px;
+      gap: 32px;
+      margin-top: 48px;
+      padding-top: 32px;
       border-top: 1px solid var(--border);
+      flex-wrap: wrap;
     }
-    .stat { }
     .stat-num {
-      font-size: 1.9rem;
+      font-size: 1.8rem;
       font-weight: 800;
       background: linear-gradient(90deg, var(--purple-glow), var(--neon));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+    .stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
 
     /* Hero visual */
     .hero-visual {
@@ -318,6 +455,7 @@
       border-radius: 50%;
       border: 1px solid rgba(139,61,255,0.3);
       animation: spin 18s linear infinite;
+      will-change: transform;
     }
     .orb-ring::after {
       content: '';
@@ -334,6 +472,7 @@
       border-radius: 50%;
       border: 1px dashed rgba(94,234,212,0.25);
       animation: spin 12s linear infinite reverse;
+      will-change: transform;
     }
     .orb-ring-2::before {
       content: '';
@@ -358,9 +497,7 @@
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-14px); }
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
     .floating-tag {
       position: absolute;
       padding: 8px 14px;
@@ -376,6 +513,9 @@
     .tag-1 { top: 28px; left: -10px; animation: tagFloat 5s ease-in-out infinite; }
     .tag-2 { bottom: 60px; right: -20px; animation: tagFloat 5s ease-in-out infinite 1.5s; }
     .tag-3 { top: 50%; left: -30px; animation: tagFloat 5s ease-in-out infinite 3s; }
+    html[dir="rtl"] .tag-1 { left: auto; right: -10px; }
+    html[dir="rtl"] .tag-2 { right: auto; left: -20px; }
+    html[dir="rtl"] .tag-3 { left: auto; right: -30px; }
     @keyframes tagFloat {
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-8px); }
@@ -383,12 +523,14 @@
 
     @media (max-width: 900px) {
       .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      html[dir="rtl"] .hero-inner { text-align: center; }
       .hero-sub { margin: 0 auto 40px; }
       .hero-buttons { justify-content: center; }
       .hero-stats { justify-content: center; }
       .hero-visual { margin-top: 40px; }
-      .orb-wrapper { width: 280px; height: 280px; }
-      .brain-icon { font-size: 5.5rem; }
+      .orb-wrapper { width: 260px; height: 260px; }
+      .brain-icon { font-size: 5rem; }
+      .tag-1, .tag-2, .tag-3 { display: none; }
     }
 
     /* ============================================================
@@ -402,22 +544,83 @@
       color: var(--purple-glow);
       margin-bottom: 14px;
     }
+    html[dir="rtl"] .section-label { letter-spacing: 0.04em; }
     .section-title {
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-size: clamp(1.7rem, 3.2vw, 2.7rem);
       font-weight: 800;
       line-height: 1.15;
       letter-spacing: -0.025em;
       margin-bottom: 18px;
     }
+    html[dir="rtl"] .section-title { letter-spacing: 0; }
     .section-desc {
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       color: var(--muted);
       max-width: 560px;
       line-height: 1.75;
     }
-    .section-head { margin-bottom: 56px; }
+    .section-head { margin-bottom: 52px; }
     .section-head.centered { text-align: center; }
     .section-head.centered .section-desc { margin: 0 auto; }
+
+    /* ============================================================
+       DIVIDER
+    ============================================================ */
+    .divider {
+      width: 60px; height: 3px;
+      background: linear-gradient(90deg, var(--purple-core), var(--neon));
+      border-radius: 2px;
+      margin-bottom: 24px;
+    }
+    .divider.centered { margin: 0 auto 24px; }
+
+    /* ============================================================
+       TRUST MARQUEE
+    ============================================================ */
+    #trust {
+      padding: 44px 0;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(139,61,255,0.03);
+      position: relative;
+      z-index: 1;
+    }
+    .marquee-label {
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 26px;
+    }
+    html[dir="rtl"] .marquee-label { letter-spacing: 0.04em; }
+    .marquee-track {
+      display: flex;
+      gap: 40px;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+      will-change: transform;
+    }
+    .marquee-item {
+      padding: 9px 20px;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      backdrop-filter: blur(8px);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
 
     /* ============================================================
        ABOUT
@@ -429,26 +632,23 @@
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 64px;
+      gap: 60px;
       align-items: center;
     }
-    .about-visual {
-      position: relative;
-      padding: 40px;
-    }
+    .about-visual { position: relative; padding: 32px; }
     .about-card {
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: var(--radius-card);
-      padding: 28px;
+      padding: 24px;
       backdrop-filter: blur(16px);
       box-shadow: 0 0 60px rgba(139,61,255,0.08);
     }
     .about-metric {
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 16px 0;
+      gap: 14px;
+      padding: 14px 0;
       border-bottom: 1px solid var(--border);
     }
     .about-metric:last-child { border-bottom: none; }
@@ -462,7 +662,7 @@
       font-size: 1.2rem;
       flex-shrink: 0;
     }
-    .metric-info strong { display: block; font-size: 1.15rem; font-weight: 700; }
+    .metric-info strong { display: block; font-size: 1.1rem; font-weight: 700; }
     .metric-info span { font-size: 0.82rem; color: var(--muted); }
     .about-glow {
       position: absolute;
@@ -473,30 +673,22 @@
       filter: blur(40px);
       pointer-events: none;
     }
-    .about-content p { color: var(--muted); margin-bottom: 20px; line-height: 1.8; }
-    .about-features {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-top: 32px;
-    }
-    .about-feature {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-    }
+    html[dir="rtl"] .about-glow { right: auto; left: 0; }
+    .about-content p { color: var(--muted); margin-bottom: 18px; line-height: 1.8; }
+    .about-features { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
+    .about-feature { display: flex; align-items: flex-start; gap: 12px; }
     .check {
       width: 22px; height: 22px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--purple-core), var(--neon));
       display: grid;
       place-items: center;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       flex-shrink: 0;
       margin-top: 2px;
       box-shadow: 0 0 10px rgba(139,61,255,0.5);
     }
-    .about-feature p { font-size: 0.92rem; color: var(--muted); }
+    .about-feature p { font-size: 0.9rem; color: var(--muted); }
     .about-feature p strong { color: var(--white); }
 
     @media (max-width: 768px) {
@@ -511,18 +703,19 @@
     .services-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
+      gap: 24px;
     }
+    @media (max-width: 900px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .services-grid { grid-template-columns: 1fr; } }
     .service-card {
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: var(--radius-card);
-      padding: 36px 28px;
+      padding: 32px 24px;
       backdrop-filter: blur(16px);
       position: relative;
       overflow: hidden;
       transition: all var(--transition);
-      cursor: default;
     }
     .service-card::before {
       content: '';
@@ -535,19 +728,19 @@
     .service-card:hover { border-color: rgba(139,61,255,0.5); transform: translateY(-6px); box-shadow: 0 24px 60px rgba(139,61,255,0.15); }
     .service-card:hover::before { opacity: 1; }
     .service-icon {
-      width: 54px; height: 54px;
+      width: 52px; height: 52px;
       border-radius: 14px;
       background: linear-gradient(135deg, rgba(139,61,255,0.3), rgba(191,95,255,0.1));
       border: 1px solid var(--border);
       display: grid;
       place-items: center;
-      font-size: 1.6rem;
-      margin-bottom: 24px;
+      font-size: 1.5rem;
+      margin-bottom: 22px;
       transition: box-shadow var(--transition);
     }
     .service-card:hover .service-icon { box-shadow: 0 0 24px rgba(139,61,255,0.5); }
-    .service-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; }
-    .service-card p { font-size: 0.88rem; color: var(--muted); margin-bottom: 24px; line-height: 1.7; }
+    .service-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+    .service-card p { font-size: 0.87rem; color: var(--muted); margin-bottom: 22px; line-height: 1.7; }
     .service-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
     .service-features li {
       font-size: 0.82rem;
@@ -556,10 +749,8 @@
       align-items: center;
       gap: 8px;
     }
-    .service-features li::before {
-      content: '▸';
-      color: var(--purple-glow);
-    }
+    .service-features li::before { content: '▸'; color: var(--purple-glow); }
+    html[dir="rtl"] .service-features li::before { content: '◂'; }
     .card-glow {
       position: absolute;
       width: 120px; height: 120px;
@@ -569,19 +760,21 @@
       filter: blur(20px);
       pointer-events: none;
     }
-
-    @media (max-width: 900px) { .services-grid { grid-template-columns: 1fr; } }
-    @media (min-width: 600px) and (max-width: 900px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+    html[dir="rtl"] .card-glow { right: auto; left: -30px; }
 
     /* ============================================================
        PROJECTS / PORTFOLIO
     ============================================================ */
-    #projects { padding: 100px 0; background: linear-gradient(180deg, transparent, rgba(139,61,255,0.04) 50%, transparent); }
+    #projects {
+      padding: 100px 0;
+      background: linear-gradient(180deg, transparent, rgba(139,61,255,0.04) 50%, transparent);
+    }
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 28px;
+      gap: 24px;
     }
+    @media (max-width: 768px) { .projects-grid { grid-template-columns: 1fr; } }
     .project-card {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -593,7 +786,11 @@
       display: block;
       position: relative;
     }
-    .project-card:hover { border-color: rgba(139,61,255,0.55); transform: translateY(-5px); box-shadow: 0 20px 60px rgba(139,61,255,0.18); }
+    .project-card:hover {
+      border-color: rgba(139,61,255,0.55);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 60px rgba(139,61,255,0.18);
+    }
     .project-thumb {
       height: 180px;
       position: relative;
@@ -602,11 +799,15 @@
       align-items: center;
       justify-content: center;
     }
-    .project-thumb-bg {
-      position: absolute;
-      inset: 0;
+    .project-thumb-bg { position: absolute; inset: 0; }
+    .project-thumb-icon {
+      font-size: 3.5rem;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 0 20px rgba(139,61,255,0.7));
+      transition: transform 0.4s ease;
     }
-    .project-thumb-icon { font-size: 3.5rem; position: relative; z-index: 1; filter: drop-shadow(0 0 20px rgba(139,61,255,0.7)); }
+    .project-card:hover .project-thumb-icon { transform: scale(1.08); }
     .project-thumb-overlay {
       position: absolute;
       inset: 0;
@@ -628,19 +829,40 @@
       z-index: 3;
       backdrop-filter: blur(6px);
     }
-    .project-body { padding: 22px 24px 24px; }
-    .project-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
-    .project-body p { font-size: 0.84rem; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
-    .project-footer {
+    html[dir="rtl"] .project-tag { left: auto; right: 14px; }
+    /* LinkedIn play overlay on project cards */
+    .project-play-overlay {
+      position: absolute;
+      inset: 0;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      z-index: 4;
+      opacity: 0;
+      transition: opacity var(--transition);
     }
+    .project-card:hover .project-play-overlay { opacity: 1; }
+    .project-play-circle {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple-core), var(--neon));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: #fff;
+      box-shadow: 0 0 32px rgba(139,61,255,0.7), 0 0 0 8px rgba(139,61,255,0.15);
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+    .project-body { padding: 20px 22px 22px; }
+    .project-body h3 { font-size: 1.02rem; font-weight: 700; margin-bottom: 8px; }
+    .project-body p { font-size: 0.84rem; color: var(--muted); margin-bottom: 18px; line-height: 1.6; }
+    .project-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
     .view-project-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 8px 18px;
+      padding: 8px 16px;
       border-radius: 50px;
       border: 1px solid var(--border);
       background: var(--glass);
@@ -649,331 +871,15 @@
       color: var(--purple-glow);
       transition: all var(--transition);
     }
-    .project-card:hover .view-project-btn { background: rgba(139,61,255,0.18); border-color: var(--purple-mid); color: var(--white); }
-    .project-ext { font-size: 0.75rem; color: var(--muted); display: flex; align-items: center; gap: 4px; }
-
-    @media (max-width: 768px) { .projects-grid { grid-template-columns: 1fr; } }
-
-    /* ============================================================
-       CHATBOT DEMO
-    ============================================================ */
-    #demo { padding: 100px 0; }
-    .demo-wrapper {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
-    .demo-content .section-desc { margin-bottom: 32px; }
-    .demo-feature {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      margin-bottom: 20px;
-    }
-    .demo-feature-icon {
-      width: 36px; height: 36px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, rgba(139,61,255,0.3), rgba(191,95,255,0.1));
-      border: 1px solid var(--border);
-      display: grid;
-      place-items: center;
-      font-size: 1rem;
-      flex-shrink: 0;
-    }
-    .demo-feature-text strong { display: block; font-size: 0.92rem; font-weight: 600; margin-bottom: 2px; }
-    .demo-feature-text span { font-size: 0.82rem; color: var(--muted); }
-
-    /* Chat widget */
-    .chat-widget {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 0 80px rgba(139,61,255,0.1);
-    }
-    .chat-header {
-      padding: 18px 22px;
-      background: linear-gradient(135deg, rgba(139,61,255,0.25), rgba(191,95,255,0.1));
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .chat-avatar {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple-core), var(--neon));
-      display: grid;
-      place-items: center;
-      font-size: 1.1rem;
-      box-shadow: 0 0 14px rgba(139,61,255,0.6);
-    }
-    .chat-info strong { display: block; font-size: 0.9rem; font-weight: 700; }
-    .chat-info span { font-size: 0.75rem; color: #4ade80; display: flex; align-items: center; gap: 4px; }
-    .chat-info span::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 6px #4ade80; }
-    .chat-messages {
-      height: 280px;
-      overflow-y: auto;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) transparent;
-    }
-    .msg {
-      max-width: 80%;
-      padding: 10px 14px;
-      border-radius: 14px;
-      font-size: 0.86rem;
-      line-height: 1.55;
-      animation: msgIn 0.25s ease;
-    }
-    @keyframes msgIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .msg-bot {
+    .project-card:hover .view-project-btn {
       background: rgba(139,61,255,0.18);
-      border: 1px solid var(--border);
-      border-radius: 14px 14px 14px 4px;
+      border-color: var(--purple-mid);
       color: var(--white);
-      align-self: flex-start;
     }
-    .msg-user {
-      background: linear-gradient(135deg, var(--purple-core), var(--neon));
-      color: #fff;
-      border-radius: 14px 14px 4px 14px;
-      align-self: flex-end;
-    }
-    .msg-typing {
-      background: rgba(139,61,255,0.18);
-      border: 1px solid var(--border);
-      border-radius: 14px 14px 14px 4px;
-      padding: 12px 16px;
-      align-self: flex-start;
-      display: flex;
-      gap: 5px;
-      align-items: center;
-    }
-    .dot-typing {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--purple-glow);
-      animation: typing 1.2s infinite;
-    }
-    .dot-typing:nth-child(2) { animation-delay: 0.2s; }
-    .dot-typing:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes typing {
-      0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
-      30%            { opacity: 1; transform: translateY(-4px); }
-    }
-    .chat-input-row {
-      display: flex;
-      gap: 10px;
-      padding: 14px 18px;
-      border-top: 1px solid var(--border);
-      background: rgba(5,3,13,0.5);
-    }
-    .chat-input {
-      flex: 1;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
-      border-radius: 50px;
-      padding: 10px 18px;
-      color: var(--white);
-      font-size: 0.86rem;
-      outline: none;
-      transition: border-color var(--transition);
-    }
-    .chat-input::placeholder { color: var(--muted); }
-    .chat-input:focus { border-color: var(--purple-mid); }
-    .chat-send {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple-core), var(--neon));
-      display: grid;
-      place-items: center;
-      font-size: 1rem;
-      color: #fff;
-      flex-shrink: 0;
-      transition: all var(--transition);
-      box-shadow: 0 0 14px rgba(139,61,255,0.4);
-    }
-    .chat-send:hover { box-shadow: 0 0 24px rgba(191,95,255,0.7); transform: scale(1.08); }
-
-    @media (max-width: 900px) {
-      .demo-wrapper { grid-template-columns: 1fr; }
-    }
+    .project-ext { font-size: 0.74rem; color: var(--muted); }
 
     /* ============================================================
-       CONTACT / CTA
-    ============================================================ */
-    #contact { padding: 100px 0; }
-    .contact-box {
-      background: linear-gradient(135deg, rgba(139,61,255,0.15), rgba(11,6,24,0.8));
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 72px 60px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(20px);
-    }
-    .contact-box::before {
-      content: '';
-      position: absolute;
-      width: 500px; height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(139,61,255,0.2), transparent 70%);
-      top: -200px; left: 50%;
-      transform: translateX(-50%);
-      filter: blur(60px);
-      pointer-events: none;
-    }
-    .contact-box h2 { font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 16px; letter-spacing: -0.02em; }
-    .contact-box p { font-size: 1.05rem; color: var(--muted); max-width: 480px; margin: 0 auto 40px; line-height: 1.75; }
-    .whatsapp-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 16px 38px;
-      border-radius: var(--radius-btn);
-      background: linear-gradient(135deg, #25d366, #128c7e);
-      font-size: 1rem;
-      font-weight: 700;
-      color: #fff;
-      box-shadow: 0 0 36px rgba(37,211,102,0.4);
-      transition: all var(--transition);
-    }
-    .whatsapp-btn:hover { box-shadow: 0 0 56px rgba(37,211,102,0.65); transform: translateY(-2px); }
-    .whatsapp-btn .wa-icon { font-size: 1.3rem; }
-    .contact-alt { margin-top: 24px; font-size: 0.85rem; color: var(--muted); }
-    .contact-alt a { color: var(--purple-glow); border-bottom: 1px solid rgba(192,132,252,0.3); padding-bottom: 1px; transition: border-color var(--transition); }
-    .contact-alt a:hover { border-color: var(--purple-glow); }
-
-    @media (max-width: 600px) { .contact-box { padding: 40px 24px; } }
-
-    /* ============================================================
-       FOOTER
-    ============================================================ */
-    footer {
-      padding: 60px 0 32px;
-      border-top: 1px solid var(--border);
-      position: relative;
-      z-index: 1;
-    }
-    .footer-inner {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
-      gap: 48px;
-      margin-bottom: 48px;
-    }
-    .footer-brand p { font-size: 0.85rem; color: var(--muted); margin-top: 14px; line-height: 1.7; max-width: 240px; }
-    .footer-social { display: flex; gap: 12px; margin-top: 20px; }
-    .social-icon {
-      width: 36px; height: 36px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      display: grid;
-      place-items: center;
-      font-size: 0.95rem;
-      color: var(--muted);
-      transition: all var(--transition);
-      background: var(--glass);
-    }
-    .social-icon:hover { border-color: var(--purple-glow); color: var(--purple-glow); box-shadow: 0 0 14px rgba(139,61,255,0.25); }
-    .footer-col h4 { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--purple-glow); margin-bottom: 18px; }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .footer-col ul li a { font-size: 0.86rem; color: var(--muted); transition: color var(--transition); }
-    .footer-col ul li a:hover { color: var(--white); }
-    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 28px; border-top: 1px solid var(--border); }
-    .footer-bottom p { font-size: 0.8rem; color: var(--muted); }
-    .footer-bottom span { font-size: 0.8rem; color: var(--muted); }
-
-    @media (max-width: 768px) {
-      .footer-inner { grid-template-columns: 1fr 1fr; }
-      .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
-    }
-    @media (max-width: 480px) {
-      .footer-inner { grid-template-columns: 1fr; }
-    }
-
-    /* ============================================================
-       SCROLL REVEAL
-    ============================================================ */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ============================================================
-       DIVIDER / SEPARATOR
-    ============================================================ */
-    .divider {
-      width: 60px;
-      height: 3px;
-      background: linear-gradient(90deg, var(--purple-core), var(--neon));
-      border-radius: 2px;
-      margin-bottom: 24px;
-    }
-    .divider.centered { margin: 0 auto 24px; }
-
-    /* ============================================================
-       MARQUEE / TRUST LOGOS
-    ============================================================ */
-    #trust {
-      padding: 48px 0;
-      overflow: hidden;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: rgba(139,61,255,0.03);
-      position: relative;
-      z-index: 1;
-    }
-    .marquee-label {
-      text-align: center;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 28px;
-    }
-    .marquee-track {
-      display: flex;
-      gap: 48px;
-      width: max-content;
-      animation: marquee 28s linear infinite;
-    }
-    .marquee-item {
-      padding: 10px 22px;
-      border-radius: 50px;
-      border: 1px solid var(--border);
-      background: var(--glass);
-      backdrop-filter: blur(8px);
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--muted);
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-
-    /* ============================================================
-       VIDEO SHOWCASE SECTION — NEW
+       VIDEO SHOWCASE
     ============================================================ */
     #video-showcase {
       padding: 100px 0;
@@ -981,32 +887,32 @@
       position: relative;
       z-index: 1;
     }
-
-    /* Featured video hero */
     .featured-video-hero {
       border-radius: 24px;
       overflow: hidden;
       border: 1px solid var(--border);
       background: var(--panel);
       backdrop-filter: blur(20px);
-      margin-bottom: 48px;
+      margin-bottom: 44px;
       box-shadow: 0 0 80px rgba(139,61,255,0.12);
       display: grid;
       grid-template-columns: 1.4fr 1fr;
-      min-height: 360px;
+      min-height: 340px;
+    }
+    @media (max-width: 900px) {
+      .featured-video-hero { grid-template-columns: 1fr; }
     }
     .featured-video-player {
       position: relative;
       background: #000;
       overflow: hidden;
       cursor: pointer;
-      min-height: 280px;
+      min-height: 260px;
+      transition: all var(--transition);
     }
-    .featured-video-player .fv-thumb-bg {
-      position: absolute;
-      inset: 0;
-    }
-    .featured-video-player .fv-thumb-icon {
+    .fv-thumb-bg { position: absolute; inset: 0; transition: transform 0.5s ease; }
+    .featured-video-player:hover .fv-thumb-bg { transform: scale(1.04); }
+    .fv-thumb-icon {
       position: absolute;
       inset: 0;
       display: flex;
@@ -1017,8 +923,8 @@
       filter: drop-shadow(0 0 24px rgba(139,61,255,0.8));
       transition: transform 0.4s ease;
     }
-    .featured-video-player:hover .fv-thumb-icon { transform: scale(1.08); }
-    .featured-video-player .fv-overlay {
+    .featured-video-player:hover .fv-thumb-icon { transform: scale(1.06); }
+    .fv-overlay {
       position: absolute;
       inset: 0;
       background: linear-gradient(135deg, rgba(5,3,13,0.3), rgba(139,61,255,0.05));
@@ -1035,25 +941,24 @@
       z-index: 3;
     }
     .featured-play-circle {
-      width: 80px; height: 80px;
+      width: 76px; height: 76px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--purple-core), var(--neon));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
+      font-size: 1.7rem;
       box-shadow: 0 0 40px rgba(139,61,255,0.7), 0 0 80px rgba(139,61,255,0.3);
       transition: all 0.3s ease;
       border: 2px solid rgba(255,255,255,0.2);
     }
     .featured-video-player:hover .featured-play-circle {
-      transform: scale(1.12);
+      transform: scale(1.1);
       box-shadow: 0 0 60px rgba(191,95,255,0.85), 0 0 100px rgba(139,61,255,0.4);
     }
     .featured-duration-badge {
       position: absolute;
-      bottom: 16px;
-      right: 16px;
+      bottom: 14px; right: 14px;
       z-index: 4;
       background: rgba(5,3,13,0.85);
       border: 1px solid var(--border);
@@ -1065,8 +970,17 @@
       color: var(--white);
       font-family: var(--font-mono);
     }
+    html[dir="rtl"] .featured-duration-badge { right: auto; left: 14px; }
+    .featured-video-player::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.04) 4px);
+      z-index: 1;
+      pointer-events: none;
+    }
     .featured-video-info {
-      padding: 36px 32px;
+      padding: 32px 28px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -1084,94 +998,45 @@
       color: var(--purple-glow);
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       width: fit-content;
     }
-    .featured-video-title {
-      font-size: 1.4rem;
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 12px;
-      letter-spacing: -0.02em;
-    }
-    .featured-video-desc {
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 20px;
-    }
-    .featured-metrics {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-    .featured-metric-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-    .featured-metric-item .fmi-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--cyan-trace);
-      flex-shrink: 0;
-    }
+    .featured-video-title { font-size: 1.32rem; font-weight: 800; line-height: 1.2; margin-bottom: 10px; letter-spacing: -0.02em; }
+    html[dir="rtl"] .featured-video-title { letter-spacing: 0; }
+    .featured-video-desc { font-size: 0.86rem; color: var(--muted); line-height: 1.7; margin-bottom: 18px; }
+    .featured-metrics { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
+    .featured-metric-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--muted); }
+    .featured-metric-item .fmi-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan-trace); flex-shrink: 0; }
     .featured-metric-item strong { color: var(--white); }
-    .featured-tech-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .ftech-tag {
-      padding: 3px 10px;
-      border-radius: 50px;
-      border: 1px solid var(--border);
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--muted);
-      background: var(--glass);
-    }
+    .featured-tech-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .ftech-tag { padding: 3px 9px; border-radius: 50px; border: 1px solid var(--border); font-size: 0.7rem; font-weight: 600; color: var(--muted); background: var(--glass); }
     .featured-watch-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 11px 24px;
+      padding: 10px 22px;
       border-radius: var(--radius-btn);
       background: linear-gradient(135deg, var(--purple-core), var(--neon));
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 600;
       color: #fff;
       box-shadow: 0 0 22px rgba(139,61,255,0.45);
       transition: all var(--transition);
       cursor: pointer;
       border: none;
-      margin-top: 20px;
+      margin-top: 18px;
       width: fit-content;
     }
     .featured-watch-btn:hover { box-shadow: 0 0 38px rgba(191,95,255,0.7); transform: translateY(-2px); }
 
-    @media (max-width: 900px) {
-      .featured-video-hero { grid-template-columns: 1fr; }
-      .featured-video-player { min-height: 220px; }
-    }
-
     /* Video Filters */
-    .video-filters {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 36px;
-      justify-content: center;
-    }
+    .video-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; justify-content: center; }
     .vf-btn {
-      padding: 8px 18px;
+      padding: 7px 16px;
       border-radius: 50px;
       border: 1px solid var(--border);
       background: var(--glass);
-      font-size: 0.8rem;
+      font-size: 0.79rem;
       font-weight: 600;
       color: var(--muted);
       cursor: pointer;
@@ -1185,11 +1050,11 @@
       box-shadow: 0 0 14px rgba(139,61,255,0.3);
     }
 
-    /* Video Gallery Grid */
+    /* Video Gallery */
     .video-gallery-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      gap: 22px;
     }
     @media (max-width: 900px) { .video-gallery-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 560px) { .video-gallery-grid { grid-template-columns: 1fr; } }
@@ -1208,23 +1073,10 @@
     .video-card:hover {
       border-color: rgba(139,61,255,0.6);
       transform: translateY(-8px) scale(1.015);
-      box-shadow: 0 28px 70px rgba(139,61,255,0.22), 0 0 0 1px rgba(139,61,255,0.15);
+      box-shadow: 0 28px 70px rgba(139,61,255,0.22);
     }
-    .video-card[data-hidden="true"] {
-      display: none;
-    }
-
-    /* Video Thumbnail */
-    .vc-thumb {
-      position: relative;
-      height: 180px;
-      overflow: hidden;
-    }
-    .vc-thumb-bg {
-      position: absolute;
-      inset: 0;
-      transition: transform 0.5s ease;
-    }
+    .vc-thumb { position: relative; height: 175px; overflow: hidden; }
+    .vc-thumb-bg { position: absolute; inset: 0; transition: transform 0.5s ease; }
     .video-card:hover .vc-thumb-bg { transform: scale(1.06); }
     .vc-thumb-icon {
       position: absolute;
@@ -1245,38 +1097,23 @@
       z-index: 2;
       transition: background var(--transition);
     }
-    .video-card:hover .vc-thumb-overlay { background: linear-gradient(180deg, rgba(5,3,13,0.05) 0%, rgba(5,3,13,0.45) 100%); }
-
-    /* Play button overlay */
-    .vc-play-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 3;
-    }
+    .video-card:hover .vc-thumb-overlay { background: linear-gradient(180deg, rgba(5,3,13,0.05) 0%, rgba(5,3,13,0.4) 100%); }
+    .vc-play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 3; }
     .vc-play-btn {
-      width: 56px; height: 56px;
+      width: 54px; height: 54px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--purple-core), var(--neon));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       box-shadow: 0 0 28px rgba(139,61,255,0.65), 0 0 0 6px rgba(139,61,255,0.15);
       transition: all 0.3s ease;
       border: 2px solid rgba(255,255,255,0.2);
-      transform: scale(0.85);
-      opacity: 0.75;
+      transform: scale(0.82);
+      opacity: 0.7;
     }
-    .video-card:hover .vc-play-btn {
-      transform: scale(1);
-      opacity: 1;
-      box-shadow: 0 0 44px rgba(191,95,255,0.85), 0 0 0 10px rgba(139,61,255,0.12);
-    }
-
-    /* Duration badge */
+    .video-card:hover .vc-play-btn { transform: scale(1); opacity: 1; box-shadow: 0 0 44px rgba(191,95,255,0.85), 0 0 0 10px rgba(139,61,255,0.12); }
     .vc-duration {
       position: absolute;
       bottom: 10px; right: 10px;
@@ -1291,8 +1128,7 @@
       color: var(--white);
       font-family: var(--font-mono);
     }
-
-    /* Category badge on thumb */
+    html[dir="rtl"] .vc-duration { right: auto; left: 10px; }
     .vc-category {
       position: absolute;
       top: 10px; left: 10px;
@@ -1308,13 +1144,12 @@
       text-transform: uppercase;
       backdrop-filter: blur(6px);
     }
-
-    /* Hover info overlay */
+    html[dir="rtl"] .vc-category { left: auto; right: 10px; }
     .vc-hover-info {
       position: absolute;
       inset: 0;
       z-index: 5;
-      padding: 16px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -1324,120 +1159,33 @@
       pointer-events: none;
     }
     .video-card:hover .vc-hover-info { opacity: 1; }
-    .vc-hover-title {
-      font-size: 0.88rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-      line-height: 1.3;
-    }
-    .vc-hover-metrics {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-    .vc-hover-metric {
-      font-size: 0.65rem;
-      font-weight: 600;
-      padding: 2px 7px;
-      border-radius: 50px;
-      background: rgba(139,61,255,0.3);
-      border: 1px solid rgba(139,61,255,0.4);
-      color: var(--purple-glow);
-    }
-
-    /* Card body */
-    .vc-body {
-      padding: 16px 18px 18px;
-    }
-    .vc-body h3 {
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-      line-height: 1.3;
-    }
-    .vc-body p {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 12px;
-      line-height: 1.55;
-    }
-    .vc-tech-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-bottom: 12px;
-    }
-    .vc-tech-tag {
-      font-size: 0.65rem;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 50px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      background: var(--glass);
-    }
-    .vc-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .vc-impact {
-      font-size: 0.72rem;
-      color: var(--cyan-trace);
-      font-weight: 600;
-    }
+    .vc-hover-title { font-size: 0.86rem; font-weight: 700; margin-bottom: 6px; line-height: 1.3; }
+    .vc-hover-metrics { display: flex; flex-wrap: wrap; gap: 4px; }
+    .vc-hover-metric { font-size: 0.64rem; font-weight: 600; padding: 2px 7px; border-radius: 50px; background: rgba(139,61,255,0.3); border: 1px solid rgba(139,61,255,0.4); color: var(--purple-glow); }
+    .vc-body { padding: 15px 17px 17px; }
+    .vc-body h3 { font-size: 0.93rem; font-weight: 700; margin-bottom: 5px; line-height: 1.3; }
+    .vc-body p { font-size: 0.79rem; color: var(--muted); margin-bottom: 10px; line-height: 1.55; }
+    .vc-tech-row { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+    .vc-tech-tag { font-size: 0.64rem; font-weight: 600; padding: 2px 7px; border-radius: 50px; border: 1px solid var(--border); color: var(--muted); background: var(--glass); }
+    .vc-footer { display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; }
+    .vc-impact { font-size: 0.71rem; color: var(--cyan-trace); font-weight: 600; }
     .vc-watch-btn {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 6px 14px;
+      gap: 4px;
+      padding: 5px 13px;
       border-radius: 50px;
       border: 1px solid var(--border);
       background: var(--glass);
-      font-size: 0.72rem;
+      font-size: 0.71rem;
       font-weight: 600;
       color: var(--purple-glow);
       transition: all var(--transition);
     }
-    .video-card:hover .vc-watch-btn {
-      background: rgba(139,61,255,0.2);
-      border-color: var(--purple-mid);
-      color: var(--white);
-    }
-
-    /* Cinematic frame effect on thumb */
-    .vc-thumb::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border: 2px solid transparent;
-      border-radius: 0;
-      z-index: 6;
-      transition: border-color 0.3s ease;
-      pointer-events: none;
-    }
-    .video-card:hover .vc-thumb::before {
-      border-color: rgba(139,61,255,0.4);
-    }
-
-    /* Scan line effect on featured */
-    .featured-video-player::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.03) 2px,
-        rgba(0,0,0,0.03) 4px
-      );
-      z-index: 1;
-      pointer-events: none;
-    }
+    .video-card:hover .vc-watch-btn { background: rgba(139,61,255,0.2); border-color: var(--purple-mid); color: var(--white); }
 
     /* ============================================================
-       VIDEO MODAL — NEW
+       VIDEO MODAL
     ============================================================ */
     #video-modal {
       position: fixed;
@@ -1451,14 +1199,11 @@
       pointer-events: none;
       transition: opacity 0.35s ease;
     }
-    #video-modal.open {
-      opacity: 1;
-      pointer-events: all;
-    }
+    #video-modal.open { opacity: 1; pointer-events: all; }
     .vm-backdrop {
       position: absolute;
       inset: 0;
-      background: rgba(5, 3, 13, 0.88);
+      background: rgba(5,3,13,0.88);
       backdrop-filter: blur(22px);
       -webkit-backdrop-filter: blur(22px);
     }
@@ -1466,23 +1211,18 @@
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 900px;
-      background: rgba(18, 10, 40, 0.92);
-      border: 1px solid rgba(148, 85, 255, 0.35);
+      max-width: 880px;
+      background: rgba(18,10,40,0.92);
+      border: 1px solid rgba(148,85,255,0.35);
       border-radius: 24px;
       overflow: hidden;
-      box-shadow:
-        0 0 0 1px rgba(139,61,255,0.1),
-        0 40px 120px rgba(5,3,13,0.9),
-        0 0 80px rgba(139,61,255,0.15);
+      box-shadow: 0 40px 120px rgba(5,3,13,0.9), 0 0 80px rgba(139,61,255,0.15);
       transform: scale(0.9) translateY(20px);
       transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-height: 90vh;
+      overflow-y: auto;
     }
-    #video-modal.open .vm-container {
-      transform: scale(1) translateY(0);
-    }
-
-    /* Modal top bar */
+    #video-modal.open .vm-container { transform: scale(1) translateY(0); }
     .vm-top-bar {
       display: flex;
       align-items: center;
@@ -1490,12 +1230,11 @@
       padding: 16px 22px;
       border-bottom: 1px solid var(--border);
       background: linear-gradient(135deg, rgba(139,61,255,0.15), transparent);
+      position: sticky;
+      top: 0;
+      z-index: 2;
     }
-    .vm-title-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .vm-title-wrap { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
     .vm-cat-pill {
       padding: 3px 10px;
       border-radius: 50px;
@@ -1506,11 +1245,10 @@
       color: var(--purple-glow);
       letter-spacing: 0.07em;
       text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
-    .vm-title-text {
-      font-size: 1rem;
-      font-weight: 700;
-    }
+    .vm-title-text { font-size: 0.98rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .vm-close-btn {
       width: 36px; height: 36px;
       border-radius: 50%;
@@ -1524,24 +1262,12 @@
       cursor: pointer;
       transition: all var(--transition);
       flex-shrink: 0;
+      margin-left: 12px;
     }
+    html[dir="rtl"] .vm-close-btn { margin-left: 0; margin-right: 12px; }
     .vm-close-btn:hover { background: rgba(139,61,255,0.2); border-color: var(--purple-glow); color: var(--white); }
-
-    /* Video player area */
-    .vm-player-wrap {
-      position: relative;
-      width: 100%;
-      background: #000;
-      min-height: 200px;
-    }
-    .vm-player-wrap iframe,
-    .vm-player-wrap video {
-      width: 100%;
-      display: block;
-      border: none;
-    }
-
-    /* Loading spinner */
+    .vm-player-wrap { position: relative; width: 100%; background: #000; min-height: 180px; }
+    .vm-player-wrap iframe, .vm-player-wrap video { width: 100%; display: block; border: none; }
     .vm-loader {
       position: absolute;
       inset: 0;
@@ -1551,76 +1277,28 @@
       background: rgba(5,3,13,0.8);
       z-index: 2;
       transition: opacity 0.3s ease;
+      min-height: 180px;
     }
     .vm-loader.hidden { opacity: 0; pointer-events: none; }
-    .vm-spinner {
-      width: 44px; height: 44px;
-      border: 3px solid var(--border);
-      border-top-color: var(--purple-glow);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    /* Modal info panel */
+    .vm-spinner { width: 44px; height: 44px; border: 3px solid var(--border); border-top-color: var(--purple-glow); border-radius: 50%; animation: spin 0.8s linear infinite; }
     .vm-info-panel {
-      padding: 24px 28px;
+      padding: 22px 26px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      gap: 22px;
       border-top: 1px solid var(--border);
     }
-    @media (max-width: 600px) {
-      .vm-info-panel { grid-template-columns: 1fr; }
-    }
-    .vm-info-col h4 {
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--purple-glow);
-      margin-bottom: 10px;
-    }
-    .vm-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
-    .vm-metrics-list {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-    .vm-metric-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-    .vm-metric-row .vmdot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--cyan-trace);
-      flex-shrink: 0;
-    }
+    @media (max-width: 600px) { .vm-info-panel { grid-template-columns: 1fr; padding: 18px; } }
+    .vm-info-col h4 { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--purple-glow); margin-bottom: 10px; }
+    html[dir="rtl"] .vm-info-col h4 { letter-spacing: 0.02em; }
+    .vm-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
+    .vm-metrics-list { display: flex; flex-direction: column; gap: 7px; }
+    .vm-metric-row { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--muted); }
+    .vm-metric-row .vmdot { width: 5px; height: 5px; border-radius: 50%; background: var(--cyan-trace); flex-shrink: 0; }
     .vm-metric-row strong { color: var(--white); }
-    .vm-tech-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-    }
-    .vm-tech-chip {
-      padding: 3px 10px;
-      border-radius: 50px;
-      border: 1px solid var(--border);
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--muted);
-      background: var(--glass);
-    }
-    .vm-cta-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 16px;
-    }
+    .vm-tech-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .vm-tech-chip { padding: 3px 10px; border-radius: 50px; border: 1px solid var(--border); font-size: 0.7rem; font-weight: 600; color: var(--muted); background: var(--glass); }
+    .vm-cta-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
     .vm-wa-btn {
       display: inline-flex;
       align-items: center;
@@ -1636,93 +1314,398 @@
     }
     .vm-wa-btn:hover { box-shadow: 0 0 28px rgba(37,211,102,0.55); transform: translateY(-1px); }
 
-    @media (max-width: 600px) {
-      .vm-container { border-radius: 16px; }
-      .vm-info-panel { padding: 18px; }
+    /* ============================================================
+       CHATBOT DEMO
+    ============================================================ */
+    #demo { padding: 100px 0; }
+    .demo-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+    @media (max-width: 900px) { .demo-wrapper { grid-template-columns: 1fr; } }
+    .demo-content .section-desc { margin-bottom: 28px; }
+    .demo-feature { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
+    .demo-feature-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(139,61,255,0.3), rgba(191,95,255,0.1));
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .demo-feature-text strong { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
+    .demo-feature-text span { font-size: 0.81rem; color: var(--muted); }
+    .chat-widget {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 80px rgba(139,61,255,0.1);
+    }
+    .chat-header {
+      padding: 16px 20px;
+      background: linear-gradient(135deg, rgba(139,61,255,0.25), rgba(191,95,255,0.1));
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .chat-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple-core), var(--neon));
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+      box-shadow: 0 0 14px rgba(139,61,255,0.6);
+      flex-shrink: 0;
+    }
+    .chat-info strong { display: block; font-size: 0.9rem; font-weight: 700; }
+    .chat-info span { font-size: 0.74rem; color: #4ade80; display: flex; align-items: center; gap: 4px; }
+    .chat-info span::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 6px #4ade80; }
+    .chat-messages {
+      height: 280px;
+      overflow-y: auto;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .msg {
+      max-width: 82%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      animation: msgIn 0.25s ease;
+    }
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .msg-bot {
+      background: rgba(139,61,255,0.18);
+      border: 1px solid var(--border);
+      border-radius: 14px 14px 14px 4px;
+      color: var(--white);
+      align-self: flex-start;
+    }
+    html[dir="rtl"] .msg-bot { border-radius: 14px 14px 4px 14px; align-self: flex-end; }
+    .msg-user {
+      background: linear-gradient(135deg, var(--purple-core), var(--neon));
+      color: #fff;
+      border-radius: 14px 14px 4px 14px;
+      align-self: flex-end;
+    }
+    html[dir="rtl"] .msg-user { border-radius: 14px 14px 14px 4px; align-self: flex-start; }
+    .msg-typing {
+      background: rgba(139,61,255,0.18);
+      border: 1px solid var(--border);
+      border-radius: 14px 14px 14px 4px;
+      padding: 12px 16px;
+      align-self: flex-start;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    html[dir="rtl"] .msg-typing { border-radius: 14px 14px 4px 14px; align-self: flex-end; }
+    .dot-typing { width: 6px; height: 6px; border-radius: 50%; background: var(--purple-glow); animation: typing 1.2s infinite; }
+    .dot-typing:nth-child(2) { animation-delay: 0.2s; }
+    .dot-typing:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing {
+      0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+      30%            { opacity: 1; transform: translateY(-4px); }
+    }
+    .chat-input-row {
+      display: flex;
+      gap: 10px;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      background: rgba(5,3,13,0.5);
+    }
+    .chat-input {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 10px 18px;
+      color: var(--white);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color var(--transition);
+      font-family: inherit;
+    }
+    .chat-input::placeholder { color: var(--muted); }
+    .chat-input:focus { border-color: var(--purple-mid); }
+    .chat-send {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple-core), var(--neon));
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      color: #fff;
+      flex-shrink: 0;
+      transition: all var(--transition);
+      box-shadow: 0 0 14px rgba(139,61,255,0.4);
+      align-self: center;
+    }
+    .chat-send:hover { box-shadow: 0 0 24px rgba(191,95,255,0.7); transform: scale(1.08); }
+
+    /* ============================================================
+       CONTACT
+    ============================================================ */
+    #contact { padding: 100px 0; }
+    .contact-box {
+      background: linear-gradient(135deg, rgba(139,61,255,0.15), rgba(11,6,24,0.8));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 72px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+    }
+    .contact-box::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139,61,255,0.2), transparent 70%);
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      filter: blur(60px);
+      pointer-events: none;
+    }
+    .contact-box h2 { font-size: clamp(1.55rem, 3vw, 2.4rem); font-weight: 800; margin-bottom: 14px; letter-spacing: -0.02em; }
+    html[dir="rtl"] .contact-box h2 { letter-spacing: 0; }
+    .contact-box p { font-size: 1.02rem; color: var(--muted); max-width: 460px; margin: 0 auto 36px; line-height: 1.75; }
+    .whatsapp-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 36px;
+      border-radius: var(--radius-btn);
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #fff;
+      box-shadow: 0 0 36px rgba(37,211,102,0.4);
+      transition: all var(--transition);
+    }
+    .whatsapp-btn:hover { box-shadow: 0 0 56px rgba(37,211,102,0.65); transform: translateY(-2px); }
+    .wa-icon { font-size: 1.2rem; }
+    .contact-alt { margin-top: 22px; font-size: 0.84rem; color: var(--muted); }
+    .contact-alt a { color: var(--purple-glow); border-bottom: 1px solid rgba(192,132,252,0.3); padding-bottom: 1px; transition: border-color var(--transition); }
+    .contact-alt a:hover { border-color: var(--purple-glow); }
+    @media (max-width: 600px) { .contact-box { padding: 40px 20px; } }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      padding: 56px 0 28px;
+      border-top: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+    }
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 44px;
+      margin-bottom: 44px;
+    }
+    @media (max-width: 768px) { .footer-inner { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .footer-inner { grid-template-columns: 1fr; } }
+    .footer-brand p { font-size: 0.84rem; color: var(--muted); margin-top: 12px; line-height: 1.7; max-width: 240px; }
+    .footer-social { display: flex; gap: 10px; margin-top: 18px; }
+    .social-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      font-size: 0.9rem;
+      color: var(--muted);
+      transition: all var(--transition);
+      background: var(--glass);
+    }
+    .social-icon:hover { border-color: var(--purple-glow); color: var(--purple-glow); box-shadow: 0 0 14px rgba(139,61,255,0.25); }
+    .footer-col h4 { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--purple-glow); margin-bottom: 16px; }
+    html[dir="rtl"] .footer-col h4 { letter-spacing: 0.01em; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .footer-col ul li a { font-size: 0.85rem; color: var(--muted); transition: color var(--transition); }
+    .footer-col ul li a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .footer-bottom p, .footer-bottom span { font-size: 0.79rem; color: var(--muted); }
+    @media (max-width: 600px) { .footer-bottom { flex-direction: column; text-align: center; } }
+
+    /* ============================================================
+       SCROLL REVEAL
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ============================================================
+       RTL OVERRIDES
+    ============================================================ */
+    html[dir="rtl"] .nav-links { flex-direction: row-reverse; }
+    html[dir="rtl"] .hero-inner { direction: rtl; }
+    html[dir="rtl"] .hero-buttons { flex-direction: row-reverse; justify-content: flex-end; }
+    @media (max-width: 900px) {
+      html[dir="rtl"] .hero-buttons { justify-content: center; flex-direction: row; }
+    }
+    html[dir="rtl"] .about-grid { direction: rtl; }
+    html[dir="rtl"] .footer-inner { direction: rtl; }
+    html[dir="rtl"] .hero-stats { flex-direction: row-reverse; }
+    html[dir="rtl"] .about-feature { flex-direction: row; }
+    html[dir="rtl"] .demo-feature { direction: rtl; }
+    html[dir="rtl"] .chat-input-row { flex-direction: row-reverse; }
+
+    /* ============================================================
+       REDUCED MOTION
+    ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
   </style>
 </head>
 <body>
 
-<!-- ============================================================
-     ANIMATED BACKGROUND CANVAS
-============================================================ -->
+<!-- Language transition overlay -->
+<div id="lang-overlay"><div class="lang-spinner"></div></div>
+
+<!-- Animated background canvas -->
 <canvas id="bg-canvas"></canvas>
+
+<!-- Mobile menu backdrop -->
+<div id="menu-overlay"></div>
 
 <!-- ============================================================
      NAVBAR
 ============================================================ -->
 <nav id="navbar">
-  <div class="nav-logo">
-    <div class="logo-icon">⬡</div>
-    Agentix<span>Labs</span>
-  </div>
+  <a href="#hero" class="nav-logo">
+    <!-- NEW AI-EYES LOGO SVG -->
+    <div class="logo-svg-wrap">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="logoGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#8b3dff"/>
+            <stop offset="100%" stop-color="#bf5fff"/>
+          </linearGradient>
+          <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Rounded rect body -->
+        <rect x="2" y="2" width="32" height="32" rx="9" fill="url(#logoGrad)" opacity="0.95"/>
+        <!-- Inner glow ring -->
+        <rect x="4" y="4" width="28" height="28" rx="7" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <!-- Left eye -->
+        <circle cx="12.5" cy="18" r="4" fill="rgba(255,255,255,0.15)" filter="url(#glow)"/>
+        <circle cx="12.5" cy="18" r="2.5" fill="#ffffff" opacity="0.95"/>
+        <circle cx="13.4" cy="17.1" r="0.9" fill="rgba(192,132,252,0.6)"/>
+        <!-- Right eye -->
+        <circle cx="23.5" cy="18" r="4" fill="rgba(255,255,255,0.15)" filter="url(#glow)"/>
+        <circle cx="23.5" cy="18" r="2.5" fill="#ffffff" opacity="0.95"/>
+        <circle cx="24.4" cy="17.1" r="0.9" fill="rgba(192,132,252,0.6)"/>
+        <!-- Subtle chin line -->
+        <path d="M14 25 Q18 27 22 25" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+    Agentix<span class="brand-accent"> AI</span>
+  </a>
+
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#video-showcase">Videos</a></li>
-    <li><a href="#demo">Demo</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#about" data-i18n="nav_about">About</a></li>
+    <li><a href="#services" data-i18n="nav_services">Services</a></li>
+    <li><a href="#projects" data-i18n="nav_projects">Projects</a></li>
+    <li><a href="#video-showcase" data-i18n="nav_videos">Videos</a></li>
+    <li><a href="#demo" data-i18n="nav_demo">Demo</a></li>
+    <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
   </ul>
-  <a href="https://wa.me/201288694962" target="_blank" class="nav-cta">Get Started →</a>
-  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+
+  <div class="nav-right">
+    <button class="lang-switcher" id="lang-switcher" aria-label="Switch language">
+      <span class="lang-globe">🌐</span>
+      <span class="lang-code" id="lang-code-label">EN</span>
+    </button>
+    <a href="https://wa.me/201288694962" target="_blank" class="nav-cta" data-i18n="nav_cta">Get Started →</a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
 <!-- Mobile menu -->
-<div class="mobile-menu" id="mobile-menu">
-  <a href="#about" onclick="closeMobileMenu()">About</a>
-  <a href="#services" onclick="closeMobileMenu()">Services</a>
-  <a href="#projects" onclick="closeMobileMenu()">Projects</a>
-  <a href="#video-showcase" onclick="closeMobileMenu()">Videos</a>
-  <a href="#demo" onclick="closeMobileMenu()">Demo</a>
-  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
-  <a href="https://wa.me/201288694962" target="_blank" class="btn-primary" style="justify-content:center">Get Started →</a>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="#about" data-i18n="nav_about">About</a>
+  <a href="#services" data-i18n="nav_services">Services</a>
+  <a href="#projects" data-i18n="nav_projects">Projects</a>
+  <a href="#video-showcase" data-i18n="nav_videos">Videos</a>
+  <a href="#demo" data-i18n="nav_demo">Demo</a>
+  <a href="#contact" data-i18n="nav_contact">Contact</a>
+  <button class="mobile-lang-btn" id="mobile-lang-btn">
+    <span>🌐</span>
+    <span id="mobile-lang-label">Switch to Arabic / العربية</span>
+  </button>
+  <a href="https://wa.me/201288694962" target="_blank" class="mobile-cta" data-i18n="nav_cta">Get Started →</a>
 </div>
 
 <!-- ============================================================
-     HERO SECTION
+     HERO
 ============================================================ -->
 <section id="hero">
   <div class="container">
     <div class="hero-inner">
-      <!-- Copy -->
       <div class="hero-copy">
         <div class="hero-badge">
           <span class="dot"></span>
-          AI Automation Platform
+          <span data-i18n="hero_badge">AI Automation Platform</span>
         </div>
         <h1 class="hero-title">
-          Build <span class="gradient-text">Smarter Businesses</span> with AI Agents
+          <span data-i18n="hero_title_1">Build </span><span class="gradient-text" data-i18n="hero_title_2">Smarter Businesses</span><span data-i18n="hero_title_3"> with AI Agents</span>
         </h1>
-        <p class="hero-sub">
+        <p class="hero-sub" data-i18n="hero_sub">
           Automate your business operations with intelligent AI systems that work 24/7, so you can focus on what actually matters.
         </p>
         <div class="hero-buttons">
-          <a href="#projects" class="btn-primary">View Projects →</a>
+          <a href="#projects" class="btn-primary" data-i18n="hero_btn1">View Projects →</a>
           <a href="https://wa.me/201288694962" target="_blank" class="btn-secondary">
-            <span>💬</span> Contact on WhatsApp
+            <span>💬</span> <span data-i18n="hero_btn2">Contact on WhatsApp</span>
           </a>
         </div>
         <div class="hero-stats">
           <div class="stat">
             <div class="stat-num">24/7</div>
-            <div class="stat-label">AI Availability</div>
+            <div class="stat-label" data-i18n="stat1">AI Availability</div>
           </div>
           <div class="stat">
             <div class="stat-num">3×</div>
-            <div class="stat-label">Faster Operations</div>
+            <div class="stat-label" data-i18n="stat2">Faster Operations</div>
           </div>
           <div class="stat">
             <div class="stat-num">100%</div>
-            <div class="stat-label">Automated</div>
+            <div class="stat-label" data-i18n="stat3">Automated</div>
           </div>
         </div>
       </div>
-
-      <!-- Visual -->
       <div class="hero-visual">
         <div class="orb-wrapper">
           <div class="orb"></div>
@@ -1730,8 +1713,8 @@
           <div class="orb-ring-2"></div>
           <div class="brain-icon">🧠</div>
         </div>
-        <div class="floating-tag tag-1">🤖 AI Agent Active</div>
-        <div class="floating-tag tag-2">⚡ Automating…</div>
+        <div class="floating-tag tag-1">🤖 <span data-i18n="ftag1">AI Agent Active</span></div>
+        <div class="floating-tag tag-2">⚡ <span data-i18n="ftag2">Automating…</span></div>
         <div class="floating-tag tag-3">📊 99.9% Uptime</div>
       </div>
     </div>
@@ -1742,8 +1725,8 @@
      TRUST MARQUEE
 ============================================================ -->
 <section id="trust">
-  <p class="marquee-label">Technologies & Integrations</p>
-  <div class="marquee-track" id="marquee">
+  <p class="marquee-label" data-i18n="marquee_label">Technologies &amp; Integrations</p>
+  <div class="marquee-track">
     <div class="marquee-item">🤖 OpenAI GPT-4</div>
     <div class="marquee-item">🔗 LangChain</div>
     <div class="marquee-item">💬 WhatsApp API</div>
@@ -1754,7 +1737,6 @@
     <div class="marquee-item">🌐 REST APIs</div>
     <div class="marquee-item">🐍 Python</div>
     <div class="marquee-item">⚙️ Embedded AI</div>
-    <!-- Duplicate for seamless loop -->
     <div class="marquee-item">🤖 OpenAI GPT-4</div>
     <div class="marquee-item">🔗 LangChain</div>
     <div class="marquee-item">💬 WhatsApp API</div>
@@ -1769,7 +1751,7 @@
 </section>
 
 <!-- ============================================================
-     ABOUT SECTION
+     ABOUT
 ============================================================ -->
 <section id="about">
   <div class="container">
@@ -1780,55 +1762,51 @@
           <div class="about-metric">
             <div class="metric-icon">🤖</div>
             <div class="metric-info">
-              <strong>Intelligent Agents</strong>
-              <span>Custom AI agents for your business</span>
+              <strong data-i18n="about_m1_title">Intelligent Agents</strong>
+              <span data-i18n="about_m1_sub">Custom AI agents for your business</span>
             </div>
           </div>
           <div class="about-metric">
             <div class="metric-icon">⚡</div>
             <div class="metric-info">
-              <strong>Instant Automation</strong>
-              <span>Deploy in days, not months</span>
+              <strong data-i18n="about_m2_title">Instant Automation</strong>
+              <span data-i18n="about_m2_sub">Deploy in days, not months</span>
             </div>
           </div>
           <div class="about-metric">
             <div class="metric-icon">📈</div>
             <div class="metric-info">
-              <strong>Measurable ROI</strong>
-              <span>Track performance from day one</span>
+              <strong data-i18n="about_m3_title">Measurable ROI</strong>
+              <span data-i18n="about_m3_sub">Track performance from day one</span>
             </div>
           </div>
           <div class="about-metric">
             <div class="metric-icon">🔒</div>
             <div class="metric-info">
-              <strong>Enterprise-Grade Security</strong>
-              <span>Data privacy first, always</span>
+              <strong data-i18n="about_m4_title">Enterprise-Grade Security</strong>
+              <span data-i18n="about_m4_sub">Data privacy first, always</span>
             </div>
           </div>
         </div>
       </div>
       <div class="about-content reveal">
-        <div class="section-label">About Agentix Labs</div>
+        <div class="section-label" data-i18n="about_label">About Agentix</div>
         <div class="divider"></div>
-        <h2 class="section-title">We Build AI That Works While You Sleep</h2>
-        <p>
-          Agentix Labs is an AI automation company built to help businesses reduce manual work, eliminate bottlenecks, and deliver exceptional customer experiences — automatically.
-        </p>
-        <p>
-          We design and deploy intelligent AI agents tailored to your workflows, from handling customer inquiries on WhatsApp to running complex business automations across your entire operation.
-        </p>
+        <h2 class="section-title" data-i18n="about_title">We Build AI That Works While You Sleep</h2>
+        <p data-i18n="about_p1">Agentix is an AI automation company built to help businesses reduce manual work, eliminate bottlenecks, and deliver exceptional customer experiences — automatically.</p>
+        <p data-i18n="about_p2">We design and deploy intelligent AI agents tailored to your workflows, from handling customer inquiries on WhatsApp to running complex business automations across your entire operation.</p>
         <div class="about-features">
           <div class="about-feature">
             <div class="check">✓</div>
-            <p><strong>No-code integration</strong> — connects to your existing tools without rebuilding anything.</p>
+            <p><strong data-i18n="about_f1_title">No-code integration</strong> — <span data-i18n="about_f1_sub">connects to your existing tools without rebuilding anything.</span></p>
           </div>
           <div class="about-feature">
             <div class="check">✓</div>
-            <p><strong>Fully customized</strong> — every AI agent is built around your specific business logic.</p>
+            <p><strong data-i18n="about_f2_title">Fully customized</strong> — <span data-i18n="about_f2_sub">every AI agent is built around your specific business logic.</span></p>
           </div>
           <div class="about-feature">
             <div class="check">✓</div>
-            <p><strong>Always on</strong> — AI agents operate 24/7 with zero downtime or sick days.</p>
+            <p><strong data-i18n="about_f3_title">Always on</strong> — <span data-i18n="about_f3_sub">AI agents operate 24/7 with zero downtime or sick days.</span></p>
           </div>
         </div>
       </div>
@@ -1837,63 +1815,56 @@
 </section>
 
 <!-- ============================================================
-     SERVICES SECTION
+     SERVICES
 ============================================================ -->
 <section id="services">
   <div class="container">
     <div class="section-head centered reveal">
-      <div class="section-label">What We Build</div>
+      <div class="section-label" data-i18n="services_label">What We Build</div>
       <div class="divider centered"></div>
-      <h2 class="section-title">AI Solutions for Every Business</h2>
-      <p class="section-desc">From WhatsApp bots to full workflow automation — we cover every layer of your business operations.</p>
+      <h2 class="section-title" data-i18n="services_title">AI Solutions for Every Business</h2>
+      <p class="section-desc" data-i18n="services_desc">From WhatsApp bots to full workflow automation — we cover every layer of your business operations.</p>
     </div>
     <div class="services-grid">
-
-      <!-- Service 1 -->
       <div class="service-card reveal">
         <div class="card-glow"></div>
         <div class="service-icon">💬</div>
-        <h3>AI WhatsApp Assistant</h3>
-        <p>A 24/7 AI-powered assistant that lives inside WhatsApp, handling customer conversations so your team doesn't have to.</p>
+        <h3 data-i18n="svc1_title">AI WhatsApp Assistant</h3>
+        <p data-i18n="svc1_desc">A 24/7 AI-powered assistant that lives inside WhatsApp, handling customer conversations so your team doesn't have to.</p>
         <ul class="service-features">
-          <li>AI-powered customer support</li>
-          <li>Automatic reply generation</li>
-          <li>Appointment booking & scheduling</li>
-          <li>Customer data collection</li>
-          <li>Always-on availability</li>
+          <li data-i18n="svc1_f1">AI-powered customer support</li>
+          <li data-i18n="svc1_f2">Automatic reply generation</li>
+          <li data-i18n="svc1_f3">Appointment booking &amp; scheduling</li>
+          <li data-i18n="svc1_f4">Customer data collection</li>
+          <li data-i18n="svc1_f5">Always-on availability</li>
         </ul>
       </div>
-
-      <!-- Service 2 -->
       <div class="service-card reveal">
         <div class="card-glow"></div>
         <div class="service-icon">🌐</div>
-        <h3>AI Web Chatbots</h3>
-        <p>An intelligent chatbot embedded into your website, turning passive visitors into active, qualified leads.</p>
+        <h3 data-i18n="svc2_title">AI Web Chatbots</h3>
+        <p data-i18n="svc2_desc">An intelligent chatbot embedded into your website, turning passive visitors into active, qualified leads.</p>
         <ul class="service-features">
-          <li>Website customer assistant</li>
-          <li>Product recommendations</li>
-          <li>FAQ & support automation</li>
-          <li>Lead generation & capture</li>
-          <li>Seamless CRM handoff</li>
+          <li data-i18n="svc2_f1">Website customer assistant</li>
+          <li data-i18n="svc2_f2">Product recommendations</li>
+          <li data-i18n="svc2_f3">FAQ &amp; support automation</li>
+          <li data-i18n="svc2_f4">Lead generation &amp; capture</li>
+          <li data-i18n="svc2_f5">Seamless CRM handoff</li>
         </ul>
       </div>
-
-      <!-- Service 3 -->
       <div class="service-card reveal">
         <div class="card-glow"></div>
         <div class="service-icon">⚙️</div>
-        <h3>Business AI Automation</h3>
-        <p>End-to-end workflow automation that removes repetitive manual tasks and lets your team operate at a higher level.</p>
+        <h3 data-i18n="svc3_title">Business AI Automation</h3>
+        <p data-i18n="svc3_desc">End-to-end workflow automation that removes repetitive manual tasks and lets your team operate at a higher level.</p>
         <ul class="service-features">
-          <li>Full workflow automation</li>
-          <li>Data processing & analysis</li>
-          <li>Automated report generation</li>
-          <li>Business tool integrations</li>
-          <li>Custom AI pipelines</li>
+          <li data-i18n="svc3_f1">Full workflow automation</li>
+          <li data-i18n="svc3_f2">Data processing &amp; analysis</li>
+          <li data-i18n="svc3_f3">Automated report generation</li>
+          <li data-i18n="svc3_f4">Business tool integrations</li>
+          <li data-i18n="svc3_f5">Custom AI pipelines</li>
         </ul>
       </div>
-
     </div>
   </div>
 </section>
@@ -1904,141 +1875,113 @@
 <section id="projects">
   <div class="container">
     <div class="section-head centered reveal">
-      <div class="section-label">Our Work</div>
+      <div class="section-label" data-i18n="projects_label">Our Work</div>
       <div class="divider centered"></div>
-      <h2 class="section-title">Real AI Projects. Real Results.</h2>
-      <p class="section-desc">A selection of AI systems we've built across computer vision, NLP, and embedded intelligence.</p>
+      <h2 class="section-title" data-i18n="projects_title">Real AI Projects. Real Results.</h2>
+      <p class="section-desc" data-i18n="projects_desc">A selection of AI systems we've built across computer vision, NLP, and embedded intelligence.</p>
     </div>
     <div class="projects-grid">
-
-      <!-- Project 1 -->
-      <a
-        href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-deeplearning-ugcPost-7450336307383554048-sBT2"
-        target="_blank"
-        rel="noopener"
-        class="project-card reveal"
-      >
+      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-deeplearning-ugcPost-7450336307383554048-sBT2" target="_blank" rel="noopener" class="project-card reveal">
         <div class="project-thumb">
-          <div class="project-thumb-bg" style="background: linear-gradient(135deg, #1a0a3e 0%, #3d0f6e 50%, #0d0120 100%);"></div>
+          <div class="project-thumb-bg" style="background:linear-gradient(135deg,#1a0a3e 0%,#3d0f6e 50%,#0d0120 100%);"></div>
           <div class="project-thumb-icon">👁️</div>
           <div class="project-thumb-overlay"></div>
+          <div class="project-play-overlay"><div class="project-play-circle">▶</div></div>
           <div class="project-tag">Computer Vision · Deep Learning</div>
         </div>
         <div class="project-body">
-          <h3>AI Computer Vision Project</h3>
-          <p>A deep-learning computer vision system capable of real-time object detection and scene understanding at scale.</p>
+          <h3 data-i18n="proj1_title">AI Computer Vision Project</h3>
+          <p data-i18n="proj1_desc">A deep-learning computer vision system capable of real-time object detection and scene understanding at scale.</p>
           <div class="project-footer">
-            <span class="view-project-btn">View on LinkedIn →</span>
+            <span class="view-project-btn" data-i18n="proj_view">View on LinkedIn →</span>
             <span class="project-ext">🔗 linkedin.com</span>
           </div>
         </div>
       </a>
-
-      <!-- Project 2 -->
-      <a
-        href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-adas-ugcPost-7455307906163392512-opdL"
-        target="_blank"
-        rel="noopener"
-        class="project-card reveal"
-      >
+      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-adas-ugcPost-7455307906163392512-opdL" target="_blank" rel="noopener" class="project-card reveal">
         <div class="project-thumb">
-          <div class="project-thumb-bg" style="background: linear-gradient(135deg, #0a1a3e 0%, #0f3d6e 50%, #011420 100%);"></div>
+          <div class="project-thumb-bg" style="background:linear-gradient(135deg,#0a1a3e 0%,#0f3d6e 50%,#011420 100%);"></div>
           <div class="project-thumb-icon">🚗</div>
           <div class="project-thumb-overlay"></div>
+          <div class="project-play-overlay"><div class="project-play-circle">▶</div></div>
           <div class="project-tag">ADAS · Autonomous Systems</div>
         </div>
         <div class="project-body">
-          <h3>AI Computer Vision ADAS System</h3>
-          <p>An Advanced Driver Assistance System powered by real-time computer vision for lane detection, obstacle awareness, and hazard alerts.</p>
+          <h3 data-i18n="proj2_title">AI Computer Vision ADAS System</h3>
+          <p data-i18n="proj2_desc">An Advanced Driver Assistance System powered by real-time computer vision for lane detection, obstacle awareness, and hazard alerts.</p>
           <div class="project-footer">
-            <span class="view-project-btn">View on LinkedIn →</span>
+            <span class="view-project-btn" data-i18n="proj_view">View on LinkedIn →</span>
             <span class="project-ext">🔗 linkedin.com</span>
           </div>
         </div>
       </a>
-
-      <!-- Project 3 -->
-      <a
-        href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-rag-fastapi-ugcPost-7461538370284879872-ZeeR"
-        target="_blank"
-        rel="noopener"
-        class="project-card reveal"
-      >
+      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-rag-fastapi-ugcPost-7461538370284879872-ZeeR" target="_blank" rel="noopener" class="project-card reveal">
         <div class="project-thumb">
-          <div class="project-thumb-bg" style="background: linear-gradient(135deg, #1a2a0a 0%, #3a6e0f 50%, #071400 100%);"></div>
+          <div class="project-thumb-bg" style="background:linear-gradient(135deg,#1a2a0a 0%,#3a6e0f 50%,#071400 100%);"></div>
           <div class="project-thumb-icon">📡</div>
           <div class="project-thumb-overlay"></div>
+          <div class="project-play-overlay"><div class="project-play-circle">▶</div></div>
           <div class="project-tag">RAG · FastAPI · LLM</div>
         </div>
         <div class="project-body">
-          <h3>AI RAG FastAPI System</h3>
-          <p>A Retrieval-Augmented Generation system built on FastAPI, enabling LLMs to answer questions grounded in private knowledge bases.</p>
+          <h3 data-i18n="proj3_title">AI RAG FastAPI System</h3>
+          <p data-i18n="proj3_desc">A Retrieval-Augmented Generation system built on FastAPI, enabling LLMs to answer questions grounded in private knowledge bases.</p>
           <div class="project-footer">
-            <span class="view-project-btn">View on LinkedIn →</span>
+            <span class="view-project-btn" data-i18n="proj_view">View on LinkedIn →</span>
             <span class="project-ext">🔗 linkedin.com</span>
           </div>
         </div>
       </a>
-
-      <!-- Project 4 -->
-      <a
-        href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-embeddedsystems-ugcPost-7466831647548706816-6F-6"
-        target="_blank"
-        rel="noopener"
-        class="project-card reveal"
-      >
+      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-embeddedsystems-ugcPost-7466831647548706816-6F-6" target="_blank" rel="noopener" class="project-card reveal">
         <div class="project-thumb">
-          <div class="project-thumb-bg" style="background: linear-gradient(135deg, #2a0a1a 0%, #6e0f3a 50%, #140008 100%);"></div>
+          <div class="project-thumb-bg" style="background:linear-gradient(135deg,#2a0a1a 0%,#6e0f3a 50%,#140008 100%);"></div>
           <div class="project-thumb-icon">🔬</div>
           <div class="project-thumb-overlay"></div>
+          <div class="project-play-overlay"><div class="project-play-circle">▶</div></div>
           <div class="project-tag">Embedded AI · Edge Computing</div>
         </div>
         <div class="project-body">
-          <h3>AI Computer Vision Embedded Systems</h3>
-          <p>Computer vision running directly on embedded hardware at the edge — eliminating cloud dependency and delivering near-zero latency inference.</p>
+          <h3 data-i18n="proj4_title">AI Computer Vision Embedded Systems</h3>
+          <p data-i18n="proj4_desc">Computer vision running directly on embedded hardware at the edge — eliminating cloud dependency and delivering near-zero latency inference.</p>
           <div class="project-footer">
-            <span class="view-project-btn">View on LinkedIn →</span>
+            <span class="view-project-btn" data-i18n="proj_view">View on LinkedIn →</span>
             <span class="project-ext">🔗 linkedin.com</span>
           </div>
         </div>
       </a>
-
     </div>
   </div>
 </section>
 
 <!-- ============================================================
-     VIDEO SHOWCASE SECTION — NEW
+     VIDEO SHOWCASE
 ============================================================ -->
 <section id="video-showcase">
   <div class="container">
-
     <div class="section-head centered reveal">
-      <div class="section-label">AI in Action</div>
+      <div class="section-label" data-i18n="vid_label">AI in Action</div>
       <div class="divider centered"></div>
-      <h2 class="section-title">Watch Our AI Systems Work</h2>
-      <p class="section-desc">Real demos, real results. See how our AI agents perform in live environments across industries.</p>
+      <h2 class="section-title" data-i18n="vid_title">Watch Our AI Systems Work</h2>
+      <p class="section-desc" data-i18n="vid_desc">Real demos, real results. See how our AI agents perform in live environments across industries.</p>
     </div>
 
     <!-- Featured Video Hero -->
     <div class="featured-video-hero reveal" id="featured-video-hero">
       <div class="featured-video-player" id="featured-player" onclick="openModalById('vid-1')">
-        <div class="fv-thumb-bg" id="featured-bg" style="background: linear-gradient(135deg, #1a0832 0%, #4a1580 40%, #0d0120 100%);"></div>
+        <div class="fv-thumb-bg" id="featured-bg" style="background:linear-gradient(135deg,#1a0832 0%,#4a1580 40%,#0d0120 100%);"></div>
         <div class="fv-thumb-icon" id="featured-icon">🤖</div>
         <div class="fv-overlay"></div>
-        <div class="featured-play-btn">
-          <div class="featured-play-circle">▶</div>
-        </div>
+        <div class="featured-play-btn"><div class="featured-play-circle">▶</div></div>
         <div class="featured-duration-badge" id="featured-duration">2:47</div>
       </div>
       <div class="featured-video-info">
         <div class="featured-category-badge" id="featured-cat">🤖 AI Customer Support</div>
-        <h3 class="featured-video-title" id="featured-title">WhatsApp AI Support Agent — Live Demo</h3>
-        <p class="featured-video-desc" id="featured-desc">Watch a fully autonomous AI agent handle 50+ customer inquiries simultaneously on WhatsApp — booking appointments, resolving issues, and escalating when needed. Zero human intervention required.</p>
+        <h3 class="featured-video-title" id="featured-title" data-i18n="fv_title">WhatsApp AI Support Agent — Live Demo</h3>
+        <p class="featured-video-desc" id="featured-desc" data-i18n="fv_desc">Watch a fully autonomous AI agent handle 50+ customer inquiries simultaneously on WhatsApp — booking appointments, resolving issues, and escalating when needed. Zero human intervention required.</p>
         <div class="featured-metrics" id="featured-metrics">
-          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>94%</strong> &nbsp;customer satisfaction rate</div>
-          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>3× faster</strong> &nbsp;response vs. human agents</div>
-          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>24/7</strong> &nbsp;zero-downtime operation</div>
+          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>94%</strong> &nbsp;<span data-i18n="fv_m1">customer satisfaction rate</span></div>
+          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>3×</strong> &nbsp;<span data-i18n="fv_m2">faster response vs. human agents</span></div>
+          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>24/7</strong> &nbsp;<span data-i18n="fv_m3">zero-downtime operation</span></div>
         </div>
         <div class="featured-tech-tags" id="featured-tags">
           <span class="ftech-tag">WhatsApp API</span>
@@ -2047,31 +1990,26 @@
           <span class="ftech-tag">FastAPI</span>
           <span class="ftech-tag">Python</span>
         </div>
-        <button class="featured-watch-btn" onclick="openModalById('vid-1')">▶ Watch Full Demo</button>
+        <button class="featured-watch-btn" id="featured-watch-btn" onclick="openModalById('vid-1')">▶ <span data-i18n="watch_btn">Watch Full Demo</span></button>
       </div>
     </div>
 
     <!-- Video Filters -->
     <div class="video-filters reveal">
-      <button class="vf-btn active" data-filter="all">All Videos</button>
-      <button class="vf-btn" data-filter="customer-support">AI Customer Support</button>
-      <button class="vf-btn" data-filter="whatsapp">WhatsApp Automation</button>
-      <button class="vf-btn" data-filter="lead-gen">Lead Generation</button>
-      <button class="vf-btn" data-filter="computer-vision">Computer Vision</button>
-      <button class="vf-btn" data-filter="enterprise">Enterprise AI</button>
-      <button class="vf-btn" data-filter="ecommerce">E-Commerce</button>
+      <button class="vf-btn active" data-filter="all" data-i18n="filter_all">All Videos</button>
+      <button class="vf-btn" data-filter="customer-support" data-i18n="filter_support">AI Customer Support</button>
+      <button class="vf-btn" data-filter="whatsapp" data-i18n="filter_wa">WhatsApp Automation</button>
+      <button class="vf-btn" data-filter="lead-gen" data-i18n="filter_lead">Lead Generation</button>
+      <button class="vf-btn" data-filter="computer-vision" data-i18n="filter_cv">Computer Vision</button>
+      <button class="vf-btn" data-filter="enterprise" data-i18n="filter_ent">Enterprise AI</button>
+      <button class="vf-btn" data-filter="ecommerce" data-i18n="filter_ecom">E-Commerce</button>
     </div>
 
     <!-- Video Gallery -->
     <div class="video-gallery-grid" id="video-gallery">
-
-      <!-- Video Card 1 -->
-      <div class="video-card reveal"
-           data-id="vid-1"
-           data-category="customer-support whatsapp"
-           onclick="openModalById('vid-1')">
+      <div class="video-card reveal" data-id="vid-1" data-category="customer-support whatsapp" onclick="openModalById('vid-1')">
         <div class="vc-thumb">
-          <div class="vc-thumb-bg" style="background: linear-gradient(135deg, #1a0832 0%, #4a1580 40%, #0d0120 100%);"></div>
+          <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#1a0832 0%,#4a1580 40%,#0d0120 100%);"></div>
           <div class="vc-thumb-icon">🤖</div>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
@@ -2079,35 +2017,20 @@
           <div class="vc-duration">2:47</div>
           <div class="vc-hover-info">
             <div class="vc-hover-title">WhatsApp AI Support Agent</div>
-            <div class="vc-hover-metrics">
-              <span class="vc-hover-metric">94% CSAT</span>
-              <span class="vc-hover-metric">3× Faster</span>
-              <span class="vc-hover-metric">24/7 Active</span>
-            </div>
+            <div class="vc-hover-metrics"><span class="vc-hover-metric">94% CSAT</span><span class="vc-hover-metric">3× Faster</span><span class="vc-hover-metric">24/7</span></div>
           </div>
         </div>
         <div class="vc-body">
-          <h3>WhatsApp AI Support Agent</h3>
-          <p>Autonomous agent handling 50+ simultaneous customer inquiries on WhatsApp with zero human intervention.</p>
-          <div class="vc-tech-row">
-            <span class="vc-tech-tag">WhatsApp API</span>
-            <span class="vc-tech-tag">GPT-4</span>
-            <span class="vc-tech-tag">LangChain</span>
-          </div>
-          <div class="vc-footer">
-            <span class="vc-impact">↑ 94% satisfaction rate</span>
-            <span class="vc-watch-btn">▶ Watch</span>
-          </div>
+          <h3 data-i18n="vc1_title">WhatsApp AI Support Agent</h3>
+          <p data-i18n="vc1_desc">Autonomous agent handling 50+ simultaneous customer inquiries on WhatsApp with zero human intervention.</p>
+          <div class="vc-tech-row"><span class="vc-tech-tag">WhatsApp API</span><span class="vc-tech-tag">GPT-4</span><span class="vc-tech-tag">LangChain</span></div>
+          <div class="vc-footer"><span class="vc-impact">↑ 94% satisfaction</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
         </div>
       </div>
 
-      <!-- Video Card 2 -->
-      <div class="video-card reveal"
-           data-id="vid-2"
-           data-category="lead-gen"
-           onclick="openModalById('vid-2')">
+      <div class="video-card reveal" data-id="vid-2" data-category="lead-gen" onclick="openModalById('vid-2')">
         <div class="vc-thumb">
-          <div class="vc-thumb-bg" style="background: linear-gradient(135deg, #0a2a1a 0%, #1a6040 40%, #001408 100%);"></div>
+          <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#0a2a1a 0%,#1a6040 40%,#001408 100%);"></div>
           <div class="vc-thumb-icon">🎯</div>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
@@ -2115,71 +2038,41 @@
           <div class="vc-duration">3:12</div>
           <div class="vc-hover-info">
             <div class="vc-hover-title">AI Lead Qualification Bot</div>
-            <div class="vc-hover-metrics">
-              <span class="vc-hover-metric">340% more leads</span>
-              <span class="vc-hover-metric">Auto-qualify</span>
-              <span class="vc-hover-metric">CRM sync</span>
-            </div>
+            <div class="vc-hover-metrics"><span class="vc-hover-metric">340% more leads</span><span class="vc-hover-metric">Auto-qualify</span></div>
           </div>
         </div>
         <div class="vc-body">
-          <h3>AI Lead Qualification Bot</h3>
-          <p>Automatically qualifies, scores, and routes inbound leads — syncing directly into your CRM with full context.</p>
-          <div class="vc-tech-row">
-            <span class="vc-tech-tag">n8n</span>
-            <span class="vc-tech-tag">OpenAI</span>
-            <span class="vc-tech-tag">CRM API</span>
-          </div>
-          <div class="vc-footer">
-            <span class="vc-impact">↑ 340% more qualified leads</span>
-            <span class="vc-watch-btn">▶ Watch</span>
-          </div>
+          <h3 data-i18n="vc2_title">AI Lead Qualification Bot</h3>
+          <p data-i18n="vc2_desc">Automatically qualifies, scores, and routes inbound leads — syncing directly into your CRM with full context.</p>
+          <div class="vc-tech-row"><span class="vc-tech-tag">n8n</span><span class="vc-tech-tag">OpenAI</span><span class="vc-tech-tag">CRM API</span></div>
+          <div class="vc-footer"><span class="vc-impact">↑ 340% more leads</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
         </div>
       </div>
 
-      <!-- Video Card 3 -->
-      <div class="video-card reveal"
-           data-id="vid-3"
-           data-category="computer-vision enterprise"
-           onclick="openModalById('vid-3')">
+      <div class="video-card reveal" data-id="vid-3" data-category="computer-vision enterprise" onclick="openModalById('vid-3')">
         <div class="vc-thumb">
-          <div class="vc-thumb-bg" style="background: linear-gradient(135deg, #0a1a3e 0%, #0f3d6e 50%, #011420 100%);"></div>
+          <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#0a1a3e 0%,#0f3d6e 50%,#011420 100%);"></div>
           <div class="vc-thumb-icon">🚗</div>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
           <div class="vc-category">Computer Vision</div>
           <div class="vc-duration">4:05</div>
           <div class="vc-hover-info">
-            <div class="vc-hover-title">ADAS Real-Time Vision System</div>
-            <div class="vc-hover-metrics">
-              <span class="vc-hover-metric">30ms latency</span>
-              <span class="vc-hover-metric">99.2% accuracy</span>
-              <span class="vc-hover-metric">Edge deploy</span>
-            </div>
+            <div class="vc-hover-title">ADAS Real-Time Vision</div>
+            <div class="vc-hover-metrics"><span class="vc-hover-metric">30ms latency</span><span class="vc-hover-metric">99.2% accuracy</span></div>
           </div>
         </div>
         <div class="vc-body">
-          <h3>ADAS Real-Time Vision System</h3>
-          <p>Lane detection, obstacle awareness, and hazard alerts running at 30ms latency on embedded hardware.</p>
-          <div class="vc-tech-row">
-            <span class="vc-tech-tag">YOLOv8</span>
-            <span class="vc-tech-tag">OpenCV</span>
-            <span class="vc-tech-tag">TensorRT</span>
-          </div>
-          <div class="vc-footer">
-            <span class="vc-impact">99.2% detection accuracy</span>
-            <span class="vc-watch-btn">▶ Watch</span>
-          </div>
+          <h3 data-i18n="vc3_title">ADAS Real-Time Vision System</h3>
+          <p data-i18n="vc3_desc">Lane detection, obstacle awareness, and hazard alerts running at 30ms latency on embedded hardware.</p>
+          <div class="vc-tech-row"><span class="vc-tech-tag">YOLOv8</span><span class="vc-tech-tag">OpenCV</span><span class="vc-tech-tag">TensorRT</span></div>
+          <div class="vc-footer"><span class="vc-impact">99.2% accuracy</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
         </div>
       </div>
 
-      <!-- Video Card 4 -->
-      <div class="video-card reveal"
-           data-id="vid-4"
-           data-category="ecommerce customer-support"
-           onclick="openModalById('vid-4')">
+      <div class="video-card reveal" data-id="vid-4" data-category="ecommerce customer-support" onclick="openModalById('vid-4')">
         <div class="vc-thumb">
-          <div class="vc-thumb-bg" style="background: linear-gradient(135deg, #2a1a0a 0%, #6e400f 50%, #140800 100%);"></div>
+          <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#2a1a0a 0%,#6e400f 50%,#140800 100%);"></div>
           <div class="vc-thumb-icon">🛒</div>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
@@ -2187,35 +2080,20 @@
           <div class="vc-duration">2:33</div>
           <div class="vc-hover-info">
             <div class="vc-hover-title">E-Commerce AI Shopping Agent</div>
-            <div class="vc-hover-metrics">
-              <span class="vc-hover-metric">+28% AOV</span>
-              <span class="vc-hover-metric">Personalized</span>
-              <span class="vc-hover-metric">Auto upsell</span>
-            </div>
+            <div class="vc-hover-metrics"><span class="vc-hover-metric">+28% AOV</span><span class="vc-hover-metric">Auto upsell</span></div>
           </div>
         </div>
         <div class="vc-body">
-          <h3>E-Commerce AI Shopping Agent</h3>
-          <p>Personalized product recommendations and smart upselling — embedded directly in chat, boosting average order value.</p>
-          <div class="vc-tech-row">
-            <span class="vc-tech-tag">RAG</span>
-            <span class="vc-tech-tag">GPT-4</span>
-            <span class="vc-tech-tag">Shopify API</span>
-          </div>
-          <div class="vc-footer">
-            <span class="vc-impact">↑ 28% average order value</span>
-            <span class="vc-watch-btn">▶ Watch</span>
-          </div>
+          <h3 data-i18n="vc4_title">E-Commerce AI Shopping Agent</h3>
+          <p data-i18n="vc4_desc">Personalized product recommendations and smart upselling embedded in chat, boosting average order value.</p>
+          <div class="vc-tech-row"><span class="vc-tech-tag">RAG</span><span class="vc-tech-tag">GPT-4</span><span class="vc-tech-tag">Shopify API</span></div>
+          <div class="vc-footer"><span class="vc-impact">↑ 28% order value</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
         </div>
       </div>
 
-      <!-- Video Card 5 -->
-      <div class="video-card reveal"
-           data-id="vid-5"
-           data-category="enterprise"
-           onclick="openModalById('vid-5')">
+      <div class="video-card reveal" data-id="vid-5" data-category="enterprise" onclick="openModalById('vid-5')">
         <div class="vc-thumb">
-          <div class="vc-thumb-bg" style="background: linear-gradient(135deg, #1a2a0a 0%, #3a6e0f 50%, #071400 100%);"></div>
+          <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#1a2a0a 0%,#3a6e0f 50%,#071400 100%);"></div>
           <div class="vc-thumb-icon">📡</div>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
@@ -2223,35 +2101,20 @@
           <div class="vc-duration">5:18</div>
           <div class="vc-hover-info">
             <div class="vc-hover-title">RAG Knowledge Base System</div>
-            <div class="vc-hover-metrics">
-              <span class="vc-hover-metric">Private docs</span>
-              <span class="vc-hover-metric">99% accuracy</span>
-              <span class="vc-hover-metric">Instant answers</span>
-            </div>
+            <div class="vc-hover-metrics"><span class="vc-hover-metric">99% accuracy</span><span class="vc-hover-metric">Instant answers</span></div>
           </div>
         </div>
         <div class="vc-body">
-          <h3>RAG Knowledge Base System</h3>
-          <p>LLMs answering enterprise questions grounded in private documents — no hallucinations, full source citations.</p>
-          <div class="vc-tech-row">
-            <span class="vc-tech-tag">FastAPI</span>
-            <span class="vc-tech-tag">LangChain</span>
-            <span class="vc-tech-tag">Pinecone</span>
-          </div>
-          <div class="vc-footer">
-            <span class="vc-impact">99% answer accuracy</span>
-            <span class="vc-watch-btn">▶ Watch</span>
-          </div>
+          <h3 data-i18n="vc5_title">RAG Knowledge Base System</h3>
+          <p data-i18n="vc5_desc">LLMs answering enterprise questions grounded in private documents — no hallucinations, full source citations.</p>
+          <div class="vc-tech-row"><span class="vc-tech-tag">FastAPI</span><span class="vc-tech-tag">LangChain</span><span class="vc-tech-tag">Pinecone</span></div>
+          <div class="vc-footer"><span class="vc-impact">99% answer accuracy</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
         </div>
       </div>
 
-      <!-- Video Card 6 -->
-      <div class="video-card reveal"
-           data-id="vid-6"
-           data-category="computer-vision enterprise"
-           onclick="openModalById('vid-6')">
+      <div class="video-card reveal" data-id="vid-6" data-category="computer-vision enterprise" onclick="openModalById('vid-6')">
         <div class="vc-thumb">
-          <div class="vc-thumb-bg" style="background: linear-gradient(135deg, #2a0a1a 0%, #6e0f3a 50%, #140008 100%);"></div>
+          <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#2a0a1a 0%,#6e0f3a 50%,#140008 100%);"></div>
           <div class="vc-thumb-icon">🔬</div>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
@@ -2259,28 +2122,16 @@
           <div class="vc-duration">3:44</div>
           <div class="vc-hover-info">
             <div class="vc-hover-title">Edge AI Embedded Vision</div>
-            <div class="vc-hover-metrics">
-              <span class="vc-hover-metric">No cloud</span>
-              <span class="vc-hover-metric">&lt;5ms latency</span>
-              <span class="vc-hover-metric">Offline-first</span>
-            </div>
+            <div class="vc-hover-metrics"><span class="vc-hover-metric">No cloud</span><span class="vc-hover-metric">&lt;5ms latency</span></div>
           </div>
         </div>
         <div class="vc-body">
-          <h3>Edge AI Embedded Vision</h3>
-          <p>Computer vision inference running entirely on embedded hardware — no cloud, no latency, no privacy risk.</p>
-          <div class="vc-tech-row">
-            <span class="vc-tech-tag">TensorFlow Lite</span>
-            <span class="vc-tech-tag">ONNX</span>
-            <span class="vc-tech-tag">Raspberry Pi</span>
-          </div>
-          <div class="vc-footer">
-            <span class="vc-impact">&lt;5ms inference latency</span>
-            <span class="vc-watch-btn">▶ Watch</span>
-          </div>
+          <h3 data-i18n="vc6_title">Edge AI Embedded Vision</h3>
+          <p data-i18n="vc6_desc">Computer vision inference running entirely on embedded hardware — no cloud, no latency, no privacy risk.</p>
+          <div class="vc-tech-row"><span class="vc-tech-tag">TF Lite</span><span class="vc-tech-tag">ONNX</span><span class="vc-tech-tag">Raspberry Pi</span></div>
+          <div class="vc-footer"><span class="vc-impact">&lt;5ms latency</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -2292,76 +2143,67 @@
   <div class="container">
     <div class="demo-wrapper">
       <div class="demo-content reveal">
-        <div class="section-label">Try It Now</div>
+        <div class="section-label" data-i18n="demo_label">Try It Now</div>
         <div class="divider"></div>
-        <h2 class="section-title">Talk to Our AI Agent</h2>
-        <p class="section-desc">Experience what an Agentix Labs AI assistant feels like. Say hello and let it walk you through what automation can do for your business.</p>
+        <h2 class="section-title" data-i18n="demo_title">Talk to Our AI Agent</h2>
+        <p class="section-desc" data-i18n="demo_desc">Experience what an Agentix AI assistant feels like. Say hello and let it walk you through what automation can do for your business.</p>
         <div class="demo-feature">
           <div class="demo-feature-icon">🧠</div>
           <div class="demo-feature-text">
-            <strong>Context-aware responses</strong>
-            <span>Understands the full conversation, not just the last message.</span>
+            <strong data-i18n="demo_f1_title">Context-aware responses</strong>
+            <span data-i18n="demo_f1_sub">Understands the full conversation, not just the last message.</span>
           </div>
         </div>
         <div class="demo-feature">
           <div class="demo-feature-icon">⚡</div>
           <div class="demo-feature-text">
-            <strong>Instant replies, always</strong>
-            <span>Zero wait time, zero dropped messages, zero frustration.</span>
+            <strong data-i18n="demo_f2_title">Instant replies, always</strong>
+            <span data-i18n="demo_f2_sub">Zero wait time, zero dropped messages, zero frustration.</span>
           </div>
         </div>
         <div class="demo-feature">
           <div class="demo-feature-icon">📋</div>
           <div class="demo-feature-text">
-            <strong>Qualified lead capture</strong>
-            <span>Collects name, company, and contact details automatically.</span>
+            <strong data-i18n="demo_f3_title">Qualified lead capture</strong>
+            <span data-i18n="demo_f3_sub">Collects name, company, and contact details automatically.</span>
           </div>
         </div>
       </div>
-
-      <!-- Chat Widget -->
       <div class="chat-widget reveal">
         <div class="chat-header">
           <div class="chat-avatar">🤖</div>
           <div class="chat-info">
             <strong>Agentix AI</strong>
-            <span>Online now</span>
+            <span data-i18n="chat_online">Online now</span>
           </div>
         </div>
         <div class="chat-messages" id="chat-messages">
-          <div class="msg msg-bot">👋 Hello! I'm the Agentix Labs AI agent. Type <strong>"Hello"</strong> to get started.</div>
+          <div class="msg msg-bot" id="chat-greeting">👋 Hello! I'm the Agentix AI agent. Type <strong>"Hello"</strong> to get started.</div>
         </div>
         <div class="chat-input-row">
-          <input
-            type="text"
-            id="chat-input"
-            class="chat-input"
-            placeholder="Type a message…"
-            autocomplete="off"
-          />
-          <button class="chat-send" id="chat-send">➤</button>
+          <input type="text" id="chat-input" class="chat-input" data-i18n-placeholder="chat_placeholder" placeholder="Type a message…" autocomplete="off"/>
+          <button class="chat-send" id="chat-send" aria-label="Send">➤</button>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
 <!-- ============================================================
-     CONTACT / CTA SECTION
+     CONTACT
 ============================================================ -->
 <section id="contact">
   <div class="container">
     <div class="contact-box reveal">
-      <div class="section-label" style="color:var(--purple-glow);margin-bottom:16px;">Ready to Automate?</div>
-      <h2>Transform Your Business with AI Agents</h2>
-      <p>Send us a message on WhatsApp and let's build something intelligent together. We typically respond within minutes.</p>
+      <div class="section-label" style="color:var(--purple-glow);margin-bottom:14px;" data-i18n="contact_label">Ready to Automate?</div>
+      <h2 data-i18n="contact_title">Transform Your Business with AI Agents</h2>
+      <p data-i18n="contact_desc">Send us a message on WhatsApp and let's build something intelligent together. We typically respond within minutes.</p>
       <a href="https://wa.me/201288694962" target="_blank" class="whatsapp-btn">
         <span class="wa-icon">💬</span>
-        Message Us on WhatsApp
+        <span data-i18n="contact_wa_btn">Message Us on WhatsApp</span>
       </a>
       <p class="contact-alt">
-        Prefer email? Reach out at <a href="mailto:elshirefabdelrahman@gmail.com">elshirefabdelrahman@gmail.com</a>
+        <span data-i18n="contact_alt">Prefer email? Reach out at</span> <a href="mailto:elshirefabdelrahman@gmail.com">elshirefabdelrahman@gmail.com</a>
       </p>
     </div>
   </div>
@@ -2374,50 +2216,67 @@
   <div class="container">
     <div class="footer-inner">
       <div class="footer-brand">
-        <div class="nav-logo">
-          <div class="logo-icon">⬡</div>
-          Agentix<span style="color:var(--purple-glow)">Labs</span>
-        </div>
-        <p>AI Automation Solutions that transform how businesses operate, communicate, and grow.</p>
+        <a href="#hero" class="nav-logo" style="text-decoration:none;">
+          <div class="logo-svg-wrap">
+            <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="logoGrad2" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#8b3dff"/><stop offset="100%" stop-color="#bf5fff"/>
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="32" height="32" rx="9" fill="url(#logoGrad2)" opacity="0.95"/>
+              <rect x="4" y="4" width="28" height="28" rx="7" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+              <circle cx="12.5" cy="18" r="4" fill="rgba(255,255,255,0.15)"/>
+              <circle cx="12.5" cy="18" r="2.5" fill="#ffffff" opacity="0.95"/>
+              <circle cx="13.4" cy="17.1" r="0.9" fill="rgba(192,132,252,0.6)"/>
+              <circle cx="23.5" cy="18" r="4" fill="rgba(255,255,255,0.15)"/>
+              <circle cx="23.5" cy="18" r="2.5" fill="#ffffff" opacity="0.95"/>
+              <circle cx="24.4" cy="17.1" r="0.9" fill="rgba(192,132,252,0.6)"/>
+              <path d="M14 25 Q18 27 22 25" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+          Agentix<span class="brand-accent"> AI</span>
+        </a>
+        <p data-i18n="footer_tagline">AI Automation Solutions that transform how businesses operate, communicate, and grow.</p>
         <div class="footer-social">
-          <a href="https://www.linkedin.com/in/abdelrahman-elsherif-944a52337" target="_blank" class="social-icon" title="LinkedIn">in</a>
-          <a href="https://wa.me/201288694962" target="_blank" class="social-icon" title="WhatsApp">💬</a>
+          <a href="https://www.linkedin.com/in/abdelrahman-elsherif-944a52337" target="_blank" class="social-icon" title="LinkedIn" rel="noopener">in</a>
+          <a href="https://wa.me/201288694962" target="_blank" class="social-icon" title="WhatsApp" rel="noopener">💬</a>
         </div>
       </div>
       <div class="footer-col">
-        <h4>Services</h4>
+        <h4 data-i18n="footer_services">Services</h4>
         <ul>
-          <li><a href="#services">AI WhatsApp Assistant</a></li>
-          <li><a href="#services">AI Web Chatbots</a></li>
-          <li><a href="#services">Business Automation</a></li>
+          <li><a href="#services" data-i18n="svc1_title">AI WhatsApp Assistant</a></li>
+          <li><a href="#services" data-i18n="svc2_title">AI Web Chatbots</a></li>
+          <li><a href="#services" data-i18n="svc3_title">Business Automation</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Company</h4>
+        <h4 data-i18n="footer_company">Company</h4>
         <ul>
-          <li><a href="#about">About Us</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#video-showcase">Videos</a></li>
-          <li><a href="#demo">Live Demo</a></li>
+          <li><a href="#about" data-i18n="nav_about">About Us</a></li>
+          <li><a href="#projects" data-i18n="nav_projects">Projects</a></li>
+          <li><a href="#video-showcase" data-i18n="nav_videos">Videos</a></li>
+          <li><a href="#demo" data-i18n="nav_demo">Live Demo</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h4 data-i18n="footer_contact">Contact</h4>
         <ul>
-          <li><a href="https://wa.me/201288694962" target="_blank">WhatsApp</a></li>
+          <li><a href="https://wa.me/201288694962" target="_blank" rel="noopener">WhatsApp</a></li>
           <li><a href="mailto:elshirefabdelrahman@gmail.com">Email Us</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 Agentix . All rights reserved.</p>
-      <span>Built by abdelrahman elshiref  · Powered by Imagination</span>
+      <p>© 2025 Agentix AI. <span data-i18n="footer_rights">All rights reserved.</span></p>
+      <span data-i18n="footer_credit">Built by Abdelrahman Elsherif · Powered by Imagination</span>
     </div>
   </div>
 </footer>
 
 <!-- ============================================================
-     VIDEO MODAL — NEW
+     VIDEO MODAL
 ============================================================ -->
 <div id="video-modal" role="dialog" aria-modal="true" aria-label="Video player">
   <div class="vm-backdrop" id="vm-backdrop"></div>
@@ -2427,25 +2286,22 @@
         <span class="vm-cat-pill" id="vm-cat">AI Demo</span>
         <span class="vm-title-text" id="vm-title">Video Demo</span>
       </div>
-      <button class="vm-close-btn" id="vm-close" aria-label="Close video">✕</button>
+      <button class="vm-close-btn" id="vm-close" aria-label="Close">✕</button>
     </div>
     <div class="vm-player-wrap" id="vm-player-wrap">
-      <div class="vm-loader" id="vm-loader">
-        <div class="vm-spinner"></div>
-      </div>
-      <!-- iframe injected by JS -->
+      <div class="vm-loader" id="vm-loader"><div class="vm-spinner"></div></div>
     </div>
     <div class="vm-info-panel">
       <div class="vm-info-col">
-        <h4>About this project</h4>
+        <h4 data-i18n="modal_about">About this project</h4>
         <p class="vm-desc" id="vm-desc">Loading…</p>
         <div class="vm-tech-row" id="vm-tech-row"></div>
         <div class="vm-cta-row">
-          <a href="https://wa.me/201288694962" target="_blank" class="vm-wa-btn">💬 Get This Built</a>
+          <a href="https://wa.me/201288694962" target="_blank" class="vm-wa-btn">💬 <span data-i18n="modal_cta">Get This Built</span></a>
         </div>
       </div>
       <div class="vm-info-col">
-        <h4>Results achieved</h4>
+        <h4 data-i18n="modal_results">Results achieved</h4>
         <div class="vm-metrics-list" id="vm-metrics-list"></div>
       </div>
     </div>
@@ -2457,393 +2313,410 @@
 ============================================================ -->
 <script>
 /* ----------------------------------------------------------
-   BACKGROUND PARTICLE CANVAS
+   TRANSLATIONS
 ---------------------------------------------------------- */
-(function() {
+const TRANSLATIONS = {
+  en: {
+    nav_about: 'About', nav_services: 'Services', nav_projects: 'Projects',
+    nav_videos: 'Videos', nav_demo: 'Demo', nav_contact: 'Contact',
+    nav_cta: 'Get Started →',
+    hero_badge: 'AI Automation Platform',
+    hero_title_1: 'Build ', hero_title_2: 'Smarter Businesses', hero_title_3: ' with AI Agents',
+    hero_sub: 'Automate your business operations with intelligent AI systems that work 24/7, so you can focus on what actually matters.',
+    hero_btn1: 'View Projects →', hero_btn2: 'Contact on WhatsApp',
+    stat1: 'AI Availability', stat2: 'Faster Operations', stat3: 'Automated',
+    ftag1: 'AI Agent Active', ftag2: 'Automating…',
+    marquee_label: 'Technologies & Integrations',
+    about_label: 'About Agentix',
+    about_title: 'We Build AI That Works While You Sleep',
+    about_p1: 'Agentix is an AI automation company built to help businesses reduce manual work, eliminate bottlenecks, and deliver exceptional customer experiences — automatically.',
+    about_p2: 'We design and deploy intelligent AI agents tailored to your workflows, from handling customer inquiries on WhatsApp to running complex business automations across your entire operation.',
+    about_m1_title: 'Intelligent Agents', about_m1_sub: 'Custom AI agents for your business',
+    about_m2_title: 'Instant Automation', about_m2_sub: 'Deploy in days, not months',
+    about_m3_title: 'Measurable ROI', about_m3_sub: 'Track performance from day one',
+    about_m4_title: 'Enterprise-Grade Security', about_m4_sub: 'Data privacy first, always',
+    about_f1_title: 'No-code integration', about_f1_sub: 'connects to your existing tools without rebuilding anything.',
+    about_f2_title: 'Fully customized', about_f2_sub: 'every AI agent is built around your specific business logic.',
+    about_f3_title: 'Always on', about_f3_sub: 'AI agents operate 24/7 with zero downtime or sick days.',
+    services_label: 'What We Build', services_title: 'AI Solutions for Every Business',
+    services_desc: 'From WhatsApp bots to full workflow automation — we cover every layer of your business operations.',
+    svc1_title: 'AI WhatsApp Assistant',
+    svc1_desc: "A 24/7 AI-powered assistant that lives inside WhatsApp, handling customer conversations so your team doesn't have to.",
+    svc1_f1: 'AI-powered customer support', svc1_f2: 'Automatic reply generation',
+    svc1_f3: 'Appointment booking & scheduling', svc1_f4: 'Customer data collection', svc1_f5: 'Always-on availability',
+    svc2_title: 'AI Web Chatbots',
+    svc2_desc: 'An intelligent chatbot embedded into your website, turning passive visitors into active, qualified leads.',
+    svc2_f1: 'Website customer assistant', svc2_f2: 'Product recommendations',
+    svc2_f3: 'FAQ & support automation', svc2_f4: 'Lead generation & capture', svc2_f5: 'Seamless CRM handoff',
+    svc3_title: 'Business AI Automation',
+    svc3_desc: 'End-to-end workflow automation that removes repetitive manual tasks and lets your team operate at a higher level.',
+    svc3_f1: 'Full workflow automation', svc3_f2: 'Data processing & analysis',
+    svc3_f3: 'Automated report generation', svc3_f4: 'Business tool integrations', svc3_f5: 'Custom AI pipelines',
+    projects_label: 'Our Work', projects_title: 'Real AI Projects. Real Results.',
+    projects_desc: "A selection of AI systems we've built across computer vision, NLP, and embedded intelligence.",
+    proj1_title: 'AI Computer Vision Project',
+    proj1_desc: 'A deep-learning computer vision system capable of real-time object detection and scene understanding at scale.',
+    proj2_title: 'AI Computer Vision ADAS System',
+    proj2_desc: 'An Advanced Driver Assistance System powered by real-time computer vision for lane detection, obstacle awareness, and hazard alerts.',
+    proj3_title: 'AI RAG FastAPI System',
+    proj3_desc: 'A Retrieval-Augmented Generation system built on FastAPI, enabling LLMs to answer questions grounded in private knowledge bases.',
+    proj4_title: 'AI Computer Vision Embedded Systems',
+    proj4_desc: 'Computer vision running directly on embedded hardware at the edge — eliminating cloud dependency and delivering near-zero latency inference.',
+    proj_view: 'View on LinkedIn →',
+    vid_label: 'AI in Action', vid_title: 'Watch Our AI Systems Work',
+    vid_desc: 'Real demos, real results. See how our AI agents perform in live environments across industries.',
+    fv_title: 'WhatsApp AI Support Agent — Live Demo',
+    fv_desc: 'Watch a fully autonomous AI agent handle 50+ customer inquiries simultaneously on WhatsApp — booking appointments, resolving issues, and escalating when needed. Zero human intervention required.',
+    fv_m1: 'customer satisfaction rate', fv_m2: 'faster response vs. human agents', fv_m3: 'zero-downtime operation',
+    watch_btn: 'Watch Full Demo', watch_short: 'Watch',
+    filter_all: 'All Videos', filter_support: 'AI Customer Support', filter_wa: 'WhatsApp Automation',
+    filter_lead: 'Lead Generation', filter_cv: 'Computer Vision', filter_ent: 'Enterprise AI', filter_ecom: 'E-Commerce',
+    vc1_title: 'WhatsApp AI Support Agent',
+    vc1_desc: 'Autonomous agent handling 50+ simultaneous customer inquiries on WhatsApp with zero human intervention.',
+    vc2_title: 'AI Lead Qualification Bot',
+    vc2_desc: 'Automatically qualifies, scores, and routes inbound leads — syncing directly into your CRM with full context.',
+    vc3_title: 'ADAS Real-Time Vision System',
+    vc3_desc: 'Lane detection, obstacle awareness, and hazard alerts running at 30ms latency on embedded hardware.',
+    vc4_title: 'E-Commerce AI Shopping Agent',
+    vc4_desc: 'Personalized product recommendations and smart upselling embedded in chat, boosting average order value.',
+    vc5_title: 'RAG Knowledge Base System',
+    vc5_desc: 'LLMs answering enterprise questions grounded in private documents — no hallucinations, full source citations.',
+    vc6_title: 'Edge AI Embedded Vision',
+    vc6_desc: 'Computer vision inference running entirely on embedded hardware — no cloud, no latency, no privacy risk.',
+    demo_label: 'Try It Now', demo_title: 'Talk to Our AI Agent',
+    demo_desc: 'Experience what an Agentix AI assistant feels like. Say hello and let it walk you through what automation can do for your business.',
+    demo_f1_title: 'Context-aware responses', demo_f1_sub: 'Understands the full conversation, not just the last message.',
+    demo_f2_title: 'Instant replies, always', demo_f2_sub: 'Zero wait time, zero dropped messages, zero frustration.',
+    demo_f3_title: 'Qualified lead capture', demo_f3_sub: 'Collects name, company, and contact details automatically.',
+    chat_online: 'Online now', chat_placeholder: 'Type a message…',
+    chat_greeting: '👋 Hello! I\'m the Agentix AI agent. Type <strong>"Hello"</strong> to get started.',
+    contact_label: 'Ready to Automate?', contact_title: 'Transform Your Business with AI Agents',
+    contact_desc: "Send us a message on WhatsApp and let's build something intelligent together. We typically respond within minutes.",
+    contact_wa_btn: 'Message Us on WhatsApp',
+    contact_alt: 'Prefer email? Reach out at',
+    footer_tagline: 'AI Automation Solutions that transform how businesses operate, communicate, and grow.',
+    footer_services: 'Services', footer_company: 'Company', footer_contact: 'Contact',
+    footer_rights: 'All rights reserved.',
+    footer_credit: 'Built by Abdelrahman Elsherif · Powered by Imagination',
+    modal_about: 'About this project', modal_results: 'Results achieved', modal_cta: 'Get This Built',
+  },
+  ar: {
+    nav_about: 'من نحن', nav_services: 'خدماتنا', nav_projects: 'مشاريعنا',
+    nav_videos: 'الفيديوهات', nav_demo: 'تجربة مباشرة', nav_contact: 'تواصل معنا',
+    nav_cta: 'ابدأ الآن ←',
+    hero_badge: 'منصة أتمتة الذكاء الاصطناعي',
+    hero_title_1: 'بناء ', hero_title_2: 'أعمال أذكى', hero_title_3: ' بوكلاء الذكاء الاصطناعي',
+    hero_sub: 'أتمت عمليات شركتك بأنظمة ذكاء اصطناعي تعمل على مدار الساعة، حتى تتفرغ لما يهمك حقاً.',
+    hero_btn1: 'استعرض المشاريع ←', hero_btn2: 'تواصل عبر واتساب',
+    stat1: 'توافر الذكاء الاصطناعي', stat2: 'عمليات أسرع', stat3: 'مؤتمت بالكامل',
+    ftag1: 'وكيل الذكاء نشط', ftag2: 'جارٍ الأتمتة…',
+    marquee_label: 'التقنيات والتكاملات',
+    about_label: 'عن Agentix',
+    about_title: 'نبني ذكاءً اصطناعياً يعمل بينما أنت نائم',
+    about_p1: 'Agentix شركة أتمتة ذكاء اصطناعي تساعد الشركات على تقليل العمل اليدوي، وإزالة الاختناقات، وتقديم تجارب عملاء استثنائية — بشكل تلقائي.',
+    about_p2: 'نصمم وننشر وكلاء ذكاء اصطناعي مخصصين لسير عملك، من الرد على استفسارات العملاء عبر واتساب إلى تشغيل أتمتة أعمال معقدة عبر عملياتك بأكملها.',
+    about_m1_title: 'وكلاء ذكيون', about_m1_sub: 'وكلاء ذكاء اصطناعي مخصصون لشركتك',
+    about_m2_title: 'أتمتة فورية', about_m2_sub: 'نشر خلال أيام لا أشهر',
+    about_m3_title: 'عائد قابل للقياس', about_m3_sub: 'تتبع الأداء من اليوم الأول',
+    about_m4_title: 'أمان على مستوى المؤسسات', about_m4_sub: 'خصوصية البيانات أولاً دائماً',
+    about_f1_title: 'تكامل بدون كود', about_f1_sub: 'يتصل بأدواتك الحالية دون إعادة بناء أي شيء.',
+    about_f2_title: 'مخصص بالكامل', about_f2_sub: 'كل وكيل ذكاء اصطناعي مبني حول منطق عملك.',
+    about_f3_title: 'دائماً نشط', about_f3_sub: 'الوكلاء يعملون 24/7 بدون توقف.',
+    services_label: 'ما نبنيه', services_title: 'حلول ذكاء اصطناعي لكل الأعمال',
+    services_desc: 'من روبوتات واتساب إلى أتمتة سير العمل الكاملة — نغطي كل طبقة من عملياتك.',
+    svc1_title: 'مساعد واتساب الذكي',
+    svc1_desc: 'مساعد ذكاء اصطناعي يعمل 24/7 داخل واتساب، يتعامل مع محادثات العملاء حتى لا يضطر فريقك للقيام بذلك.',
+    svc1_f1: 'دعم العملاء بالذكاء الاصطناعي', svc1_f2: 'ردود تلقائية', svc1_f3: 'حجز المواعيد',
+    svc1_f4: 'جمع بيانات العملاء', svc1_f5: 'توافر على مدار الساعة',
+    svc2_title: 'روبوتات دردشة الويب',
+    svc2_desc: 'روبوت دردشة ذكي مدمج في موقعك الإلكتروني، يحوّل الزوار السلبيين إلى عملاء محتملين.',
+    svc2_f1: 'مساعد العملاء على الموقع', svc2_f2: 'توصيات المنتجات', svc2_f3: 'أتمتة الأسئلة الشائعة',
+    svc2_f4: 'توليد العملاء المحتملين', svc2_f5: 'ربط سلس بنظام CRM',
+    svc3_title: 'أتمتة الأعمال بالذكاء الاصطناعي',
+    svc3_desc: 'أتمتة سير العمل من البداية إلى النهاية لإزالة المهام اليدوية المتكررة.',
+    svc3_f1: 'أتمتة سير العمل الكاملة', svc3_f2: 'معالجة البيانات وتحليلها',
+    svc3_f3: 'إنشاء التقارير تلقائياً', svc3_f4: 'تكاملات أدوات الأعمال', svc3_f5: 'خطوط أنابيب ذكاء اصطناعي مخصصة',
+    projects_label: 'أعمالنا', projects_title: 'مشاريع حقيقية. نتائج حقيقية.',
+    projects_desc: 'مجموعة من أنظمة الذكاء الاصطناعي التي بنيناها في رؤية الحاسوب ومعالجة اللغة والأنظمة المدمجة.',
+    proj1_title: 'مشروع رؤية حاسوبية بالذكاء الاصطناعي',
+    proj1_desc: 'نظام رؤية حاسوبية بتعلم عميق قادر على اكتشاف الأجسام في الوقت الفعلي.',
+    proj2_title: 'نظام ADAS للرؤية الحاسوبية',
+    proj2_desc: 'نظام مساعدة السائق المتقدم مدعوم برؤية حاسوبية في الوقت الفعلي.',
+    proj3_title: 'نظام RAG مع FastAPI',
+    proj3_desc: 'نظام توليد معزز بالاسترجاع يمكّن نماذج اللغة من الإجابة بناءً على قواعد المعرفة الخاصة.',
+    proj4_title: 'رؤية حاسوبية في الأنظمة المدمجة',
+    proj4_desc: 'رؤية حاسوبية تعمل مباشرة على الأجهزة المدمجة مع كمون شبه صفري.',
+    proj_view: 'عرض على لينكدإن ←',
+    vid_label: 'الذكاء الاصطناعي في العمل', vid_title: 'شاهد أنظمتنا تعمل',
+    vid_desc: 'عروض توضيحية حقيقية ونتائج حقيقية. اكتشف كيف يعمل وكلاؤنا في بيئات حية.',
+    fv_title: 'وكيل دعم واتساب — عرض مباشر',
+    fv_desc: 'شاهد وكيل ذكاء اصطناعي مستقلاً يتعامل مع 50+ استفساراً للعملاء في نفس الوقت على واتساب.',
+    fv_m1: 'معدل رضا العملاء', fv_m2: 'أسرع من الوكلاء البشريين', fv_m3: 'تشغيل بدون توقف',
+    watch_btn: 'مشاهدة العرض الكامل', watch_short: 'شاهد',
+    filter_all: 'جميع الفيديوهات', filter_support: 'دعم العملاء', filter_wa: 'أتمتة واتساب',
+    filter_lead: 'توليد العملاء', filter_cv: 'رؤية حاسوبية', filter_ent: 'ذكاء المؤسسات', filter_ecom: 'التجارة الإلكترونية',
+    vc1_title: 'وكيل دعم واتساب الذكي',
+    vc1_desc: 'وكيل مستقل يتعامل مع 50+ استفساراً في نفس الوقت بدون تدخل بشري.',
+    vc2_title: 'روبوت تأهيل العملاء المحتملين',
+    vc2_desc: 'يؤهل ويصنف ويوجه العملاء المحتملين ويزامنهم مع نظام CRM تلقائياً.',
+    vc3_title: 'نظام ADAS للرؤية في الوقت الفعلي',
+    vc3_desc: 'اكتشاف مسارات وعقبات وتحذيرات بكمون 30 مللي ثانية على أجهزة مدمجة.',
+    vc4_title: 'وكيل تسوق ذكي للتجارة الإلكترونية',
+    vc4_desc: 'توصيات منتجات مخصصة وبيع إضافي ذكي مدمج في الدردشة.',
+    vc5_title: 'نظام قاعدة المعرفة RAG',
+    vc5_desc: 'نماذج لغة تجيب على أسئلة المؤسسات بناءً على مستندات خاصة — بدون هلوسة.',
+    vc6_title: 'رؤية حاسوبية مدمجة على الحافة',
+    vc6_desc: 'استنتاج رؤية حاسوبية يعمل كلياً على أجهزة مدمجة — بدون سحابة وبكمون أقل من 5 مللي ثانية.',
+    demo_label: 'جربها الآن', demo_title: 'تحدث مع وكيلنا الذكي',
+    demo_desc: 'اختبر شعور مساعد Agentix الذكي. قل مرحباً ودعه يوضح ما يمكن للأتمتة فعله لشركتك.',
+    demo_f1_title: 'ردود تدرك السياق', demo_f1_sub: 'يفهم المحادثة الكاملة وليس الرسالة الأخيرة فقط.',
+    demo_f2_title: 'ردود فورية دائماً', demo_f2_sub: 'صفر وقت انتظار، صفر رسائل ضائعة، صفر إحباط.',
+    demo_f3_title: 'التقاط العملاء المحتملين', demo_f3_sub: 'يجمع الاسم والشركة وتفاصيل الاتصال تلقائياً.',
+    chat_online: 'متصل الآن', chat_placeholder: 'اكتب رسالة…',
+    chat_greeting: '👋 مرحباً! أنا وكيل Agentix. اكتب <strong>"مرحبا"</strong> للبدء.',
+    contact_label: 'مستعد للأتمتة؟', contact_title: 'حوّل شركتك بوكلاء الذكاء الاصطناعي',
+    contact_desc: 'أرسل لنا رسالة على واتساب ولنبني شيئاً ذكياً معاً. نرد عادةً في غضون دقائق.',
+    contact_wa_btn: 'راسلنا على واتساب',
+    contact_alt: 'تفضل البريد الإلكتروني؟ تواصل على',
+    footer_tagline: 'حلول أتمتة الذكاء الاصطناعي التي تحوّل طريقة عمل الشركات وتواصلها ونموها.',
+    footer_services: 'الخدمات', footer_company: 'الشركة', footer_contact: 'تواصل',
+    footer_rights: 'جميع الحقوق محفوظة.',
+    footer_credit: 'بناء عبدالرحمن الشريف · بقوة الخيال',
+    modal_about: 'عن هذا المشروع', modal_results: 'النتائج المحققة', modal_cta: 'ابنِ هذا لشركتك',
+  }
+};
+
+let currentLang = 'en';
+
+function applyTranslations(lang) {
+  const t = TRANSLATIONS[lang];
+  if (!t) return;
+  // Set dir
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  // Translate all data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  // Placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+  // Lang switcher label
+  document.getElementById('lang-code-label').textContent = lang === 'en' ? 'EN' : 'ع';
+  document.getElementById('mobile-lang-label').textContent = lang === 'en' ? 'Switch to Arabic / العربية' : 'Switch to English';
+  // Reset chatbot on lang switch
+  resetChatbot(lang);
+}
+
+function switchLanguage() {
+  const overlay = document.getElementById('lang-overlay');
+  overlay.classList.add('active');
+  setTimeout(() => {
+    currentLang = currentLang === 'en' ? 'ar' : 'en';
+    applyTranslations(currentLang);
+    setTimeout(() => { overlay.classList.remove('active'); }, 280);
+  }, 280);
+}
+
+document.getElementById('lang-switcher').addEventListener('click', switchLanguage);
+document.getElementById('mobile-lang-btn').addEventListener('click', () => { closeMobileMenu(); switchLanguage(); });
+
+/* ----------------------------------------------------------
+   PARTICLE CANVAS BACKGROUND
+---------------------------------------------------------- */
+(function () {
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-
-  function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  const PARTICLE_COUNT = 80;
+  let W, H;
   const COLORS = ['rgba(139,61,255,', 'rgba(191,95,255,', 'rgba(94,234,212,'];
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
 
-  function randomBetween(a, b) { return a + Math.random() * (b - a); }
+  const pts = Array.from({ length: 75 }, () => ({
+    x: rand(0, window.innerWidth), y: rand(0, window.innerHeight),
+    r: rand(0.8, 2.3), vx: rand(-0.15, 0.15), vy: rand(-0.15, 0.15),
+    color: COLORS[Math.floor(Math.random() * 3)], alpha: rand(0.12, 0.5)
+  }));
 
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    particles.push({
-      x: randomBetween(0, window.innerWidth),
-      y: randomBetween(0, window.innerHeight),
-      r: randomBetween(0.8, 2.4),
-      vx: randomBetween(-0.18, 0.18),
-      vy: randomBetween(-0.18, 0.18),
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      alpha: randomBetween(0.15, 0.55),
-    });
-  }
-
-  function drawFrame() {
+  function draw() {
     ctx.clearRect(0, 0, W, H);
-    for (const p of particles) {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color + p.alpha + ')';
-      ctx.fill();
+    for (const p of pts) {
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + p.alpha + ')'; ctx.fill();
       p.x += p.vx; p.y += p.vy;
-      if (p.x < 0) p.x = W;
-      if (p.x > W) p.x = 0;
-      if (p.y < 0) p.y = H;
-      if (p.y > H) p.y = 0;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
     }
-    // Draw faint connecting lines
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 110) {
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = 'rgba(139,61,255,' + (0.07 * (1 - dist / 110)) + ')';
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 105) {
+          ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
+          ctx.strokeStyle = 'rgba(139,61,255,' + (0.065 * (1 - d / 105)) + ')';
+          ctx.lineWidth = 0.5; ctx.stroke();
         }
       }
     }
-    requestAnimationFrame(drawFrame);
+    requestAnimationFrame(draw);
   }
-  drawFrame();
+  draw();
 })();
 
 /* ----------------------------------------------------------
-   NAVBAR SCROLL EFFECT
+   NAVBAR SCROLL
 ---------------------------------------------------------- */
-window.addEventListener('scroll', function() {
-  const nav = document.getElementById('navbar');
-  if (window.scrollY > 40) {
-    nav.style.background = 'rgba(5,3,13,0.96)';
-  } else {
-    nav.style.background = 'rgba(5,3,13,0.7)';
-  }
-});
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.background =
+    window.scrollY > 40 ? 'rgba(5,3,13,0.97)' : 'rgba(5,3,13,0.7)';
+}, { passive: true });
 
 /* ----------------------------------------------------------
-   MOBILE MENU
+   MOBILE MENU — PROPER TOGGLE
 ---------------------------------------------------------- */
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobile-menu');
-hamburger.addEventListener('click', function() {
-  const open = mobileMenu.style.display === 'flex';
-  mobileMenu.style.display = open ? 'none' : 'flex';
-});
-function closeMobileMenu() {
-  mobileMenu.style.display = 'none';
+const menuOverlay = document.getElementById('menu-overlay');
+let menuOpen = false;
+
+function openMobileMenu() {
+  menuOpen = true;
+  mobileMenu.classList.add('open');
+  mobileMenu.setAttribute('aria-hidden', 'false');
+  hamburger.classList.add('open');
+  hamburger.setAttribute('aria-expanded', 'true');
+  menuOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
+
+function closeMobileMenu() {
+  menuOpen = false;
+  mobileMenu.classList.remove('open');
+  mobileMenu.setAttribute('aria-hidden', 'true');
+  hamburger.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', 'false');
+  menuOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+hamburger.addEventListener('click', (e) => {
+  e.stopPropagation();
+  menuOpen ? closeMobileMenu() : openMobileMenu();
+});
+
+menuOverlay.addEventListener('click', closeMobileMenu);
+
+// Close on nav link click
+mobileMenu.querySelectorAll('a[href]').forEach(link => {
+  link.addEventListener('click', closeMobileMenu);
+});
+
+// Close on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (menuOpen) closeMobileMenu();
+    if (document.getElementById('video-modal').classList.contains('open')) closeModal();
+  }
+});
 
 /* ----------------------------------------------------------
    SCROLL REVEAL
 ---------------------------------------------------------- */
-(function() {
-  const els = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  els.forEach(el => observer.observe(el));
-})();
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 /* ----------------------------------------------------------
-   AI CHATBOT DEMO
----------------------------------------------------------- */
-(function() {
-  const messagesEl = document.getElementById('chat-messages');
-  const inputEl    = document.getElementById('chat-input');
-  const sendBtn    = document.getElementById('chat-send');
-
-  // Conversation state machine
-  let step = 0;
-  let userData = { name: '', company: '', phone: '', type: '' };
-
-  const FLOW = [
-    // step 0: initial greeting
-    {
-      trigger: /hello|hi|hey|start/i,
-      response: "Welcome to Agentix Labs! 🚀 I'm your AI business consultant. I'd love to show you how we can automate your operations.\n\nTo get started, what's your name?",
-      nextStep: 1,
-    },
-    // step 1: collect name
-    {
-      trigger: /.+/,
-      collectKey: 'name',
-      response: (val) => `Great to meet you, ${val}! 👋\n\nWhat company do you work for?`,
-      nextStep: 2,
-    },
-    // step 2: collect company
-    {
-      trigger: /.+/,
-      collectKey: 'company',
-      response: (val) => `${val} — exciting! 🏢\n\nWhat's the best phone number to reach you on?`,
-      nextStep: 3,
-    },
-    // step 3: collect phone
-    {
-      trigger: /.+/,
-      collectKey: 'phone',
-      response: () => `Perfect. Last question — what type of business are you in? (e.g. e-commerce, healthcare, real estate, retail…)`,
-      nextStep: 4,
-    },
-    // step 4: collect business type → wrap up
-    {
-      trigger: /.+/,
-      collectKey: 'type',
-      response: (val, data) => `Excellent! Here's what I've captured:\n\n👤 Name: ${data.name}\n🏢 Company: ${data.company}\n📞 Phone: ${data.phone}\n💼 Industry: ${val}\n\nOne of our AI specialists will be in touch with you soon to discuss custom automation solutions for ${data.company}. ✅\n\nTalk to us directly on WhatsApp: wa.me/201288694962`,
-      nextStep: 99,
-    },
-  ];
-
-  function appendMsg(text, type) {
-    const msg = document.createElement('div');
-    msg.className = 'msg msg-' + type;
-    msg.innerHTML = text.replace(/\n/g, '<br>');
-    messagesEl.appendChild(msg);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-  }
-
-  function showTyping() {
-    const el = document.createElement('div');
-    el.className = 'msg-typing';
-    el.id = 'typing';
-    el.innerHTML = '<div class="dot-typing"></div><div class="dot-typing"></div><div class="dot-typing"></div>';
-    messagesEl.appendChild(el);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-    return el;
-  }
-
-  function removeTyping() {
-    const t = document.getElementById('typing');
-    if (t) t.remove();
-  }
-
-  function handleInput() {
-    const val = inputEl.value.trim();
-    if (!val) return;
-    appendMsg(val, 'user');
-    inputEl.value = '';
-
-    if (step === 99) {
-      // Conversation done
-      const typing = showTyping();
-      setTimeout(() => {
-        removeTyping();
-        appendMsg("We've already captured your details. Our team will reach out soon! 🙌", 'bot');
-      }, 900);
-      return;
-    }
-
-    const flowItem = FLOW[step];
-    if (step === 0 && !flowItem.trigger.test(val)) {
-      const typing = showTyping();
-      setTimeout(() => {
-        removeTyping();
-        appendMsg("Just type <strong>Hello</strong> to kick things off! 👋", 'bot');
-      }, 700);
-      return;
-    }
-
-    if (flowItem.collectKey) {
-      userData[flowItem.collectKey] = val;
-    }
-
-    const responseText = typeof flowItem.response === 'function'
-      ? flowItem.response(val, userData)
-      : flowItem.response;
-
-    const typing = showTyping();
-    setTimeout(() => {
-      removeTyping();
-      appendMsg(responseText, 'bot');
-      step = flowItem.nextStep;
-    }, 900 + Math.random() * 400);
-  }
-
-  sendBtn.addEventListener('click', handleInput);
-  inputEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleInput(); });
-})();
-
-/* ----------------------------------------------------------
-   VIDEO DATA STORE
+   VIDEO DATA
 ---------------------------------------------------------- */
 const VIDEO_DATA = {
   'vid-1': {
-    title: 'WhatsApp AI Support Agent',
-    category: 'AI Customer Support',
-    desc: 'A fully autonomous AI agent handling 50+ simultaneous customer inquiries on WhatsApp. Covers appointment booking, FAQ resolution, complaint handling, and smart escalation — with zero human intervention required.',
-    duration: '2:47',
-    tech: ['WhatsApp API', 'OpenAI GPT-4', 'LangChain', 'FastAPI', 'Python'],
-    metrics: [
-      { label: 'Customer satisfaction rate', value: '94%' },
-      { label: 'Response speed vs. human agents', value: '3× faster' },
-      { label: 'Ticket deflection rate', value: '78%' },
-      { label: 'Uptime availability', value: '24/7' },
-    ],
-    // LinkedIn URL used as embed fallback with custom player
+    title: 'WhatsApp AI Support Agent', category: 'AI Customer Support',
+    desc: 'A fully autonomous AI agent handling 50+ simultaneous customer inquiries on WhatsApp. Covers appointment booking, FAQ resolution, complaint handling, and smart escalation.',
+    duration: '2:47', tech: ['WhatsApp API', 'OpenAI GPT-4', 'LangChain', 'FastAPI', 'Python'],
+    metrics: [{ label: 'Customer satisfaction rate', value: '94%' }, { label: 'Response speed vs. human agents', value: '3× faster' }, { label: 'Ticket deflection rate', value: '78%' }, { label: 'Uptime availability', value: '24/7' }],
     linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-deeplearning-ugcPost-7450336307383554048-sBT2',
-    thumbBg: 'linear-gradient(135deg, #1a0832 0%, #4a1580 40%, #0d0120 100%)',
-    thumbIcon: '🤖',
+    thumbBg: 'linear-gradient(135deg,#1a0832 0%,#4a1580 40%,#0d0120 100%)', thumbIcon: '🤖',
   },
   'vid-2': {
-    title: 'AI Lead Qualification Bot',
-    category: 'Lead Generation',
-    desc: 'Automatically qualifies, scores, and routes inbound leads based on custom criteria. Integrates with CRM platforms and syncs full conversation context — so sales teams receive hot leads, not cold forms.',
-    duration: '3:12',
-    tech: ['n8n', 'OpenAI', 'CRM API', 'Webhook', 'Python'],
-    metrics: [
-      { label: 'Increase in qualified leads', value: '+340%' },
-      { label: 'Lead-to-close time reduction', value: '60% faster' },
-      { label: 'CRM data accuracy', value: '99.1%' },
-      { label: 'Hours saved per week', value: '22 hrs' },
-    ],
+    title: 'AI Lead Qualification Bot', category: 'Lead Generation',
+    desc: 'Automatically qualifies, scores, and routes inbound leads based on custom criteria. Integrates with CRM platforms and syncs full conversation context.',
+    duration: '3:12', tech: ['n8n', 'OpenAI', 'CRM API', 'Webhook', 'Python'],
+    metrics: [{ label: 'Increase in qualified leads', value: '+340%' }, { label: 'Lead-to-close time reduction', value: '60% faster' }, { label: 'CRM data accuracy', value: '99.1%' }, { label: 'Hours saved per week', value: '22 hrs' }],
     linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-deeplearning-ugcPost-7450336307383554048-sBT2',
-    thumbBg: 'linear-gradient(135deg, #0a2a1a 0%, #1a6040 40%, #001408 100%)',
-    thumbIcon: '🎯',
+    thumbBg: 'linear-gradient(135deg,#0a2a1a 0%,#1a6040 40%,#001408 100%)', thumbIcon: '🎯',
   },
   'vid-3': {
-    title: 'ADAS Real-Time Vision System',
-    category: 'Computer Vision',
-    desc: 'An Advanced Driver Assistance System built with real-time computer vision. Detects lanes, obstacles, and hazards at 30ms latency — deployed on edge hardware without cloud dependency.',
-    duration: '4:05',
-    tech: ['YOLOv8', 'OpenCV', 'TensorRT', 'Python', 'CUDA'],
-    metrics: [
-      { label: 'Object detection accuracy', value: '99.2%' },
-      { label: 'Inference latency', value: '30ms' },
-      { label: 'False positive rate', value: '< 0.4%' },
-      { label: 'Frames per second', value: '60 FPS' },
-    ],
+    title: 'ADAS Real-Time Vision System', category: 'Computer Vision',
+    desc: 'An Advanced Driver Assistance System built with real-time computer vision. Detects lanes, obstacles, and hazards at 30ms latency on edge hardware.',
+    duration: '4:05', tech: ['YOLOv8', 'OpenCV', 'TensorRT', 'Python', 'CUDA'],
+    metrics: [{ label: 'Object detection accuracy', value: '99.2%' }, { label: 'Inference latency', value: '30ms' }, { label: 'False positive rate', value: '< 0.4%' }, { label: 'Frames per second', value: '60 FPS' }],
     linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-adas-ugcPost-7455307906163392512-opdL',
-    thumbBg: 'linear-gradient(135deg, #0a1a3e 0%, #0f3d6e 50%, #011420 100%)',
-    thumbIcon: '🚗',
+    thumbBg: 'linear-gradient(135deg,#0a1a3e 0%,#0f3d6e 50%,#011420 100%)', thumbIcon: '🚗',
   },
   'vid-4': {
-    title: 'E-Commerce AI Shopping Agent',
-    category: 'E-Commerce Automation',
-    desc: 'A smart shopping assistant embedded in chat that delivers personalized product recommendations, handles objections, and auto-upsells — boosting average order value by 28% within the first month.',
-    duration: '2:33',
-    tech: ['RAG', 'GPT-4', 'Shopify API', 'LangChain', 'FastAPI'],
-    metrics: [
-      { label: 'Average order value increase', value: '+28%' },
-      { label: 'Cart abandonment reduction', value: '41% less' },
-      { label: 'Customer session duration', value: '+2.4 min' },
-      { label: 'Conversion rate lift', value: '+19%' },
-    ],
+    title: 'E-Commerce AI Shopping Agent', category: 'E-Commerce Automation',
+    desc: 'A smart shopping assistant embedded in chat that delivers personalized product recommendations, handles objections, and auto-upsells.',
+    duration: '2:33', tech: ['RAG', 'GPT-4', 'Shopify API', 'LangChain', 'FastAPI'],
+    metrics: [{ label: 'Average order value increase', value: '+28%' }, { label: 'Cart abandonment reduction', value: '41% less' }, { label: 'Session duration increase', value: '+2.4 min' }, { label: 'Conversion rate lift', value: '+19%' }],
     linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-rag-fastapi-ugcPost-7461538370284879872-ZeeR',
-    thumbBg: 'linear-gradient(135deg, #2a1a0a 0%, #6e400f 50%, #140800 100%)',
-    thumbIcon: '🛒',
+    thumbBg: 'linear-gradient(135deg,#2a1a0a 0%,#6e400f 50%,#140800 100%)', thumbIcon: '🛒',
   },
   'vid-5': {
-    title: 'RAG Knowledge Base System',
-    category: 'Enterprise AI',
-    desc: 'A Retrieval-Augmented Generation system powering enterprise Q&A over private documents. Zero hallucinations, full source citations, and instant accurate answers from internal knowledge bases.',
-    duration: '5:18',
-    tech: ['FastAPI', 'LangChain', 'Pinecone', 'OpenAI', 'Python'],
-    metrics: [
-      { label: 'Answer accuracy', value: '99%' },
-      { label: 'Response time', value: '< 2 seconds' },
-      { label: 'Documents indexed', value: '10,000+' },
-      { label: 'Support ticket reduction', value: '65%' },
-    ],
+    title: 'RAG Knowledge Base System', category: 'Enterprise AI',
+    desc: 'A Retrieval-Augmented Generation system powering enterprise Q&A over private documents. Zero hallucinations, full source citations, instant accurate answers.',
+    duration: '5:18', tech: ['FastAPI', 'LangChain', 'Pinecone', 'OpenAI', 'Python'],
+    metrics: [{ label: 'Answer accuracy', value: '99%' }, { label: 'Response time', value: '< 2 seconds' }, { label: 'Documents indexed', value: '10,000+' }, { label: 'Support ticket reduction', value: '65%' }],
     linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-rag-fastapi-ugcPost-7461538370284879872-ZeeR',
-    thumbBg: 'linear-gradient(135deg, #1a2a0a 0%, #3a6e0f 50%, #071400 100%)',
-    thumbIcon: '📡',
+    thumbBg: 'linear-gradient(135deg,#1a2a0a 0%,#3a6e0f 50%,#071400 100%)', thumbIcon: '📡',
   },
   'vid-6': {
-    title: 'Edge AI Embedded Vision',
-    category: 'Embedded AI',
-    desc: 'Computer vision inference running entirely on embedded hardware — no cloud dependency, no latency overhead, no data privacy risk. Designed for offline-first, real-world deployment scenarios.',
-    duration: '3:44',
-    tech: ['TensorFlow Lite', 'ONNX', 'Raspberry Pi', 'OpenCV', 'C++'],
-    metrics: [
-      { label: 'Inference latency', value: '< 5ms' },
-      { label: 'Cloud dependency', value: 'Zero' },
-      { label: 'Power consumption', value: '3W average' },
-      { label: 'Model size', value: '< 8MB' },
-    ],
+    title: 'Edge AI Embedded Vision', category: 'Embedded AI',
+    desc: 'Computer vision inference running entirely on embedded hardware — no cloud dependency, no latency overhead, no data privacy risk.',
+    duration: '3:44', tech: ['TensorFlow Lite', 'ONNX', 'Raspberry Pi', 'OpenCV', 'C++'],
+    metrics: [{ label: 'Inference latency', value: '< 5ms' }, { label: 'Cloud dependency', value: 'Zero' }, { label: 'Power consumption', value: '3W average' }, { label: 'Model size', value: '< 8MB' }],
     linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-embeddedsystems-ugcPost-7466831647548706816-6F-6',
-    thumbBg: 'linear-gradient(135deg, #2a0a1a 0%, #6e0f3a 50%, #140008 100%)',
-    thumbIcon: '🔬',
-  },
+    thumbBg: 'linear-gradient(135deg,#2a0a1a 0%,#6e0f3a 50%,#140008 100%)', thumbIcon: '🔬',
+  }
 };
 
 /* ----------------------------------------------------------
    VIDEO MODAL
 ---------------------------------------------------------- */
 const modal = document.getElementById('video-modal');
-const vmBackdrop = document.getElementById('vm-backdrop');
 const vmClose = document.getElementById('vm-close');
-const vmTitle = document.getElementById('vm-title');
-const vmCat = document.getElementById('vm-cat');
-const vmDesc = document.getElementById('vm-desc');
-const vmTechRow = document.getElementById('vm-tech-row');
-const vmMetricsList = document.getElementById('vm-metrics-list');
-const vmPlayerWrap = document.getElementById('vm-player-wrap');
-const vmLoader = document.getElementById('vm-loader');
-
-let currentVideoId = null;
+const vmBackdrop = document.getElementById('vm-backdrop');
 
 function openModalById(id) {
   const data = VIDEO_DATA[id];
   if (!data) return;
-
-  currentVideoId = id;
-
-  // Populate text
-  vmTitle.textContent = data.title;
-  vmCat.textContent = data.category;
-  vmDesc.textContent = data.desc;
-
-  // Tech tags
-  vmTechRow.innerHTML = data.tech.map(t => `<span class="vm-tech-chip">${t}</span>`).join('');
-
-  // Metrics
-  vmMetricsList.innerHTML = data.metrics.map(m =>
-    `<div class="vm-metric-row"><span class="vmdot"></span><strong>${m.value}</strong>&nbsp;${m.label}</div>`
-  ).join('');
-
-  // Player — build a styled demo player since we can't embed LinkedIn directly
-  // We show a premium placeholder player with the project icon, linking out only if user clicks
-  vmLoader.classList.remove('hidden');
-
-  // Remove old player content (except loader)
-  const oldPlayer = vmPlayerWrap.querySelector('.vm-demo-player');
-  if (oldPlayer) oldPlayer.remove();
-
-  const playerEl = document.createElement('div');
-  playerEl.className = 'vm-demo-player';
-  playerEl.style.cssText = `
-    position: relative;
-    width: 100%;
-    padding-top: 56.25%;
-    background: ${data.thumbBg};
-    overflow: hidden;
-  `;
-  playerEl.innerHTML = `
-    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:1;">
-      <div style="font-size:5rem;filter:drop-shadow(0 0 28px rgba(139,61,255,0.8));">${data.thumbIcon}</div>
-      <div style="text-align:center;padding:0 24px;">
-        <div style="font-size:1.1rem;font-weight:800;margin-bottom:8px;">${data.title}</div>
-        <div style="font-size:0.85rem;color:#a89bc2;margin-bottom:20px;">Click below to watch the full project demo on LinkedIn</div>
+  document.getElementById('vm-title').textContent = data.title;
+  document.getElementById('vm-cat').textContent = data.category;
+  document.getElementById('vm-desc').textContent = data.desc;
+  document.getElementById('vm-tech-row').innerHTML = data.tech.map(t => `<span class="vm-tech-chip">${t}</span>`).join('');
+  document.getElementById('vm-metrics-list').innerHTML = data.metrics.map(m => `<div class="vm-metric-row"><span class="vmdot"></span><strong>${m.value}</strong>&nbsp;${m.label}</div>`).join('');
+  const wrap = document.getElementById('vm-player-wrap');
+  const loader = document.getElementById('vm-loader');
+  loader.classList.remove('hidden');
+  const old = wrap.querySelector('.vm-demo-player');
+  if (old) old.remove();
+  const player = document.createElement('div');
+  player.className = 'vm-demo-player';
+  player.style.cssText = `position:relative;width:100%;padding-top:56.25%;background:${data.thumbBg};overflow:hidden;`;
+  player.innerHTML = `
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:1;padding:0 20px;">
+      <div style="font-size:4.5rem;filter:drop-shadow(0 0 28px rgba(139,61,255,0.8));">${data.thumbIcon}</div>
+      <div style="text-align:center;">
+        <div style="font-size:1.05rem;font-weight:800;margin-bottom:8px;">${data.title}</div>
+        <div style="font-size:0.83rem;color:#a89bc2;margin-bottom:18px;">Click below to watch the full project demo on LinkedIn</div>
         <a href="${data.linkedinUrl}" target="_blank" rel="noopener"
-           style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:50px;background:linear-gradient(135deg,#8b3dff,#bf5fff);color:#fff;font-size:0.9rem;font-weight:700;text-decoration:none;box-shadow:0 0 28px rgba(139,61,255,0.55);transition:all 0.3s;"
+           style="display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:50px;background:linear-gradient(135deg,#8b3dff,#bf5fff);color:#fff;font-size:0.88rem;font-weight:700;text-decoration:none;box-shadow:0 0 28px rgba(139,61,255,0.55);transition:all 0.3s;"
            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 44px rgba(191,95,255,0.8)'"
            onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 0 28px rgba(139,61,255,0.55)'">
           ▶ &nbsp;Watch on LinkedIn
@@ -2851,98 +2724,152 @@ function openModalById(id) {
       </div>
     </div>
     <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);pointer-events:none;z-index:0;"></div>
-    <div style="position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#8b3dff,#bf5fff,#5eead4);z-index:2;"></div>
-  `;
-  vmPlayerWrap.appendChild(playerEl);
-
-  // Hide loader
-  setTimeout(() => { vmLoader.classList.add('hidden'); }, 500);
-
-  // Open modal
+    <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#8b3dff,#bf5fff,#5eead4);z-index:2;"></div>`;
+  wrap.appendChild(player);
+  setTimeout(() => loader.classList.add('hidden'), 450);
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
 function closeModal() {
   modal.classList.remove('open');
-  document.body.style.overflow = '';
-  currentVideoId = null;
-  // Loader reset
-  vmLoader.classList.remove('hidden');
-  const oldPlayer = vmPlayerWrap.querySelector('.vm-demo-player');
-  if (oldPlayer) oldPlayer.remove();
+  if (!menuOpen) document.body.style.overflow = '';
+  const old = document.getElementById('vm-player-wrap').querySelector('.vm-demo-player');
+  if (old) old.remove();
+  document.getElementById('vm-loader').classList.remove('hidden');
 }
 
 vmClose.addEventListener('click', closeModal);
 vmBackdrop.addEventListener('click', closeModal);
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+
+/* ----------------------------------------------------------
+   VIDEO FILTERS
+---------------------------------------------------------- */
+document.querySelectorAll('.vf-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.vf-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.video-card').forEach(card => {
+      if (filter === 'all') { card.style.display = ''; }
+      else {
+        const cats = (card.dataset.category || '').split(' ');
+        card.style.display = cats.includes(filter) ? '' : 'none';
+      }
+    });
+  });
 });
 
 /* ----------------------------------------------------------
-   VIDEO FILTER BUTTONS
+   FEATURED VIDEO — UPDATE ON HOVER
 ---------------------------------------------------------- */
-(function() {
-  const filterBtns = document.querySelectorAll('.vf-btn');
-  const cards = document.querySelectorAll('.video-card');
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const filter = btn.dataset.filter;
-
-      cards.forEach(card => {
-        if (filter === 'all') {
-          card.style.display = '';
-        } else {
-          const cats = (card.dataset.category || '').split(' ');
-          const match = cats.some(c => c === filter);
-          card.style.display = match ? '' : 'none';
-        }
-      });
-    });
+document.querySelectorAll('.video-card').forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    const id = card.dataset.id;
+    const data = VIDEO_DATA[id];
+    if (!data) return;
+    document.getElementById('featured-bg').style.background = data.thumbBg;
+    document.getElementById('featured-icon').textContent = data.thumbIcon;
+    document.getElementById('featured-duration').textContent = data.duration;
+    document.getElementById('featured-cat').textContent = '▶ ' + data.category;
+    document.getElementById('featured-title').textContent = data.title;
+    document.getElementById('featured-desc').textContent = data.desc;
+    document.getElementById('featured-metrics').innerHTML = data.metrics.slice(0, 3).map(m =>
+      `<div class="featured-metric-item"><span class="fmi-dot"></span><strong>${m.value}</strong>&nbsp;${m.label}</div>`
+    ).join('');
+    document.getElementById('featured-tags').innerHTML = data.tech.map(t => `<span class="ftech-tag">${t}</span>`).join('');
+    document.getElementById('featured-player').onclick = () => openModalById(id);
+    document.getElementById('featured-watch-btn').onclick = () => openModalById(id);
   });
-})();
+});
 
 /* ----------------------------------------------------------
-   FEATURED VIDEO HERO — click any card to set as featured
-   (already wired via openModalById, but we also update featured panel)
+   CHATBOT (multi-language)
 ---------------------------------------------------------- */
-(function() {
-  const cards = document.querySelectorAll('.video-card');
-  cards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      const id = card.dataset.id;
-      const data = VIDEO_DATA[id];
-      if (!data) return;
+let chatStep = 0;
+let chatData = {};
+let chatLang = 'en';
 
-      // Update featured panel preview on hover
-      document.getElementById('featured-bg').style.background = data.thumbBg;
-      document.getElementById('featured-icon').textContent = data.thumbIcon;
-      document.getElementById('featured-duration').textContent = data.duration;
-      document.getElementById('featured-cat').textContent = '▶ ' + data.category;
-      document.getElementById('featured-title').textContent = data.title;
-      document.getElementById('featured-desc').textContent = data.desc;
+const CHAT_FLOWS = {
+  en: [
+    {
+      trigger: /hello|hi|hey|start|مرحبا|مرحبً|اهلا/i,
+      response: "Welcome to Agentix! 🚀 I'm your AI business consultant. I'd love to show you how we can automate your operations.\n\nTo get started, what's your name?",
+      nextStep: 1,
+    },
+    { trigger: /.+/, collectKey: 'name', response: (v) => `Great to meet you, ${v}! 👋\n\nWhat company do you work for?`, nextStep: 2 },
+    { trigger: /.+/, collectKey: 'company', response: (v) => `${v} — exciting! 🏢\n\nWhat's the best phone number to reach you on?`, nextStep: 3 },
+    { trigger: /.+/, collectKey: 'phone', response: () => `Perfect. Last question — what type of business are you in? (e.g. e-commerce, healthcare, real estate…)`, nextStep: 4 },
+    { trigger: /.+/, collectKey: 'type', response: (v, d) => `Excellent! Here's what I've captured:\n\n👤 Name: ${d.name}\n🏢 Company: ${d.company}\n📞 Phone: ${d.phone}\n💼 Industry: ${v}\n\nAn AI specialist will be in touch soon. ✅\n\nWhatsApp: wa.me/201288694962`, nextStep: 99 },
+  ],
+  ar: [
+    {
+      trigger: /مرحبا|مرحبً|اهلا|hello|hi|hey|start/i,
+      response: "أهلاً وسهلاً بك في Agentix! 🚀 أنا مستشارك التجاري بالذكاء الاصطناعي.\n\nللبدء، ما اسمك الكريم؟",
+      nextStep: 1,
+    },
+    { trigger: /.+/, collectKey: 'name', response: (v) => `يسعدني التعرف عليك، ${v}! 👋\n\nما اسم شركتك؟`, nextStep: 2 },
+    { trigger: /.+/, collectKey: 'company', response: (v) => `${v} — رائع! 🏢\n\nما رقم هاتفك للتواصل؟`, nextStep: 3 },
+    { trigger: /.+/, collectKey: 'phone', response: () => `ممتاز. سؤال أخير — ما نوع نشاطك التجاري؟ (مثل: تجارة إلكترونية، رعاية صحية، عقارات…)`, nextStep: 4 },
+    { trigger: /.+/, collectKey: 'type', response: (v, d) => `رائع! إليك ما جمعته:\n\n👤 الاسم: ${d.name}\n🏢 الشركة: ${d.company}\n📞 الهاتف: ${d.phone}\n💼 المجال: ${v}\n\nسيتواصل معك أحد متخصصينا قريباً. ✅\n\nواتساب: wa.me/201288694962`, nextStep: 99 },
+  ]
+};
 
-      // Metrics
-      const metricsEl = document.getElementById('featured-metrics');
-      metricsEl.innerHTML = data.metrics.slice(0, 3).map(m =>
-        `<div class="featured-metric-item"><span class="fmi-dot"></span><strong>${m.value}</strong>&nbsp;${m.label}</div>`
-      ).join('');
+function resetChatbot(lang) {
+  chatStep = 0; chatData = {}; chatLang = lang;
+  const msgs = document.getElementById('chat-messages');
+  msgs.innerHTML = '';
+  const greeting = TRANSLATIONS[lang].chat_greeting;
+  const el = document.createElement('div');
+  el.className = 'msg msg-bot';
+  el.innerHTML = greeting;
+  msgs.appendChild(el);
+}
 
-      // Tech
-      const tagsEl = document.getElementById('featured-tags');
-      tagsEl.innerHTML = data.tech.map(t => `<span class="ftech-tag">${t}</span>`).join('');
+function appendMsg(text, type) {
+  const msgs = document.getElementById('chat-messages');
+  const el = document.createElement('div');
+  el.className = 'msg msg-' + type;
+  el.innerHTML = text.replace(/\n/g, '<br>');
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+}
 
-      // Wire watch button
-      const watchBtn = document.getElementById('featured-player');
-      watchBtn.onclick = () => openModalById(id);
-      document.querySelector('.featured-watch-btn').onclick = () => openModalById(id);
-    });
-  });
-})();
+function showTyping() {
+  const msgs = document.getElementById('chat-messages');
+  const el = document.createElement('div');
+  el.className = 'msg-typing'; el.id = 'chat-typing';
+  el.innerHTML = '<div class="dot-typing"></div><div class="dot-typing"></div><div class="dot-typing"></div>';
+  msgs.appendChild(el); msgs.scrollTop = msgs.scrollHeight;
+}
+function removeTyping() { const t = document.getElementById('chat-typing'); if (t) t.remove(); }
+
+function handleChatInput() {
+  const input = document.getElementById('chat-input');
+  const val = input.value.trim();
+  if (!val) return;
+  appendMsg(val, 'user');
+  input.value = '';
+  const flow = CHAT_FLOWS[chatLang] || CHAT_FLOWS.en;
+  if (chatStep === 99) {
+    showTyping();
+    setTimeout(() => { removeTyping(); appendMsg(chatLang === 'ar' ? 'تم تسجيل بياناتك بالفعل. سيتواصل فريقنا معك قريباً! 🙌' : "We've already captured your details. Our team will reach out soon! 🙌", 'bot'); }, 900);
+    return;
+  }
+  const item = flow[chatStep];
+  if (chatStep === 0 && !item.trigger.test(val)) {
+    showTyping();
+    setTimeout(() => { removeTyping(); appendMsg(chatLang === 'ar' ? 'فقط اكتب <strong>"مرحبا"</strong> للبدء! 👋' : 'Just type <strong>"Hello"</strong> to kick things off! 👋', 'bot'); }, 700);
+    return;
+  }
+  if (item.collectKey) chatData[item.collectKey] = val;
+  const responseText = typeof item.response === 'function' ? item.response(val, chatData) : item.response;
+  showTyping();
+  setTimeout(() => { removeTyping(); appendMsg(responseText, 'bot'); chatStep = item.nextStep; }, 900 + Math.random() * 400);
+}
+
+document.getElementById('chat-send').addEventListener('click', handleChatInput);
+document.getElementById('chat-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') handleChatInput(); });
 </script>
 
 </body>
