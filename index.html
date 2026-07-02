@@ -60,6 +60,11 @@
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
     button { cursor: pointer; border: none; background: none; font: inherit; }
+    .visual-icon { width: 64%; height: 64%; color: var(--purple-glow); overflow: visible; }
+    .visual-icon .accent { color: var(--cyan-trace); }
+    .project-thumb-icon .visual-icon { width: 108px; height: 108px; }
+    .fv-thumb-icon .visual-icon { width: 150px; height: 150px; }
+    .vc-thumb-icon .visual-icon { width: 88px; height: 88px; }
 
     /* ============================================================
        SCROLLBAR
@@ -189,7 +194,8 @@
       color: var(--muted);
     }
     .lang-switcher:hover { border-color: var(--purple-glow); color: var(--white); }
-    .lang-switcher .lang-globe { font-size: 1rem; }
+    .lang-switcher .lang-globe { width: 18px; height: 18px; display: grid; place-items: center; }
+    .lang-switcher .lang-globe svg { width: 100%; height: 100%; }
     .lang-switcher .lang-code { letter-spacing: 0.04em; }
 
     .nav-cta {
@@ -236,27 +242,39 @@
       display: none;
       flex-direction: column;
       position: fixed;
-      top: 68px; left: 0; right: 0;
-      background: rgba(5,3,13,0.98);
+      top: 76px;
+      right: 14px;
+      left: auto;
+      width: min(320px, calc(100vw - 28px));
+      background: rgba(11,6,24,0.97);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border-bottom: 1px solid var(--border);
-      z-index: 999;
-      padding: 0 24px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 18px 55px rgba(0,0,0,0.48), 0 0 30px rgba(139,61,255,0.12);
+      z-index: 1001;
+      padding: 0 16px;
       overflow: hidden;
       max-height: 0;
-      transition: max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1), padding 0.38s ease;
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+      transform-origin: top right;
+      pointer-events: none;
+      transition: max-height 0.28s ease, padding 0.28s ease, opacity 0.22s ease, transform 0.22s ease;
     }
     .mobile-menu.open {
-      max-height: 520px;
-      padding: 24px 24px 28px;
+      max-height: min(70vh, 440px);
+      padding: 12px 16px 16px;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
     }
     .mobile-menu a {
       font-size: 1rem;
       font-weight: 500;
       color: var(--muted);
       display: block;
-      padding: 10px 0;
+      padding: 9px 2px;
       border-bottom: 1px solid rgba(148,85,255,0.1);
       transition: color var(--transition), padding-left var(--transition);
     }
@@ -268,8 +286,8 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-top: 16px;
-      padding: 10px 18px;
+      margin-top: 10px;
+      padding: 8px 14px;
       border-radius: 50px;
       border: 1px solid var(--border);
       background: var(--glass);
@@ -285,8 +303,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 12px;
-      padding: 12px 28px;
+      margin-top: 10px;
+      padding: 10px 22px;
       border-radius: var(--radius-btn);
       background: linear-gradient(135deg, var(--purple-core), var(--neon));
       font-size: 0.92rem;
@@ -309,9 +327,22 @@
       .nav-links { display: none; }
       .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
+      .mobile-menu { display: flex; }
     }
     @media (max-width: 480px) {
-      .lang-switcher .lang-code { display: none; }
+      .lang-switcher { padding: 6px 9px; font-size: .74rem; }
+      #navbar { padding: 0 16px; }
+      .nav-logo { font-size: 1.05rem; }
+      .mobile-menu { right: 10px; width: min(300px, calc(100vw - 20px)); }
+    }
+
+    html[dir="rtl"] .mobile-menu {
+      right: auto;
+      left: 14px;
+      transform-origin: top left;
+    }
+    @media (max-width: 480px) {
+      html[dir="rtl"] .mobile-menu { left: 10px; right: auto; }
     }
 
     /* ============================================================
@@ -449,6 +480,21 @@
       background: radial-gradient(circle at 35% 35%, rgba(139,61,255,0.55), rgba(11,6,24,0) 65%);
       animation: orbFloat 6s ease-in-out infinite;
     }
+    .neural-web {
+      position: absolute;
+      inset: -12px;
+      width: calc(100% + 24px);
+      height: calc(100% + 24px);
+      overflow: visible;
+      filter: drop-shadow(0 0 7px rgba(168,85,247,.5));
+    }
+    .neural-web .net-a { transform-origin: 200px 200px; animation: networkSpin 22s linear infinite; }
+    .neural-web .net-b { transform-origin: 200px 200px; animation: networkSpin 15s linear infinite reverse; }
+    .neural-web line { stroke: rgba(168,85,247,.42); stroke-width: 1; }
+    .neural-web .cyan-line { stroke: rgba(94,234,212,.32); }
+    .neural-web circle { fill: #a855f7; animation: neuralBlink 2.8s ease-in-out infinite; }
+    .neural-web circle:nth-of-type(2n) { fill:#5eead4; animation-delay:-1.2s; }
+    .neural-web circle:nth-of-type(3n) { animation-delay:-2s; }
     .orb-ring {
       position: absolute;
       inset: 20px;
@@ -493,11 +539,33 @@
       filter: drop-shadow(0 0 32px rgba(139,61,255,0.8));
       animation: orbFloat 6s ease-in-out infinite 1s;
     }
+    .brain-icon .visual-icon { width: 155px; height: 155px; }
+    .agentix-bot { width: 215px; height: 260px; transform: translateY(22px); }
+    .agentix-bot svg { width: 100%; height: 100%; overflow: visible; }
+    .bot-head { transform-origin: 80px 53px; animation: botThink 4.5s ease-in-out infinite; }
+    .bot-arm-left { transform-origin: 49px 122px; animation: botWave 3.4s ease-in-out infinite; }
+    .bot-arm-right { transform-origin: 112px 122px; animation: botWave 3.4s ease-in-out infinite reverse; }
+    .bot-core { animation: corePulse 1.8s ease-in-out infinite; }
+    .bot-wave-arm { transform-origin: 134px 120px; animation: friendlyWave 2.6s ease-in-out infinite; }
+    .bot-rest-arm { transform-origin: 46px 120px; animation: armBreathe 3s ease-in-out infinite; }
+    .bot-eye-wink { transform-box: fill-box; transform-origin: center; animation: heroWink 5s ease-in-out infinite; }
+    .bot-mouth-smile { animation: smileSwap 5s ease-in-out infinite; }
+    .bot-mouth-laugh { opacity: 0; animation: laughSwap 5s ease-in-out infinite; }
     @keyframes orbFloat {
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-14px); }
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes networkSpin { to { transform: rotate(360deg); } }
+    @keyframes neuralBlink { 0%,100%{opacity:.28;r:2.5px} 50%{opacity:1;r:4px} }
+    @keyframes botThink { 0%,100%{transform:rotate(-2deg) translateY(0)} 50%{transform:rotate(2deg) translateY(-3px)} }
+    @keyframes botWave { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(10deg)} }
+    @keyframes corePulse { 0%,100%{opacity:.6;filter:drop-shadow(0 0 3px #a855f7)} 50%{opacity:1;filter:drop-shadow(0 0 10px #5eead4)} }
+    @keyframes friendlyWave { 0%,100%{transform:rotate(-4deg)} 20%{transform:rotate(-24deg)} 38%{transform:rotate(10deg)} 56%{transform:rotate(-22deg)} 72%{transform:rotate(5deg)} }
+    @keyframes armBreathe { 0%,100%{transform:rotate(0)} 50%{transform:rotate(3deg)} }
+    @keyframes heroWink { 0%,38%,46%,100%{transform:scaleY(1)} 41%,44%{transform:scaleY(.08)} }
+    @keyframes smileSwap { 0%,52%,78%,100%{opacity:1} 58%,72%{opacity:0} }
+    @keyframes laughSwap { 0%,52%,78%,100%{opacity:0} 58%,72%{opacity:1} }
     .floating-tag {
       position: absolute;
       padding: 8px 14px;
@@ -513,9 +581,11 @@
     .tag-1 { top: 28px; left: -10px; animation: tagFloat 5s ease-in-out infinite; }
     .tag-2 { bottom: 60px; right: -20px; animation: tagFloat 5s ease-in-out infinite 1.5s; }
     .tag-3 { top: 50%; left: -30px; animation: tagFloat 5s ease-in-out infinite 3s; }
+    .tag-4 { top: 24%; right: -34px; animation: tagFloat 5s ease-in-out infinite 2.2s; }
     html[dir="rtl"] .tag-1 { left: auto; right: -10px; }
     html[dir="rtl"] .tag-2 { right: auto; left: -20px; }
     html[dir="rtl"] .tag-3 { left: auto; right: -30px; }
+    html[dir="rtl"] .tag-4 { right: auto; left: -34px; }
     @keyframes tagFloat {
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-8px); }
@@ -530,7 +600,8 @@
       .hero-visual { margin-top: 40px; }
       .orb-wrapper { width: 260px; height: 260px; }
       .brain-icon { font-size: 5rem; }
-      .tag-1, .tag-2, .tag-3 { display: none; }
+      .tag-1, .tag-2, .tag-3, .tag-4 { display: none; }
+      .agentix-bot { width: 165px; height: 200px; }
     }
 
     /* ============================================================
@@ -702,7 +773,7 @@
     #services { padding: 100px 0; }
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 24px;
     }
     @media (max-width: 900px) { .services-grid { grid-template-columns: 1fr 1fr; } }
@@ -728,7 +799,7 @@
     .service-card:hover { border-color: rgba(139,61,255,0.5); transform: translateY(-6px); box-shadow: 0 24px 60px rgba(139,61,255,0.15); }
     .service-card:hover::before { opacity: 1; }
     .service-icon {
-      width: 52px; height: 52px;
+      width: 58px; height: 58px;
       border-radius: 14px;
       background: linear-gradient(135deg, rgba(139,61,255,0.3), rgba(191,95,255,0.1));
       border: 1px solid var(--border);
@@ -738,7 +809,16 @@
       margin-bottom: 22px;
       transition: box-shadow var(--transition);
     }
+    .service-icon .visual-icon { width: 36px; height: 36px; }
     .service-card:hover .service-icon { box-shadow: 0 0 24px rgba(139,61,255,0.5); }
+    .service-icon svg { transition: transform .45s cubic-bezier(.2,.8,.2,1), filter .45s ease; }
+    .service-card:hover .service-icon svg { transform: scale(1.12); filter: drop-shadow(0 0 8px rgba(94,234,212,.6)); }
+    .service-logo-sport svg { animation: ballFloat 3.2s ease-in-out infinite; }
+    .service-logo-whatsapp svg { animation: whatsappHello 3.6s ease-in-out infinite; }
+    .service-logo-bot ellipse { transform-box: fill-box; transform-origin: center; animation: serviceBlink 4.5s infinite; }
+    @keyframes ballFloat { 0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-3px) rotate(5deg)} }
+    @keyframes whatsappHello { 0%,100%{transform:scale(1)} 12%{transform:scale(1.1)} 24%{transform:scale(1)} }
+    @keyframes serviceBlink { 0%,45%,50%,100%{transform:scaleY(1)} 47%{transform:scaleY(.12)} }
     .service-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
     .service-card p { font-size: 0.87rem; color: var(--muted); margin-bottom: 22px; line-height: 1.7; }
     .service-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
@@ -801,13 +881,78 @@
     }
     .project-thumb-bg { position: absolute; inset: 0; }
     .project-thumb-icon {
-      font-size: 3.5rem;
+      font-size: 1.65rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
       position: relative;
       z-index: 1;
       filter: drop-shadow(0 0 20px rgba(139,61,255,0.7));
       transition: transform 0.4s ease;
     }
     .project-card:hover .project-thumb-icon { transform: scale(1.08); }
+    .project-scene {
+      position: relative;
+      z-index: 1;
+      width: 150px;
+      height: 125px;
+      display: grid;
+      place-items: center;
+      color: var(--purple-glow);
+      filter: drop-shadow(0 0 18px rgba(139,61,255,.5));
+    }
+    .project-scene .scene-art { width: 112px; height: 112px; position: relative; z-index: 2; }
+    .project-scene::before, .project-scene::after { content: ''; position: absolute; pointer-events: none; }
+    .project-scene::before, .project-scene::after { display: none; }
+    .project-scene .scene-art { animation: projectLogoFloat 3.2s ease-in-out infinite; filter: drop-shadow(0 10px 18px rgba(5,3,13,.5)); }
+    .scene-adas .scene-art { animation-delay: -.8s; }
+    .scene-chat .scene-art { animation-delay: -1.6s; }
+    .scene-car .scene-art { animation-delay: -2.4s; }
+    @keyframes projectLogoFloat { 0%,100%{transform:translateY(0) rotate(-1deg)} 50%{transform:translateY(-7px) rotate(1deg)} }
+    .scene-driver::before {
+      width: 126px; height: 82px; border: 1px solid rgba(94,234,212,.35); border-radius: 50%;
+      box-shadow: 0 0 24px rgba(94,234,212,.12), inset 0 0 18px rgba(94,234,212,.08);
+      animation: scenePulse 2.8s ease-in-out infinite;
+    }
+    .scene-driver::after {
+      width: 112px; height: 2px; top: 35px;
+      background: linear-gradient(90deg,transparent,#5eead4,transparent);
+      box-shadow: 0 0 10px #5eead4;
+      animation: eyeScan 2.6s ease-in-out infinite;
+    }
+    .scene-adas::before {
+      width: 130px; height: 90px; border-radius: 50% 50% 12px 12px;
+      background: repeating-radial-gradient(circle at 50% 80%,transparent 0 17px,rgba(94,234,212,.2) 18px 19px);
+      animation: radarSweep 3s linear infinite;
+    }
+    .scene-adas::after {
+      bottom: 7px; width: 128px; height: 42px;
+      background: linear-gradient(65deg,transparent 46%,rgba(192,132,252,.6) 47% 49%,transparent 50%),linear-gradient(-65deg,transparent 46%,rgba(192,132,252,.6) 47% 49%,transparent 50%);
+      opacity: .7;
+    }
+    .scene-chat::before {
+      width: 118px; height: 78px; border: 1px dashed rgba(94,234,212,.4); border-radius: 22px;
+      animation: scenePulse 2.4s ease-in-out infinite;
+    }
+    .scene-chat::after {
+      width: 9px; height: 9px; border-radius: 50%; background:#5eead4;
+      box-shadow: 42px -26px 0 #c084fc,-38px 24px 0 #8b3dff,0 0 14px #5eead4,42px -26px 14px #c084fc,-38px 24px 14px #8b3dff;
+      animation: nodeOrbit 4s ease-in-out infinite;
+    }
+    .scene-car::before {
+      width: 132px; height: 90px; border-radius: 50%;
+      background: repeating-radial-gradient(circle,transparent 0 16px,rgba(94,234,212,.22) 17px 18px);
+      animation: lidarPulse 2.5s ease-out infinite;
+    }
+    .scene-car::after {
+      bottom: 8px; width: 140px; height: 2px;
+      background: linear-gradient(90deg,transparent,#c084fc,#5eead4,#c084fc,transparent);
+      box-shadow: 0 0 12px rgba(94,234,212,.7);
+    }
+    @keyframes eyeScan { 0%,100%{transform:translateY(0);opacity:.25} 50%{transform:translateY(48px);opacity:1} }
+    @keyframes radarSweep { to{transform:rotate(360deg)} }
+    @keyframes nodeOrbit { 0%,100%{transform:translate(0,0) scale(.8)} 50%{transform:translate(8px,-8px) scale(1.15)} }
+    @keyframes lidarPulse { 0%{transform:scale(.65);opacity:0} 55%{opacity:.8} 100%{transform:scale(1.15);opacity:0} }
+    @keyframes scenePulse { 0%,100%{transform:scale(.94);opacity:.55} 50%{transform:scale(1.04);opacity:1} }
     .project-thumb-overlay {
       position: absolute;
       inset: 0;
@@ -918,7 +1063,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 5rem;
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 0.09em;
       z-index: 1;
       filter: drop-shadow(0 0 24px rgba(139,61,255,0.8));
       transition: transform 0.4s ease;
@@ -1056,6 +1203,7 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 22px;
     }
+    .video-card[data-id="vid-5"], .video-card[data-id="vid-6"] { display: none; }
     @media (max-width: 900px) { .video-gallery-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 560px) { .video-gallery-grid { grid-template-columns: 1fr; } }
 
@@ -1084,12 +1232,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.8rem;
+      font-size: 1.45rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
       z-index: 1;
       filter: drop-shadow(0 0 18px rgba(139,61,255,0.7));
       transition: transform 0.4s ease;
     }
     .video-card:hover .vc-thumb-icon { transform: scale(1.1); }
+    .vc-thumb-icon .project-scene { transform: scale(.76); }
+    .fv-thumb-icon .project-scene { transform: scale(1.12); }
     .vc-thumb-overlay {
       position: absolute;
       inset: 0;
@@ -1351,15 +1503,18 @@
       gap: 12px;
     }
     .chat-avatar {
-      width: 38px; height: 38px;
+      width: 44px; height: 44px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple-core), var(--neon));
+      background: #160b2d;
       display: grid;
       place-items: center;
-      font-size: 1.1rem;
       box-shadow: 0 0 14px rgba(139,61,255,0.6);
       flex-shrink: 0;
+      overflow: hidden;
+      border: 2px solid rgba(192,132,252,.55);
     }
+    .chat-avatar .visual-icon { width: 118%; height: 118%; }
+    .chat-avatar > svg { width: 100%; height: 100%; display: block; }
     .chat-info strong { display: block; font-size: 0.9rem; font-weight: 700; }
     .chat-info span { font-size: 0.74rem; color: #4ade80; display: flex; align-items: center; gap: 4px; }
     .chat-info span::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 6px #4ade80; }
@@ -1400,6 +1555,18 @@
       align-self: flex-end;
     }
     html[dir="rtl"] .msg-user { border-radius: 14px 14px 14px 4px; align-self: flex-start; }
+    .lead-summary { width: 100%; max-width: 100%; border-color: rgba(94,234,212,0.35); }
+    .chat-lead-cta {
+      display: inline-flex;
+      margin-top: 12px;
+      padding: 9px 15px;
+      border-radius: 50px;
+      background: linear-gradient(135deg,#7c2cf1,#a948f5);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.82rem;
+      box-shadow: 0 0 18px rgba(139,61,255,0.35);
+    }
     .msg-typing {
       background: rgba(139,61,255,0.18);
       border: 1px solid var(--border);
@@ -1496,7 +1663,8 @@
       transition: all var(--transition);
     }
     .whatsapp-btn:hover { box-shadow: 0 0 56px rgba(37,211,102,0.65); transform: translateY(-2px); }
-    .wa-icon { font-size: 1.2rem; }
+    .wa-icon { width: 25px; height: 25px; display: inline-grid; place-items: center; }
+    .wa-icon svg { width: 100%; height: 100%; display: block; }
     .contact-alt { margin-top: 22px; font-size: 0.84rem; color: var(--muted); }
     .contact-alt a { color: var(--purple-glow); border-bottom: 1px solid rgba(192,132,252,0.3); padding-bottom: 1px; transition: border-color var(--transition); }
     .contact-alt a:hover { border-color: var(--purple-glow); }
@@ -1533,6 +1701,7 @@
       background: var(--glass);
     }
     .social-icon:hover { border-color: var(--purple-glow); color: var(--purple-glow); box-shadow: 0 0 14px rgba(139,61,255,0.25); }
+    .social-icon svg { width: 18px; height: 18px; display: block; }
     .footer-col h4 { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--purple-glow); margin-bottom: 16px; }
     html[dir="rtl"] .footer-col h4 { letter-spacing: 0.01em; }
     .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
@@ -1585,6 +1754,80 @@
   </style>
 </head>
 <body>
+
+<!-- Reusable illustrated icon system -->
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+  <defs>
+    <linearGradient id="brandIconGrad" x1="12" y1="8" x2="102" y2="110" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b861ff"/><stop offset=".48" stop-color="#7c24e8"/><stop offset="1" stop-color="#42109c"/>
+    </linearGradient>
+    <linearGradient id="brandIconEdge" x1="18" y1="12" x2="90" y2="98" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f0b5ff" stop-opacity=".9"/><stop offset=".45" stop-color="#a246ff" stop-opacity=".35"/><stop offset="1" stop-color="#2d087b" stop-opacity=".8"/>
+    </linearGradient>
+    <filter id="brandIconShadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#250067" flood-opacity=".75"/>
+    </filter>
+    <symbol id="icon-brand" viewBox="0 0 120 120">
+      <g filter="url(#brandIconShadow)">
+        <rect x="13" y="13" width="94" height="88" rx="28" fill="url(#brandIconGrad)" stroke="url(#brandIconEdge)" stroke-width="4"/>
+        <path d="M24 28c13-12 56-16 74 1" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="5" stroke-linecap="round"/>
+        <ellipse cx="43" cy="52" rx="12" ry="10" fill="#fff"/>
+        <ellipse cx="78" cy="52" rx="12" ry="10" fill="#fff"/>
+        <path d="M39 73c13 11 30 11 43 0" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+      </g>
+    </symbol>
+    <symbol id="icon-driver" viewBox="0 0 120 120">
+      <rect x="10" y="10" width="100" height="100" rx="31" fill="url(#brandIconGrad)" stroke="url(#brandIconEdge)" stroke-width="4"/>
+      <circle cx="60" cy="58" r="30" fill="#fff" opacity=".96"/>
+      <path d="M39 53c5-17 14-25 21-25s16 8 21 25c-8-4-15-9-21-17-6 8-13 13-21 17Z" fill="#6d28d9"/>
+      <rect x="34" y="56" width="52" height="11" rx="5.5" fill="#22103f"/>
+      <rect x="41" y="59" width="13" height="5" rx="2.5" fill="#5eead4"/><rect x="66" y="59" width="13" height="5" rx="2.5" fill="#5eead4"/>
+      <path d="M52 78c5 4 11 4 16 0" fill="none" stroke="#6d28d9" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="28" cy="61" r="6" fill="#5eead4"/><circle cx="92" cy="61" r="6" fill="#5eead4"/>
+    </symbol>
+    <symbol id="icon-adas" viewBox="0 0 120 120">
+      <rect x="10" y="10" width="100" height="100" rx="31" fill="#102c5b" stroke="#407ee8" stroke-width="4"/>
+      <path d="M28 72h64l-7-19c-2-6-7-9-13-9H48c-6 0-11 3-13 9l-7 19Z" fill="#fff"/>
+      <rect x="23" y="70" width="74" height="19" rx="7" fill="#8b3dff"/>
+      <circle cx="39" cy="87" r="9" fill="#071225" stroke="#5eead4" stroke-width="4"/><circle cx="81" cy="87" r="9" fill="#071225" stroke="#5eead4" stroke-width="4"/>
+      <path d="M60 23v15M43 27l7 13m27-13-7 13" stroke="#5eead4" stroke-width="5" stroke-linecap="round"/>
+      <rect x="34" y="57" width="52" height="7" rx="3.5" fill="#c8ddff"/>
+    </symbol>
+    <symbol id="icon-chat" viewBox="0 0 120 120">
+      <rect x="10" y="10" width="100" height="100" rx="31" fill="#275f0f" stroke="#6dbd35" stroke-width="4"/>
+      <path d="M26 30h68a14 14 0 0 1 14 14v35a14 14 0 0 1-14 14H58l-22 15V93H26a14 14 0 0 1-14-14V44a14 14 0 0 1 14-14Z" fill="#fff"/>
+      <circle cx="41" cy="62" r="7" fill="#5eead4"/><circle cx="60" cy="62" r="7" fill="#8b3dff"/><circle cx="79" cy="62" r="7" fill="#5eead4"/>
+      <circle cx="94" cy="28" r="11" fill="#8b3dff"/><path d="M94 21v14m-7-7h14" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="icon-car" viewBox="0 0 120 120">
+      <rect x="10" y="10" width="100" height="100" rx="31" fill="#751538" stroke="#d53d77" stroke-width="4"/>
+      <path d="M26 68h68l-8-21c-2-6-7-9-13-9H47c-6 0-11 3-13 9l-8 21Z" fill="#fff"/>
+      <rect x="20" y="65" width="80" height="24" rx="8" fill="#bf5fff"/>
+      <circle cx="38" cy="88" r="10" fill="#190611" stroke="#5eead4" stroke-width="4"/><circle cx="82" cy="88" r="10" fill="#190611" stroke="#5eead4" stroke-width="4"/>
+      <path d="M60 22v15m-16-10 7 12m25-12-7 12" stroke="#5eead4" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="60" cy="18" r="7" fill="#5eead4"/>
+      <rect x="35" y="51" width="50" height="7" rx="3.5" fill="#f6d8e6"/>
+    </symbol>
+    <symbol id="icon-sport" viewBox="0 0 120 120">
+      <circle cx="61" cy="23" r="10" fill="rgba(94,234,212,.2)" stroke="#5eead4" stroke-width="3"/>
+      <path d="m59 34-10 23 14 12 10-22M49 57 31 69m32 0-14 28m14-28 23 21" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="90" cy="91" r="13" fill="rgba(139,61,255,.16)" stroke="#5eead4" stroke-width="3"/>
+      <path d="M83 81l13 19m-18-8h24" stroke="#5eead4" stroke-width="2"/>
+      <path d="M17 102h88" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".65"/>
+    </symbol>
+    <symbol id="icon-flow" viewBox="0 0 120 120">
+      <rect x="12" y="18" width="32" height="24" rx="7" fill="rgba(139,61,255,.18)" stroke="currentColor" stroke-width="3"/>
+      <rect x="76" y="18" width="32" height="24" rx="7" fill="rgba(94,234,212,.12)" stroke="#5eead4" stroke-width="3"/>
+      <rect x="44" y="78" width="32" height="24" rx="7" fill="rgba(139,61,255,.18)" stroke="currentColor" stroke-width="3"/>
+      <path d="M44 30h32m16 12v17c0 8-7 14-15 14H60v5M28 42v17c0 8 7 14 15 14h17" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="m70 25 7 5-7 5m-15 36 5 7 5-7" fill="none" stroke="#5eead4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-whatsapp" viewBox="0 0 120 120">
+      <path d="M60 15a43 43 0 0 0-37 65l-7 24 25-7a43 43 0 1 0 19-82Z" fill="rgba(94,234,212,.12)" stroke="currentColor" stroke-width="3"/>
+      <path d="M42 39c3-3 7-1 9 3l5 9c1 3 0 5-3 8l-3 3c6 10 13 17 23 22l3-4c2-3 5-4 8-2l9 5c4 2 5 6 3 9-4 7-11 10-19 8-22-6-43-27-50-49-2-6 5-9 15-12Z" fill="none" stroke="#5eead4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+</svg>
 
 <!-- Language transition overlay -->
 <div id="lang-overlay"><div class="lang-spinner"></div></div>
@@ -1643,8 +1886,8 @@
 
   <div class="nav-right">
     <button class="lang-switcher" id="lang-switcher" aria-label="Switch language">
-      <span class="lang-globe">🌐</span>
-      <span class="lang-code" id="lang-code-label">EN</span>
+      <span class="lang-globe" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 12h17M12 3c2.7 2.5 4.1 5.5 4.1 9S14.7 18.5 12 21M12 3C9.3 5.5 7.9 8.5 7.9 12s1.4 6.5 4.1 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+      <span class="lang-code" id="lang-code-label">Language</span>
     </button>
     <a href="https://wa.me/201288694962" target="_blank" class="nav-cta" data-i18n="nav_cta">Get Started →</a>
     <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
@@ -1662,8 +1905,8 @@
   <a href="#demo" data-i18n="nav_demo">Demo</a>
   <a href="#contact" data-i18n="nav_contact">Contact</a>
   <button class="mobile-lang-btn" id="mobile-lang-btn">
-    <span>🌐</span>
-    <span id="mobile-lang-label">Switch to Arabic / العربية</span>
+    <span class="lang-globe" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 12h17M12 3c2.7 2.5 4.1 5.5 4.1 9S14.7 18.5 12 21M12 3C9.3 5.5 7.9 8.5 7.9 12s1.4 6.5 4.1 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+    <span id="mobile-lang-label">Language</span>
   </button>
   <a href="https://wa.me/201288694962" target="_blank" class="mobile-cta" data-i18n="nav_cta">Get Started →</a>
 </div>
@@ -1688,7 +1931,7 @@
         <div class="hero-buttons">
           <a href="#projects" class="btn-primary" data-i18n="hero_btn1">View Projects →</a>
           <a href="https://wa.me/201288694962" target="_blank" class="btn-secondary">
-            <span>💬</span> <span data-i18n="hero_btn2">Contact on WhatsApp</span>
+            <span aria-hidden="true">WA</span> <span data-i18n="hero_btn2">Contact on WhatsApp</span>
           </a>
         </div>
         <div class="hero-stats">
@@ -1709,13 +1952,62 @@
       <div class="hero-visual">
         <div class="orb-wrapper">
           <div class="orb"></div>
+          <svg class="neural-web" viewBox="0 0 400 400" aria-hidden="true">
+            <g class="net-a">
+              <line x1="200" y1="28" x2="325" y2="80"/><line x1="325" y1="80" x2="372" y2="206"/><line x1="372" y1="206" x2="304" y2="330"/><line x1="304" y1="330" x2="164" y2="369"/><line x1="164" y1="369" x2="48" y2="285"/><line x1="48" y1="285" x2="38" y2="137"/><line x1="38" y1="137" x2="200" y2="28"/>
+              <line class="cyan-line" x1="200" y1="28" x2="304" y2="330"/><line x1="325" y1="80" x2="48" y2="285"/><line class="cyan-line" x1="372" y1="206" x2="38" y2="137"/><line x1="164" y1="369" x2="200" y2="28"/>
+              <circle cx="200" cy="28" r="3"/><circle cx="325" cy="80" r="3"/><circle cx="372" cy="206" r="3"/><circle cx="304" cy="330" r="3"/><circle cx="164" cy="369" r="3"/><circle cx="48" cy="285" r="3"/><circle cx="38" cy="137" r="3"/>
+            </g>
+            <g class="net-b">
+              <line x1="200" y1="65" x2="301" y2="119"/><line class="cyan-line" x1="301" y1="119" x2="331" y2="242"/><line x1="331" y1="242" x2="239" y2="335"/><line x1="239" y1="335" x2="112" y2="308"/><line class="cyan-line" x1="112" y1="308" x2="68" y2="184"/><line x1="68" y1="184" x2="200" y2="65"/><line x1="301" y1="119" x2="112" y2="308"/><line x1="331" y1="242" x2="68" y2="184"/>
+              <circle cx="200" cy="65" r="3"/><circle cx="301" cy="119" r="3"/><circle cx="331" cy="242" r="3"/><circle cx="239" cy="335" r="3"/><circle cx="112" cy="308" r="3"/><circle cx="68" cy="184" r="3"/>
+            </g>
+          </svg>
           <div class="orb-ring"></div>
           <div class="orb-ring-2"></div>
-          <div class="brain-icon">🧠</div>
+          <div class="brain-icon">
+            <div class="agentix-bot" aria-label="Agentix AI bot">
+              <svg viewBox="0 0 180 230" role="img" aria-hidden="true">
+                <defs>
+                  <linearGradient id="botHeadGrad" x1="35" y1="15" x2="145" y2="98"><stop stop-color="#d182ff"/><stop offset=".38" stop-color="#842ff0"/><stop offset=".72" stop-color="#4b119e"/><stop offset="1" stop-color="#18052f"/></linearGradient>
+                  <linearGradient id="botBodyGrad" x1="44" y1="98" x2="130" y2="191"><stop stop-color="#6d28b8"/><stop offset=".35" stop-color="#301153"/><stop offset=".72" stop-color="#160c2e"/><stop offset="1" stop-color="#070510"/></linearGradient>
+                  <linearGradient id="botMetalGrad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b65cff"/><stop offset=".42" stop-color="#4c1a79"/><stop offset="1" stop-color="#10091e"/></linearGradient>
+                  <filter id="botGlow" x="-40%" y="-40%" width="180%" height="190%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#7c24e8" flood-opacity=".7"/></filter>
+                </defs>
+                <ellipse cx="90" cy="219" rx="64" ry="8" fill="#6d28d9" opacity=".24" filter="url(#botGlow)"/>
+                <g class="bot-head" filter="url(#botGlow)">
+                  <rect x="28" y="18" width="124" height="82" rx="31" fill="#0b0714" stroke="#a74cff" stroke-width="3"/>
+                  <rect x="33" y="22" width="114" height="73" rx="27" fill="url(#botHeadGrad)" stroke="#e3b5ff" stroke-opacity=".5" stroke-width="2"/>
+                  <path d="M44 34c20-13 67-14 91 2" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="5" stroke-linecap="round"/>
+                  <ellipse cx="65" cy="57" rx="12" ry="10" fill="#fff" filter="url(#botGlow)"/><ellipse class="bot-eye-wink" cx="115" cy="57" rx="12" ry="10" fill="#fff" filter="url(#botGlow)"/>
+                  <path class="bot-mouth-smile" d="M63 77c17 12 37 12 54 0" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+                  <path class="bot-mouth-laugh" d="M68 75c12 12 32 12 44 0-2 18-40 18-44 0Z" fill="#fff" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+                  <ellipse cx="24" cy="59" rx="8" ry="18" fill="url(#botMetalGrad)" stroke="#a855f7" stroke-width="2"/><ellipse cx="156" cy="59" rx="8" ry="18" fill="url(#botMetalGrad)" stroke="#a855f7" stroke-width="2"/>
+                </g>
+                <path d="M49 107c12-10 70-10 82 0l10 61c2 14-9 27-24 27H63c-15 0-26-13-24-27l10-61Z" fill="url(#botBodyGrad)" stroke="#8f3fe6" stroke-width="3"/>
+                <path d="M58 111c18-8 48-8 64 0" fill="none" stroke="#fff" stroke-opacity=".14" stroke-width="4" stroke-linecap="round"/>
+                <circle class="bot-core" cx="90" cy="139" r="12" fill="#190b2b" stroke="#5eead4" stroke-width="4"/><circle cx="90" cy="139" r="5" fill="#c084fc"/>
+                <circle cx="43" cy="119" r="11" fill="url(#botMetalGrad)" stroke="#a855f7" stroke-width="3"/><circle cx="137" cy="119" r="11" fill="url(#botMetalGrad)" stroke="#a855f7" stroke-width="3"/>
+                <g class="bot-rest-arm">
+                  <path d="M43 121 29 145l7 28" fill="none" stroke="#170a28" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M43 121 29 145l7 28" fill="none" stroke="url(#botMetalGrad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="37" cy="176" r="9" fill="#281144" stroke="#c084fc" stroke-width="2.5"/>
+                </g>
+                <g class="bot-wave-arm">
+                  <path d="m137 121 13-25-4-23" fill="none" stroke="#170a28" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="m137 121 13-25-4-23" fill="none" stroke="url(#botMetalGrad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="146" cy="67" r="9" fill="#281144" stroke="#c084fc" stroke-width="2.5"/>
+                </g>
+                <path d="M70 192 66 211m44-19 4 19" stroke="url(#botMetalGrad)" stroke-width="17" stroke-linecap="round"/>
+                <path d="M48 214c7-8 19-9 30-2v8H48v-6Zm54-2c11-7 23-6 30 2v6h-30v-8Z" fill="#10091e" stroke="#a855f7" stroke-width="3"/>
+              </svg>
+            </div>
+          </div>
         </div>
-        <div class="floating-tag tag-1">🤖 <span data-i18n="ftag1">AI Agent Active</span></div>
-        <div class="floating-tag tag-2">⚡ <span data-i18n="ftag2">Automating…</span></div>
-        <div class="floating-tag tag-3">📊 99.9% Uptime</div>
+        <div class="floating-tag tag-1">◈ <span data-i18n="ftag1">AI Agent Active</span></div>
+        <div class="floating-tag tag-2">⚙ <span data-i18n="ftag2">Automating…</span></div>
+        <div class="floating-tag tag-3">⌁ Data · Live Insights</div>
+        <div class="floating-tag tag-4">◉ Computer Vision</div>
       </div>
     </div>
   </div>
@@ -1727,26 +2019,26 @@
 <section id="trust">
   <p class="marquee-label" data-i18n="marquee_label">Technologies &amp; Integrations</p>
   <div class="marquee-track">
-    <div class="marquee-item">🤖 OpenAI GPT-4</div>
-    <div class="marquee-item">🔗 LangChain</div>
-    <div class="marquee-item">💬 WhatsApp API</div>
-    <div class="marquee-item">🗄️ FastAPI</div>
-    <div class="marquee-item">👁️ Computer Vision</div>
-    <div class="marquee-item">📡 RAG Systems</div>
+    <div class="marquee-item">AI · OpenAI GPT-4</div>
+    <div class="marquee-item">◇ LangChain</div>
+    <div class="marquee-item">WA · WhatsApp API</div>
+    <div class="marquee-item">API · FastAPI</div>
+    <div class="marquee-item">CV · Computer Vision</div>
+    <div class="marquee-item">RAG · Knowledge Systems</div>
     <div class="marquee-item">🧩 n8n Workflows</div>
-    <div class="marquee-item">🌐 REST APIs</div>
+    <div class="marquee-item">↔ REST APIs</div>
     <div class="marquee-item">🐍 Python</div>
-    <div class="marquee-item">⚙️ Embedded AI</div>
-    <div class="marquee-item">🤖 OpenAI GPT-4</div>
-    <div class="marquee-item">🔗 LangChain</div>
-    <div class="marquee-item">💬 WhatsApp API</div>
-    <div class="marquee-item">🗄️ FastAPI</div>
-    <div class="marquee-item">👁️ Computer Vision</div>
-    <div class="marquee-item">📡 RAG Systems</div>
+    <div class="marquee-item">EDGE · Embedded AI</div>
+    <div class="marquee-item">AI · OpenAI GPT-4</div>
+    <div class="marquee-item">◇ LangChain</div>
+    <div class="marquee-item">WA · WhatsApp API</div>
+    <div class="marquee-item">API · FastAPI</div>
+    <div class="marquee-item">CV · Computer Vision</div>
+    <div class="marquee-item">RAG · Knowledge Systems</div>
     <div class="marquee-item">🧩 n8n Workflows</div>
-    <div class="marquee-item">🌐 REST APIs</div>
+    <div class="marquee-item">↔ REST APIs</div>
     <div class="marquee-item">🐍 Python</div>
-    <div class="marquee-item">⚙️ Embedded AI</div>
+    <div class="marquee-item">EDGE · Embedded AI</div>
   </div>
 </section>
 
@@ -1760,28 +2052,28 @@
         <div class="about-glow"></div>
         <div class="about-card">
           <div class="about-metric">
-            <div class="metric-icon">🤖</div>
+            <div class="metric-icon"><svg class="visual-icon" viewBox="0 0 48 48"><rect x="6" y="7" width="36" height="34" rx="11" fill="rgba(139,61,255,.28)" stroke="#c084fc" stroke-width="2.4"/><ellipse cx="17" cy="22" rx="4.5" ry="4" fill="#fff"/><ellipse cx="31" cy="22" rx="4.5" ry="4" fill="#fff"/><path d="M15 30c6 5 12 5 18 0" fill="none" stroke="#5eead4" stroke-width="3" stroke-linecap="round"/></svg></div>
             <div class="metric-info">
               <strong data-i18n="about_m1_title">Intelligent Agents</strong>
               <span data-i18n="about_m1_sub">Custom AI agents for your business</span>
             </div>
           </div>
           <div class="about-metric">
-            <div class="metric-icon">⚡</div>
+            <div class="metric-icon"><svg class="visual-icon" viewBox="0 0 48 48"><path d="m27 4-15 23h11l-2 17 15-25H25l2-15Z" fill="rgba(139,61,255,.28)" stroke="#c084fc" stroke-width="2.5" stroke-linejoin="round"/><path d="m31 9-5 9h7" fill="none" stroke="#5eead4" stroke-width="2.5" stroke-linecap="round"/></svg></div>
             <div class="metric-info">
               <strong data-i18n="about_m2_title">Instant Automation</strong>
               <span data-i18n="about_m2_sub">Deploy in days, not months</span>
             </div>
           </div>
           <div class="about-metric">
-            <div class="metric-icon">📈</div>
+            <div class="metric-icon"><svg class="visual-icon" viewBox="0 0 48 48"><path d="M9 37V11M9 37h31M14 31l8-9 7 5 10-14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 13h6v6" fill="none" stroke="#5eead4" stroke-width="3" stroke-linecap="round"/></svg></div>
             <div class="metric-info">
               <strong data-i18n="about_m3_title">Measurable ROI</strong>
               <span data-i18n="about_m3_sub">Track performance from day one</span>
             </div>
           </div>
           <div class="about-metric">
-            <div class="metric-icon">🔒</div>
+            <div class="metric-icon"><svg class="visual-icon" viewBox="0 0 48 48"><path d="M24 5 39 11v11c0 10-6 17-15 21C15 39 9 32 9 22V11L24 5Z" fill="rgba(139,61,255,.18)" stroke="currentColor" stroke-width="3"/><path d="m17 24 5 5 10-11" fill="none" stroke="#5eead4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="metric-info">
               <strong data-i18n="about_m4_title">Enterprise-Grade Security</strong>
               <span data-i18n="about_m4_sub">Data privacy first, always</span>
@@ -1828,7 +2120,7 @@
     <div class="services-grid">
       <div class="service-card reveal">
         <div class="card-glow"></div>
-        <div class="service-icon">💬</div>
+        <div class="service-icon service-logo-whatsapp" aria-hidden="true"><svg class="visual-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="#25D366"/><path fill="#fff" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.64.07-1.75-.87-2.9-1.56-4.05-3.55-.3-.52.3-.48.87-1.6.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.47s1.06 2.87 1.21 3.07c.15.2 2.09 3.19 5.06 4.48 1.88.81 2.62.88 3.57.75.57-.09 1.76-.72 2-1.41.25-.69.25-1.29.18-1.41-.08-.13-.27-.2-.57-.35Z"/></svg></div>
         <h3 data-i18n="svc1_title">AI WhatsApp Assistant</h3>
         <p data-i18n="svc1_desc">A 24/7 AI-powered assistant that lives inside WhatsApp, handling customer conversations so your team doesn't have to.</p>
         <ul class="service-features">
@@ -1841,7 +2133,7 @@
       </div>
       <div class="service-card reveal">
         <div class="card-glow"></div>
-        <div class="service-icon">🌐</div>
+        <div class="service-icon service-logo-bot" aria-hidden="true"><svg class="visual-icon" viewBox="0 0 48 48"><defs><linearGradient id="serviceBotGrad" x1="7" y1="5" x2="42" y2="44"><stop stop-color="#c56cff"/><stop offset=".52" stop-color="#7c24e8"/><stop offset="1" stop-color="#3b0b8e"/></linearGradient></defs><rect x="5" y="6" width="38" height="36" rx="12" fill="url(#serviceBotGrad)" stroke="#d6a0ff" stroke-opacity=".65" stroke-width="2"/><ellipse cx="17" cy="21" rx="5" ry="4" fill="#fff"/><ellipse cx="31" cy="21" rx="5" ry="4" fill="#fff"/><path d="M15 30c6 5 12 5 18 0" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M10 11c7-4 21-5 28 0" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="2" stroke-linecap="round"/></svg></div>
         <h3 data-i18n="svc2_title">AI Web Chatbots</h3>
         <p data-i18n="svc2_desc">An intelligent chatbot embedded into your website, turning passive visitors into active, qualified leads.</p>
         <ul class="service-features">
@@ -1854,7 +2146,7 @@
       </div>
       <div class="service-card reveal">
         <div class="card-glow"></div>
-        <div class="service-icon">⚙️</div>
+        <div class="service-icon" aria-hidden="true"><svg class="visual-icon" viewBox="0 0 48 48"><circle cx="24" cy="24" r="9" fill="rgba(139,61,255,.22)" stroke="#c084fc" stroke-width="3"/><circle cx="24" cy="24" r="3.5" fill="#5eead4"/><path d="M24 5v6m0 26v6M5 24h6m26 0h6M10.5 10.5l4.3 4.3m18.4 18.4 4.3 4.3m0-27-4.3 4.3M14.8 33.2l-4.3 4.3" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M31 8c5 2 8 5 10 10M17 40c-5-2-8-5-10-10" fill="none" stroke="#5eead4" stroke-width="2.5" stroke-linecap="round"/></svg></div>
         <h3 data-i18n="svc3_title">Business AI Automation</h3>
         <p data-i18n="svc3_desc">End-to-end workflow automation that removes repetitive manual tasks and lets your team operate at a higher level.</p>
         <ul class="service-features">
@@ -1863,6 +2155,19 @@
           <li data-i18n="svc3_f3">Automated report generation</li>
           <li data-i18n="svc3_f4">Business tool integrations</li>
           <li data-i18n="svc3_f5">Custom AI pipelines</li>
+        </ul>
+      </div>
+      <div class="service-card reveal">
+        <div class="card-glow"></div>
+        <div class="service-icon service-logo-sport" aria-hidden="true"><svg class="visual-icon" viewBox="0 0 48 48"><circle cx="24" cy="24" r="19" fill="#f8f4ff" stroke="#c084fc" stroke-width="2.5"/><path d="m24 13 7 5-3 8h-8l-3-8 7-5Z" fill="#6d28d9"/><path d="m17 18-7-2m1 15 9-5m8 0 9 5m-6-13 7-2M20 26l-5 9m13-9 5 9M24 13V5" fill="none" stroke="#6d28d9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 35c5 4 13 5 18 0M10 16c-3 5-4 10 1 15m27-15c3 5 4 10-1 15" fill="none" stroke="#6d28d9" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+        <h3 data-i18n="svc4_title">Sports Performance Analytics</h3>
+        <p data-i18n="svc4_desc">Computer vision systems that turn match and training footage into measurable player-performance insights.</p>
+        <ul class="service-features">
+          <li data-i18n="svc4_f1">Player detection and tracking</li>
+          <li data-i18n="svc4_f2">Movement and positioning analysis</li>
+          <li data-i18n="svc4_f3">Performance metrics from video</li>
+          <li data-i18n="svc4_f4">Tactical and event analysis</li>
+          <li data-i18n="svc4_f5">Custom coaching dashboards</li>
         </ul>
       </div>
     </div>
@@ -1881,71 +2186,71 @@
       <p class="section-desc" data-i18n="projects_desc">A selection of AI systems we've built across computer vision, NLP, and embedded intelligence.</p>
     </div>
     <div class="projects-grid">
-      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-deeplearning-ugcPost-7450336307383554048-sBT2" target="_blank" rel="noopener" class="project-card reveal">
+      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-deeplearning-ugcPost-7450336307383554048-sBT2?utm_source=share&amp;utm_medium=member_ios&amp;rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU" target="_blank" rel="noopener" class="project-card reveal">
         <div class="project-thumb">
           <div class="project-thumb-bg" style="background:linear-gradient(135deg,#1a0a3e 0%,#3d0f6e 50%,#0d0120 100%);"></div>
-          <div class="project-thumb-icon">👁️</div>
+          <div class="project-thumb-icon"><div class="project-scene scene-driver"><svg class="scene-art"><use href="#icon-driver"/></svg></div></div>
           <div class="project-thumb-overlay"></div>
           <div class="project-play-overlay"><div class="project-play-circle">▶</div></div>
-          <div class="project-tag">Computer Vision · Deep Learning</div>
+          <div class="project-tag">Driver Monitoring · Driver Assistant</div>
         </div>
         <div class="project-body">
-          <h3 data-i18n="proj1_title">AI Computer Vision Project</h3>
-          <p data-i18n="proj1_desc">A deep-learning computer vision system capable of real-time object detection and scene understanding at scale.</p>
+          <h3 data-i18n="proj1_title">Driver Monitoring &amp; Driver Assistant</h3>
+          <p data-i18n="proj1_desc">A computer vision system that monitors driver state and supports safer driving with intelligent, real-time assistance.</p>
           <div class="project-footer">
             <span class="view-project-btn" data-i18n="proj_view">View on LinkedIn →</span>
-            <span class="project-ext">🔗 linkedin.com</span>
+            <span class="project-ext">↗ linkedin.com</span>
           </div>
         </div>
       </a>
-      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-adas-ugcPost-7455307906163392512-opdL" target="_blank" rel="noopener" class="project-card reveal">
+      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-adas-ugcPost-7455307906163392512-opdL?utm_source=share&amp;utm_medium=member_ios&amp;rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU" target="_blank" rel="noopener" class="project-card reveal">
         <div class="project-thumb">
           <div class="project-thumb-bg" style="background:linear-gradient(135deg,#0a1a3e 0%,#0f3d6e 50%,#011420 100%);"></div>
-          <div class="project-thumb-icon">🚗</div>
+          <div class="project-thumb-icon"><div class="project-scene scene-adas"><svg class="scene-art"><use href="#icon-adas"/></svg></div></div>
           <div class="project-thumb-overlay"></div>
           <div class="project-play-overlay"><div class="project-play-circle">▶</div></div>
           <div class="project-tag">ADAS · Autonomous Systems</div>
         </div>
         <div class="project-body">
-          <h3 data-i18n="proj2_title">AI Computer Vision ADAS System</h3>
+          <h3 data-i18n="proj2_title">ADAS System</h3>
           <p data-i18n="proj2_desc">An Advanced Driver Assistance System powered by real-time computer vision for lane detection, obstacle awareness, and hazard alerts.</p>
           <div class="project-footer">
             <span class="view-project-btn" data-i18n="proj_view">View on LinkedIn →</span>
-            <span class="project-ext">🔗 linkedin.com</span>
+            <span class="project-ext">↗ linkedin.com</span>
           </div>
         </div>
       </a>
-      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-rag-fastapi-ugcPost-7461538370284879872-ZeeR" target="_blank" rel="noopener" class="project-card reveal">
+      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-rag-fastapi-ugcPost-7461538370284879872-ZeeR?utm_medium=ios_app&amp;rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU&amp;utm_source=social_share_send&amp;utm_campaign=whatsapp" target="_blank" rel="noopener" class="project-card reveal">
         <div class="project-thumb">
           <div class="project-thumb-bg" style="background:linear-gradient(135deg,#1a2a0a 0%,#3a6e0f 50%,#071400 100%);"></div>
-          <div class="project-thumb-icon">📡</div>
+          <div class="project-thumb-icon"><div class="project-scene scene-chat"><svg class="scene-art"><use href="#icon-chat"/></svg></div></div>
           <div class="project-thumb-overlay"></div>
           <div class="project-play-overlay"><div class="project-play-circle">▶</div></div>
-          <div class="project-tag">RAG · FastAPI · LLM</div>
+          <div class="project-tag">Intelligent Chatbot · Requirements</div>
         </div>
         <div class="project-body">
-          <h3 data-i18n="proj3_title">AI RAG FastAPI System</h3>
-          <p data-i18n="proj3_desc">A Retrieval-Augmented Generation system built on FastAPI, enabling LLMs to answer questions grounded in private knowledge bases.</p>
+          <h3 data-i18n="proj3_title">Intelligent Requirements Chatbot</h3>
+          <p data-i18n="proj3_desc">An intelligent chatbot that understands business requirements, asks focused questions, and organizes client needs into actionable inputs.</p>
           <div class="project-footer">
             <span class="view-project-btn" data-i18n="proj_view">View on LinkedIn →</span>
-            <span class="project-ext">🔗 linkedin.com</span>
+            <span class="project-ext">↗ linkedin.com</span>
           </div>
         </div>
       </a>
-      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-embeddedsystems-ugcPost-7466831647548706816-6F-6" target="_blank" rel="noopener" class="project-card reveal">
+      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-embeddedsystems-ugcPost-7466831647548706816-6F-6?utm_medium=ios_app&amp;rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU&amp;utm_source=social_share_send&amp;utm_campaign=whatsapp" target="_blank" rel="noopener" class="project-card reveal">
         <div class="project-thumb">
           <div class="project-thumb-bg" style="background:linear-gradient(135deg,#2a0a1a 0%,#6e0f3a 50%,#140008 100%);"></div>
-          <div class="project-thumb-icon">🔬</div>
+          <div class="project-thumb-icon"><div class="project-scene scene-car"><svg class="scene-art"><use href="#icon-car"/></svg></div></div>
           <div class="project-thumb-overlay"></div>
           <div class="project-play-overlay"><div class="project-play-circle">▶</div></div>
-          <div class="project-tag">Embedded AI · Edge Computing</div>
+          <div class="project-tag">Self-Driving · Built From Scratch</div>
         </div>
         <div class="project-body">
-          <h3 data-i18n="proj4_title">AI Computer Vision Embedded Systems</h3>
-          <p data-i18n="proj4_desc">Computer vision running directly on embedded hardware at the edge — eliminating cloud dependency and delivering near-zero latency inference.</p>
+          <h3 data-i18n="proj4_title">Smart Self-Driving Car</h3>
+          <p data-i18n="proj4_desc">A graduation project built from scratch: a smart car combining embedded systems and computer vision for autonomous driving.</p>
           <div class="project-footer">
             <span class="view-project-btn" data-i18n="proj_view">View on LinkedIn →</span>
-            <span class="project-ext">🔗 linkedin.com</span>
+            <span class="project-ext">↗ linkedin.com</span>
           </div>
         </div>
       </a>
@@ -1969,25 +2274,24 @@
     <div class="featured-video-hero reveal" id="featured-video-hero">
       <div class="featured-video-player" id="featured-player" onclick="openModalById('vid-1')">
         <div class="fv-thumb-bg" id="featured-bg" style="background:linear-gradient(135deg,#1a0832 0%,#4a1580 40%,#0d0120 100%);"></div>
-        <div class="fv-thumb-icon" id="featured-icon">🤖</div>
+        <div class="fv-thumb-icon" id="featured-icon"><div class="project-scene scene-driver"><svg class="scene-art"><use href="#icon-driver"/></svg></div></div>
         <div class="fv-overlay"></div>
         <div class="featured-play-btn"><div class="featured-play-circle">▶</div></div>
-        <div class="featured-duration-badge" id="featured-duration">2:47</div>
+        <div class="featured-duration-badge" id="featured-duration">PROJECT 01</div>
       </div>
       <div class="featured-video-info">
-        <div class="featured-category-badge" id="featured-cat">🤖 AI Customer Support</div>
-        <h3 class="featured-video-title" id="featured-title" data-i18n="fv_title">WhatsApp AI Support Agent — Live Demo</h3>
-        <p class="featured-video-desc" id="featured-desc" data-i18n="fv_desc">Watch a fully autonomous AI agent handle 50+ customer inquiries simultaneously on WhatsApp — booking appointments, resolving issues, and escalating when needed. Zero human intervention required.</p>
+        <div class="featured-category-badge" id="featured-cat">Computer Vision · Automotive AI</div>
+        <h3 class="featured-video-title" id="featured-title" data-i18n="fv_title">Driver Monitoring &amp; Driver Assistant</h3>
+        <p class="featured-video-desc" id="featured-desc" data-i18n="fv_desc">A real-time vision system designed to monitor driver state and provide intelligent assistance for safer driving.</p>
         <div class="featured-metrics" id="featured-metrics">
-          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>94%</strong> &nbsp;<span data-i18n="fv_m1">customer satisfaction rate</span></div>
-          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>3×</strong> &nbsp;<span data-i18n="fv_m2">faster response vs. human agents</span></div>
-          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>24/7</strong> &nbsp;<span data-i18n="fv_m3">zero-downtime operation</span></div>
+          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>Real-time</strong> &nbsp;<span data-i18n="fv_m1">driver-state monitoring</span></div>
+          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>CV</strong> &nbsp;<span data-i18n="fv_m2">vision-based assistance</span></div>
+          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>Safety</strong> &nbsp;<span data-i18n="fv_m3">focused system design</span></div>
         </div>
         <div class="featured-tech-tags" id="featured-tags">
-          <span class="ftech-tag">WhatsApp API</span>
-          <span class="ftech-tag">OpenAI GPT-4</span>
-          <span class="ftech-tag">LangChain</span>
-          <span class="ftech-tag">FastAPI</span>
+          <span class="ftech-tag">Computer Vision</span>
+          <span class="ftech-tag">Deep Learning</span>
+          <span class="ftech-tag">Driver Monitoring</span>
           <span class="ftech-tag">Python</span>
         </div>
         <button class="featured-watch-btn" id="featured-watch-btn" onclick="openModalById('vid-1')">▶ <span data-i18n="watch_btn">Watch Full Demo</span></button>
@@ -1997,97 +2301,93 @@
     <!-- Video Filters -->
     <div class="video-filters reveal">
       <button class="vf-btn active" data-filter="all" data-i18n="filter_all">All Videos</button>
-      <button class="vf-btn" data-filter="customer-support" data-i18n="filter_support">AI Customer Support</button>
-      <button class="vf-btn" data-filter="whatsapp" data-i18n="filter_wa">WhatsApp Automation</button>
-      <button class="vf-btn" data-filter="lead-gen" data-i18n="filter_lead">Lead Generation</button>
       <button class="vf-btn" data-filter="computer-vision" data-i18n="filter_cv">Computer Vision</button>
       <button class="vf-btn" data-filter="enterprise" data-i18n="filter_ent">Enterprise AI</button>
-      <button class="vf-btn" data-filter="ecommerce" data-i18n="filter_ecom">E-Commerce</button>
     </div>
 
     <!-- Video Gallery -->
     <div class="video-gallery-grid" id="video-gallery">
-      <div class="video-card reveal" data-id="vid-1" data-category="customer-support whatsapp" onclick="openModalById('vid-1')">
+      <div class="video-card reveal" data-id="vid-1" data-category="computer-vision" onclick="openModalById('vid-1')">
         <div class="vc-thumb">
           <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#1a0832 0%,#4a1580 40%,#0d0120 100%);"></div>
-          <div class="vc-thumb-icon">🤖</div>
+          <div class="vc-thumb-icon"><div class="project-scene scene-driver"><svg class="scene-art"><use href="#icon-driver"/></svg></div></div>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
-          <div class="vc-category">AI Support</div>
-          <div class="vc-duration">2:47</div>
+          <div class="vc-category">Automotive AI</div>
+          <div class="vc-duration">PROJECT 01</div>
           <div class="vc-hover-info">
-            <div class="vc-hover-title">WhatsApp AI Support Agent</div>
-            <div class="vc-hover-metrics"><span class="vc-hover-metric">94% CSAT</span><span class="vc-hover-metric">3× Faster</span><span class="vc-hover-metric">24/7</span></div>
+            <div class="vc-hover-title">Driver Monitoring &amp; Assistant</div>
+            <div class="vc-hover-metrics"><span class="vc-hover-metric">Real-time vision</span><span class="vc-hover-metric">Driver safety</span></div>
           </div>
         </div>
         <div class="vc-body">
-          <h3 data-i18n="vc1_title">WhatsApp AI Support Agent</h3>
-          <p data-i18n="vc1_desc">Autonomous agent handling 50+ simultaneous customer inquiries on WhatsApp with zero human intervention.</p>
-          <div class="vc-tech-row"><span class="vc-tech-tag">WhatsApp API</span><span class="vc-tech-tag">GPT-4</span><span class="vc-tech-tag">LangChain</span></div>
-          <div class="vc-footer"><span class="vc-impact">↑ 94% satisfaction</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
+          <h3 data-i18n="vc1_title">Driver Monitoring &amp; Driver Assistant</h3>
+          <p data-i18n="vc1_desc">Real-time computer vision for driver-state monitoring and intelligent driving assistance.</p>
+          <div class="vc-tech-row"><span class="vc-tech-tag">Computer Vision</span><span class="vc-tech-tag">Deep Learning</span><span class="vc-tech-tag">Python</span></div>
+          <div class="vc-footer"><span class="vc-impact">Driver Safety AI</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
         </div>
       </div>
 
-      <div class="video-card reveal" data-id="vid-2" data-category="lead-gen" onclick="openModalById('vid-2')">
+      <div class="video-card reveal" data-id="vid-2" data-category="computer-vision" onclick="openModalById('vid-2')">
         <div class="vc-thumb">
           <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#0a2a1a 0%,#1a6040 40%,#001408 100%);"></div>
-          <div class="vc-thumb-icon">🎯</div>
+          <div class="vc-thumb-icon"><div class="project-scene scene-adas"><svg class="scene-art"><use href="#icon-adas"/></svg></div></div>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
-          <div class="vc-category">Lead Gen</div>
-          <div class="vc-duration">3:12</div>
+          <div class="vc-category">Advanced Driver Assistance</div>
+          <div class="vc-duration">PROJECT 02</div>
           <div class="vc-hover-info">
-            <div class="vc-hover-title">AI Lead Qualification Bot</div>
-            <div class="vc-hover-metrics"><span class="vc-hover-metric">340% more leads</span><span class="vc-hover-metric">Auto-qualify</span></div>
+            <div class="vc-hover-title">ADAS System</div>
+            <div class="vc-hover-metrics"><span class="vc-hover-metric">Lane detection</span><span class="vc-hover-metric">Hazard awareness</span></div>
           </div>
         </div>
         <div class="vc-body">
-          <h3 data-i18n="vc2_title">AI Lead Qualification Bot</h3>
-          <p data-i18n="vc2_desc">Automatically qualifies, scores, and routes inbound leads — syncing directly into your CRM with full context.</p>
-          <div class="vc-tech-row"><span class="vc-tech-tag">n8n</span><span class="vc-tech-tag">OpenAI</span><span class="vc-tech-tag">CRM API</span></div>
-          <div class="vc-footer"><span class="vc-impact">↑ 340% more leads</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
+          <h3 data-i18n="vc2_title">ADAS System</h3>
+          <p data-i18n="vc2_desc">Vision-based lane detection, obstacle awareness, and intelligent hazard alerts.</p>
+          <div class="vc-tech-row"><span class="vc-tech-tag">OpenCV</span><span class="vc-tech-tag">Object Detection</span><span class="vc-tech-tag">Embedded AI</span></div>
+          <div class="vc-footer"><span class="vc-impact">Road Safety AI</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
         </div>
       </div>
 
-      <div class="video-card reveal" data-id="vid-3" data-category="computer-vision enterprise" onclick="openModalById('vid-3')">
+      <div class="video-card reveal" data-id="vid-3" data-category="enterprise" onclick="openModalById('vid-3')">
         <div class="vc-thumb">
           <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#0a1a3e 0%,#0f3d6e 50%,#011420 100%);"></div>
-          <div class="vc-thumb-icon">🚗</div>
+          <div class="vc-thumb-icon"><div class="project-scene scene-chat"><svg class="scene-art"><use href="#icon-chat"/></svg></div></div>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
           <div class="vc-category">Computer Vision</div>
-          <div class="vc-duration">4:05</div>
+          <div class="vc-duration">PROJECT 03</div>
           <div class="vc-hover-info">
-            <div class="vc-hover-title">ADAS Real-Time Vision</div>
-            <div class="vc-hover-metrics"><span class="vc-hover-metric">30ms latency</span><span class="vc-hover-metric">99.2% accuracy</span></div>
+            <div class="vc-hover-title">Intelligent Requirements Chatbot</div>
+            <div class="vc-hover-metrics"><span class="vc-hover-metric">Requirement discovery</span><span class="vc-hover-metric">Structured intake</span></div>
           </div>
         </div>
         <div class="vc-body">
-          <h3 data-i18n="vc3_title">ADAS Real-Time Vision System</h3>
-          <p data-i18n="vc3_desc">Lane detection, obstacle awareness, and hazard alerts running at 30ms latency on embedded hardware.</p>
-          <div class="vc-tech-row"><span class="vc-tech-tag">YOLOv8</span><span class="vc-tech-tag">OpenCV</span><span class="vc-tech-tag">TensorRT</span></div>
-          <div class="vc-footer"><span class="vc-impact">99.2% accuracy</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
+          <h3 data-i18n="vc3_title">Intelligent Requirements Chatbot</h3>
+          <p data-i18n="vc3_desc">A smart conversational system that discovers, clarifies, and structures client requirements.</p>
+          <div class="vc-tech-row"><span class="vc-tech-tag">NLP</span><span class="vc-tech-tag">FastAPI</span><span class="vc-tech-tag">LLM</span></div>
+          <div class="vc-footer"><span class="vc-impact">Smart Discovery</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
         </div>
       </div>
 
-      <div class="video-card reveal" data-id="vid-4" data-category="ecommerce customer-support" onclick="openModalById('vid-4')">
+      <div class="video-card reveal" data-id="vid-4" data-category="computer-vision enterprise" onclick="openModalById('vid-4')">
         <div class="vc-thumb">
           <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#2a1a0a 0%,#6e400f 50%,#140800 100%);"></div>
-          <div class="vc-thumb-icon">🛒</div>
+          <div class="vc-thumb-icon"><div class="project-scene scene-car"><svg class="scene-art"><use href="#icon-car"/></svg></div></div>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
-          <div class="vc-category">E-Commerce</div>
-          <div class="vc-duration">2:33</div>
+          <div class="vc-category">Self-Driving Car</div>
+          <div class="vc-duration">PROJECT 04</div>
           <div class="vc-hover-info">
-            <div class="vc-hover-title">E-Commerce AI Shopping Agent</div>
-            <div class="vc-hover-metrics"><span class="vc-hover-metric">+28% AOV</span><span class="vc-hover-metric">Auto upsell</span></div>
+            <div class="vc-hover-title">Smart Car Built From Scratch</div>
+            <div class="vc-hover-metrics"><span class="vc-hover-metric">Graduation project</span><span class="vc-hover-metric">Autonomous driving</span></div>
           </div>
         </div>
         <div class="vc-body">
-          <h3 data-i18n="vc4_title">E-Commerce AI Shopping Agent</h3>
-          <p data-i18n="vc4_desc">Personalized product recommendations and smart upselling embedded in chat, boosting average order value.</p>
-          <div class="vc-tech-row"><span class="vc-tech-tag">RAG</span><span class="vc-tech-tag">GPT-4</span><span class="vc-tech-tag">Shopify API</span></div>
-          <div class="vc-footer"><span class="vc-impact">↑ 28% order value</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
+          <h3 data-i18n="vc4_title">Smart Self-Driving Car</h3>
+          <p data-i18n="vc4_desc">A graduation project built from scratch, combining embedded systems and computer vision.</p>
+          <div class="vc-tech-row"><span class="vc-tech-tag">Embedded AI</span><span class="vc-tech-tag">Computer Vision</span><span class="vc-tech-tag">IoT</span></div>
+          <div class="vc-footer"><span class="vc-impact">Built From Scratch</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
         </div>
       </div>
 
@@ -2171,14 +2471,22 @@
       </div>
       <div class="chat-widget reveal">
         <div class="chat-header">
-          <div class="chat-avatar">🤖</div>
+          <div class="chat-avatar" aria-label="Agentix logo">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <defs><linearGradient id="chatLogoGrad" x1="15" y1="10" x2="105" y2="108"><stop stop-color="#c56cff"/><stop offset=".5" stop-color="#7b24e8"/><stop offset="1" stop-color="#3c0b91"/></linearGradient></defs>
+              <rect x="10" y="12" width="100" height="94" rx="31" fill="url(#chatLogoGrad)" stroke="#dba3ff" stroke-opacity=".55" stroke-width="4"/>
+              <path d="M23 29c17-13 56-15 76 0" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="5" stroke-linecap="round"/>
+              <ellipse cx="42" cy="53" rx="13" ry="11" fill="#fff"/><ellipse cx="79" cy="53" rx="13" ry="11" fill="#fff"/>
+              <path d="M37 76c15 12 32 12 47 0" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+            </svg>
+          </div>
           <div class="chat-info">
             <strong>Agentix AI</strong>
             <span data-i18n="chat_online">Online now</span>
           </div>
         </div>
         <div class="chat-messages" id="chat-messages">
-          <div class="msg msg-bot" id="chat-greeting">👋 Hello! I'm the Agentix AI agent. Type <strong>"Hello"</strong> to get started.</div>
+          <div class="msg msg-bot" id="chat-greeting">Hi — tell me what you want to improve in your business.</div>
         </div>
         <div class="chat-input-row">
           <input type="text" id="chat-input" class="chat-input" data-i18n-placeholder="chat_placeholder" placeholder="Type a message…" autocomplete="off"/>
@@ -2199,7 +2507,7 @@
       <h2 data-i18n="contact_title">Transform Your Business with AI Agents</h2>
       <p data-i18n="contact_desc">Send us a message on WhatsApp and let's build something intelligent together. We typically respond within minutes.</p>
       <a href="https://wa.me/201288694962" target="_blank" class="whatsapp-btn">
-        <span class="wa-icon">💬</span>
+        <span class="wa-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2a9.84 9.84 0 0 0-8.45 14.86L2 22l5.28-1.55A9.96 9.96 0 1 0 12.04 2Zm0 17.98a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.13.92.94-3.05-.2-.31a8.1 8.1 0 1 1 6.82 3.75Zm4.45-6.06c-.24-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.55.12-.16.25-.63.79-.77.95-.14.16-.28.18-.53.06-1.44-.72-2.39-1.29-3.34-2.93-.25-.43.25-.4.72-1.32.08-.16.04-.3-.02-.43-.06-.12-.55-1.32-.75-1.81-.2-.47-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.3-.22.25-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.72 2.63 4.17 3.69 1.55.67 2.16.73 2.94.62.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.47-.28Z"/></svg></span>
         <span data-i18n="contact_wa_btn">Message Us on WhatsApp</span>
       </a>
       <p class="contact-alt">
@@ -2239,8 +2547,15 @@
         </a>
         <p data-i18n="footer_tagline">AI Automation Solutions that transform how businesses operate, communicate, and grow.</p>
         <div class="footer-social">
-          <a href="https://www.linkedin.com/in/abdelrahman-elsherif-944a52337" target="_blank" class="social-icon" title="LinkedIn" rel="noopener">in</a>
-          <a href="https://wa.me/201288694962" target="_blank" class="social-icon" title="WhatsApp" rel="noopener">💬</a>
+          <a href="https://www.linkedin.com/company/agentix-solutions/about/?viewAsMember=true" target="_blank" class="social-icon" title="Agentix Solutions on LinkedIn" aria-label="Agentix Solutions on LinkedIn" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V8.98h3.42v1.57h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.29ZM5.32 7.41a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13Zm1.78 13.04H3.54V8.98H7.1v11.47Z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/agentix_solutions?igsh=MTBkaXV6bXJkMDNsZA==" target="_blank" class="social-icon" title="Agentix Solutions on Instagram" aria-label="Agentix Solutions on Instagram" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17.4" cy="6.7" r="1.25" fill="currentColor"/></svg>
+          </a>
+          <a href="https://wa.me/201288694962" target="_blank" class="social-icon" title="WhatsApp" aria-label="Contact Agentix Solutions on WhatsApp" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2a9.84 9.84 0 0 0-8.45 14.86L2 22l5.28-1.55A9.96 9.96 0 1 0 12.04 2Zm0 17.98a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.13.92.94-3.05-.2-.31a8.1 8.1 0 1 1 6.82 3.75Zm4.45-6.06c-.24-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.55.12-.16.25-.63.79-.77.95-.14.16-.28.18-.53.06-1.44-.72-2.39-1.29-3.34-2.93-.25-.43.25-.4.72-1.32.08-.16.04-.3-.02-.43-.06-.12-.55-1.32-.75-1.81-.2-.47-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.3-.22.25-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.72 2.63 4.17 3.69 1.55.67 2.16.73 2.94.62.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.47-.28Z"/></svg>
+          </a>
         </div>
       </div>
       <div class="footer-col">
@@ -2249,6 +2564,7 @@
           <li><a href="#services" data-i18n="svc1_title">AI WhatsApp Assistant</a></li>
           <li><a href="#services" data-i18n="svc2_title">AI Web Chatbots</a></li>
           <li><a href="#services" data-i18n="svc3_title">Business Automation</a></li>
+          <li><a href="#services" data-i18n="svc4_title">Sports Performance Analytics</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -2264,6 +2580,8 @@
         <h4 data-i18n="footer_contact">Contact</h4>
         <ul>
           <li><a href="https://wa.me/201288694962" target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="https://www.linkedin.com/company/agentix-solutions/about/?viewAsMember=true" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://www.instagram.com/agentix_solutions?igsh=MTBkaXV6bXJkMDNsZA==" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="mailto:elshirefabdelrahman@gmail.com">Email Us</a></li>
         </ul>
       </div>
@@ -2297,7 +2615,7 @@
         <p class="vm-desc" id="vm-desc">Loading…</p>
         <div class="vm-tech-row" id="vm-tech-row"></div>
         <div class="vm-cta-row">
-          <a href="https://wa.me/201288694962" target="_blank" class="vm-wa-btn">💬 <span data-i18n="modal_cta">Get This Built</span></a>
+          <a href="https://wa.me/201288694962" target="_blank" rel="noopener" class="vm-wa-btn">WA <span data-i18n="modal_cta">Get This Built</span></a>
         </div>
       </div>
       <div class="vm-info-col">
@@ -2352,33 +2670,37 @@ const TRANSLATIONS = {
     svc3_desc: 'End-to-end workflow automation that removes repetitive manual tasks and lets your team operate at a higher level.',
     svc3_f1: 'Full workflow automation', svc3_f2: 'Data processing & analysis',
     svc3_f3: 'Automated report generation', svc3_f4: 'Business tool integrations', svc3_f5: 'Custom AI pipelines',
+    svc4_title: 'Sports Performance Analytics',
+    svc4_desc: 'Computer vision systems that turn match and training footage into measurable player-performance insights.',
+    svc4_f1: 'Player detection and tracking', svc4_f2: 'Movement and positioning analysis',
+    svc4_f3: 'Performance metrics from video', svc4_f4: 'Tactical and event analysis', svc4_f5: 'Custom coaching dashboards',
     projects_label: 'Our Work', projects_title: 'Real AI Projects. Real Results.',
     projects_desc: "A selection of AI systems we've built across computer vision, NLP, and embedded intelligence.",
-    proj1_title: 'AI Computer Vision Project',
-    proj1_desc: 'A deep-learning computer vision system capable of real-time object detection and scene understanding at scale.',
-    proj2_title: 'AI Computer Vision ADAS System',
+    proj1_title: 'Driver Monitoring & Driver Assistant',
+    proj1_desc: 'A computer vision system that monitors driver state and supports safer driving with intelligent, real-time assistance.',
+    proj2_title: 'ADAS System',
     proj2_desc: 'An Advanced Driver Assistance System powered by real-time computer vision for lane detection, obstacle awareness, and hazard alerts.',
-    proj3_title: 'AI RAG FastAPI System',
-    proj3_desc: 'A Retrieval-Augmented Generation system built on FastAPI, enabling LLMs to answer questions grounded in private knowledge bases.',
-    proj4_title: 'AI Computer Vision Embedded Systems',
-    proj4_desc: 'Computer vision running directly on embedded hardware at the edge — eliminating cloud dependency and delivering near-zero latency inference.',
+    proj3_title: 'Intelligent Requirements Chatbot',
+    proj3_desc: 'An intelligent chatbot that asks focused questions and organizes client requirements into actionable inputs.',
+    proj4_title: 'Smart Self-Driving Car',
+    proj4_desc: 'A graduation project built from scratch, combining embedded systems and computer vision for autonomous driving.',
     proj_view: 'View on LinkedIn →',
     vid_label: 'AI in Action', vid_title: 'Watch Our AI Systems Work',
     vid_desc: 'Real demos, real results. See how our AI agents perform in live environments across industries.',
-    fv_title: 'WhatsApp AI Support Agent — Live Demo',
-    fv_desc: 'Watch a fully autonomous AI agent handle 50+ customer inquiries simultaneously on WhatsApp — booking appointments, resolving issues, and escalating when needed. Zero human intervention required.',
-    fv_m1: 'customer satisfaction rate', fv_m2: 'faster response vs. human agents', fv_m3: 'zero-downtime operation',
+    fv_title: 'Driver Monitoring & Driver Assistant',
+    fv_desc: 'A real-time vision system designed to monitor driver state and provide intelligent assistance for safer driving.',
+    fv_m1: 'driver-state monitoring', fv_m2: 'vision-based assistance', fv_m3: 'focused system design',
     watch_btn: 'Watch Full Demo', watch_short: 'Watch',
     filter_all: 'All Videos', filter_support: 'AI Customer Support', filter_wa: 'WhatsApp Automation',
     filter_lead: 'Lead Generation', filter_cv: 'Computer Vision', filter_ent: 'Enterprise AI', filter_ecom: 'E-Commerce',
-    vc1_title: 'WhatsApp AI Support Agent',
-    vc1_desc: 'Autonomous agent handling 50+ simultaneous customer inquiries on WhatsApp with zero human intervention.',
-    vc2_title: 'AI Lead Qualification Bot',
-    vc2_desc: 'Automatically qualifies, scores, and routes inbound leads — syncing directly into your CRM with full context.',
-    vc3_title: 'ADAS Real-Time Vision System',
-    vc3_desc: 'Lane detection, obstacle awareness, and hazard alerts running at 30ms latency on embedded hardware.',
-    vc4_title: 'E-Commerce AI Shopping Agent',
-    vc4_desc: 'Personalized product recommendations and smart upselling embedded in chat, boosting average order value.',
+    vc1_title: 'Driver Monitoring & Driver Assistant',
+    vc1_desc: 'Real-time computer vision for driver-state monitoring and intelligent driving assistance.',
+    vc2_title: 'ADAS System',
+    vc2_desc: 'Vision-based lane detection, obstacle awareness, and intelligent hazard alerts.',
+    vc3_title: 'Intelligent Requirements Chatbot',
+    vc3_desc: 'A smart conversational system that discovers, clarifies, and structures client requirements.',
+    vc4_title: 'Smart Self-Driving Car',
+    vc4_desc: 'A graduation project built from scratch, combining embedded systems and computer vision.',
     vc5_title: 'RAG Knowledge Base System',
     vc5_desc: 'LLMs answering enterprise questions grounded in private documents — no hallucinations, full source citations.',
     vc6_title: 'Edge AI Embedded Vision',
@@ -2389,7 +2711,7 @@ const TRANSLATIONS = {
     demo_f2_title: 'Instant replies, always', demo_f2_sub: 'Zero wait time, zero dropped messages, zero frustration.',
     demo_f3_title: 'Qualified lead capture', demo_f3_sub: 'Collects name, company, and contact details automatically.',
     chat_online: 'Online now', chat_placeholder: 'Type a message…',
-    chat_greeting: '👋 Hello! I\'m the Agentix AI agent. Type <strong>"Hello"</strong> to get started.',
+    chat_greeting: 'Hi — I\'m Agentix AI. Tell me what you want to improve in your business, or just type <strong>"Hello"</strong>.',
     contact_label: 'Ready to Automate?', contact_title: 'Transform Your Business with AI Agents',
     contact_desc: "Send us a message on WhatsApp and let's build something intelligent together. We typically respond within minutes.",
     contact_wa_btn: 'Message Us on WhatsApp',
@@ -2436,33 +2758,37 @@ const TRANSLATIONS = {
     svc3_desc: 'أتمتة سير العمل من البداية إلى النهاية لإزالة المهام اليدوية المتكررة.',
     svc3_f1: 'أتمتة سير العمل الكاملة', svc3_f2: 'معالجة البيانات وتحليلها',
     svc3_f3: 'إنشاء التقارير تلقائياً', svc3_f4: 'تكاملات أدوات الأعمال', svc3_f5: 'خطوط أنابيب ذكاء اصطناعي مخصصة',
+    svc4_title: 'تحليل الأداء الرياضي',
+    svc4_desc: 'أنظمة رؤية حاسوبية تحوّل فيديوهات المباريات والتدريبات إلى مؤشرات واضحة لأداء اللاعبين.',
+    svc4_f1: 'اكتشاف وتتبع اللاعبين', svc4_f2: 'تحليل الحركة والتمركز',
+    svc4_f3: 'استخراج مؤشرات الأداء من الفيديو', svc4_f4: 'تحليل الأحداث والخطط', svc4_f5: 'لوحات متابعة مخصصة للمدربين',
     projects_label: 'أعمالنا', projects_title: 'مشاريع حقيقية. نتائج حقيقية.',
     projects_desc: 'مجموعة من أنظمة الذكاء الاصطناعي التي بنيناها في رؤية الحاسوب ومعالجة اللغة والأنظمة المدمجة.',
-    proj1_title: 'مشروع رؤية حاسوبية بالذكاء الاصطناعي',
-    proj1_desc: 'نظام رؤية حاسوبية بتعلم عميق قادر على اكتشاف الأجسام في الوقت الفعلي.',
-    proj2_title: 'نظام ADAS للرؤية الحاسوبية',
+    proj1_title: 'مراقبة السائق ومساعد القيادة',
+    proj1_desc: 'نظام رؤية حاسوبية يراقب حالة السائق ويقدم مساعدة ذكية لحظية لقيادة أكثر أماناً.',
+    proj2_title: 'نظام ADAS لمساعدة السائق',
     proj2_desc: 'نظام مساعدة السائق المتقدم مدعوم برؤية حاسوبية في الوقت الفعلي.',
-    proj3_title: 'نظام RAG مع FastAPI',
-    proj3_desc: 'نظام توليد معزز بالاسترجاع يمكّن نماذج اللغة من الإجابة بناءً على قواعد المعرفة الخاصة.',
-    proj4_title: 'رؤية حاسوبية في الأنظمة المدمجة',
-    proj4_desc: 'رؤية حاسوبية تعمل مباشرة على الأجهزة المدمجة مع كمون شبه صفري.',
+    proj3_title: 'شات بوت ذكي لجمع المتطلبات',
+    proj3_desc: 'شات بوت يفهم احتياج العميل، ويسأل أسئلة مركزة، وينظم المتطلبات في صورة قابلة للتنفيذ.',
+    proj4_title: 'سيارة ذكية ذاتية القيادة',
+    proj4_desc: 'مشروع تخرج تم بناؤه من الصفر، يجمع الأنظمة المدمجة والرؤية الحاسوبية للقيادة الذاتية.',
     proj_view: 'عرض على لينكدإن ←',
     vid_label: 'الذكاء الاصطناعي في العمل', vid_title: 'شاهد أنظمتنا تعمل',
     vid_desc: 'عروض توضيحية حقيقية ونتائج حقيقية. اكتشف كيف يعمل وكلاؤنا في بيئات حية.',
-    fv_title: 'وكيل دعم واتساب — عرض مباشر',
-    fv_desc: 'شاهد وكيل ذكاء اصطناعي مستقلاً يتعامل مع 50+ استفساراً للعملاء في نفس الوقت على واتساب.',
-    fv_m1: 'معدل رضا العملاء', fv_m2: 'أسرع من الوكلاء البشريين', fv_m3: 'تشغيل بدون توقف',
+    fv_title: 'مراقبة السائق ومساعد القيادة',
+    fv_desc: 'نظام رؤية حاسوبية لحظي لمراقبة حالة السائق وتقديم مساعدة ذكية لقيادة أكثر أماناً.',
+    fv_m1: 'مراقبة حالة السائق', fv_m2: 'مساعدة معتمدة على الرؤية', fv_m3: 'تصميم يركز على الأمان',
     watch_btn: 'مشاهدة العرض الكامل', watch_short: 'شاهد',
     filter_all: 'جميع الفيديوهات', filter_support: 'دعم العملاء', filter_wa: 'أتمتة واتساب',
     filter_lead: 'توليد العملاء', filter_cv: 'رؤية حاسوبية', filter_ent: 'ذكاء المؤسسات', filter_ecom: 'التجارة الإلكترونية',
-    vc1_title: 'وكيل دعم واتساب الذكي',
-    vc1_desc: 'وكيل مستقل يتعامل مع 50+ استفساراً في نفس الوقت بدون تدخل بشري.',
-    vc2_title: 'روبوت تأهيل العملاء المحتملين',
-    vc2_desc: 'يؤهل ويصنف ويوجه العملاء المحتملين ويزامنهم مع نظام CRM تلقائياً.',
-    vc3_title: 'نظام ADAS للرؤية في الوقت الفعلي',
-    vc3_desc: 'اكتشاف مسارات وعقبات وتحذيرات بكمون 30 مللي ثانية على أجهزة مدمجة.',
-    vc4_title: 'وكيل تسوق ذكي للتجارة الإلكترونية',
-    vc4_desc: 'توصيات منتجات مخصصة وبيع إضافي ذكي مدمج في الدردشة.',
+    vc1_title: 'مراقبة السائق ومساعد القيادة',
+    vc1_desc: 'رؤية حاسوبية لحظية لمراقبة حالة السائق وتقديم مساعدة ذكية.',
+    vc2_title: 'نظام ADAS لمساعدة السائق',
+    vc2_desc: 'اكتشاف المسارات والعقبات وإرسال تنبيهات ذكية للمخاطر.',
+    vc3_title: 'شات بوت ذكي لجمع المتطلبات',
+    vc3_desc: 'نظام محادثة يكتشف احتياج العميل ويوضحه وينظمه.',
+    vc4_title: 'سيارة ذكية ذاتية القيادة',
+    vc4_desc: 'مشروع تخرج مبني من الصفر يجمع الأنظمة المدمجة والرؤية الحاسوبية.',
     vc5_title: 'نظام قاعدة المعرفة RAG',
     vc5_desc: 'نماذج لغة تجيب على أسئلة المؤسسات بناءً على مستندات خاصة — بدون هلوسة.',
     vc6_title: 'رؤية حاسوبية مدمجة على الحافة',
@@ -2473,7 +2799,7 @@ const TRANSLATIONS = {
     demo_f2_title: 'ردود فورية دائماً', demo_f2_sub: 'صفر وقت انتظار، صفر رسائل ضائعة، صفر إحباط.',
     demo_f3_title: 'التقاط العملاء المحتملين', demo_f3_sub: 'يجمع الاسم والشركة وتفاصيل الاتصال تلقائياً.',
     chat_online: 'متصل الآن', chat_placeholder: 'اكتب رسالة…',
-    chat_greeting: '👋 مرحباً! أنا وكيل Agentix. اكتب <strong>"مرحبا"</strong> للبدء.',
+    chat_greeting: 'أهلاً بيك — أنا مساعد Agentix. قولي حابب تطور إيه في شغلك، أو اكتب <strong>"ابدأ"</strong> ونمشي سوا خطوة خطوة.',
     contact_label: 'مستعد للأتمتة؟', contact_title: 'حوّل شركتك بوكلاء الذكاء الاصطناعي',
     contact_desc: 'أرسل لنا رسالة على واتساب ولنبني شيئاً ذكياً معاً. نرد عادةً في غضون دقائق.',
     contact_wa_btn: 'راسلنا على واتساب',
@@ -2505,8 +2831,9 @@ function applyTranslations(lang) {
     if (t[key] !== undefined) el.placeholder = t[key];
   });
   // Lang switcher label
-  document.getElementById('lang-code-label').textContent = lang === 'en' ? 'EN' : 'ع';
-  document.getElementById('mobile-lang-label').textContent = lang === 'en' ? 'Switch to Arabic / العربية' : 'Switch to English';
+  document.getElementById('lang-code-label').textContent = lang === 'en' ? 'Language' : 'اللغة';
+  document.getElementById('mobile-lang-label').textContent = lang === 'en' ? 'Language' : 'اللغة';
+  document.getElementById('lang-switcher').setAttribute('aria-label', lang === 'en' ? 'Switch language' : 'تغيير اللغة');
   // Reset chatbot on lang switch
   resetChatbot(lang);
 }
@@ -2591,7 +2918,6 @@ function openMobileMenu() {
   hamburger.classList.add('open');
   hamburger.setAttribute('aria-expanded', 'true');
   menuOverlay.classList.add('active');
-  document.body.style.overflow = 'hidden';
 }
 
 function closeMobileMenu() {
@@ -2601,7 +2927,6 @@ function closeMobileMenu() {
   hamburger.classList.remove('open');
   hamburger.setAttribute('aria-expanded', 'false');
   menuOverlay.classList.remove('active');
-  document.body.style.overflow = '';
 }
 
 hamburger.addEventListener('click', (e) => {
@@ -2635,38 +2960,48 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 /* ----------------------------------------------------------
    VIDEO DATA
 ---------------------------------------------------------- */
+function projectIconSvg(iconId) {
+  const sceneClass = {
+    'icon-driver': 'scene-driver',
+    'icon-adas': 'scene-adas',
+    'icon-chat': 'scene-chat',
+    'icon-car': 'scene-car'
+  }[iconId] || 'scene-chat';
+  return `<div class="project-scene ${sceneClass}"><svg class="scene-art" viewBox="0 0 120 120" aria-hidden="true"><use href="#${iconId}"></use></svg></div>`;
+}
+
 const VIDEO_DATA = {
   'vid-1': {
-    title: 'WhatsApp AI Support Agent', category: 'AI Customer Support',
-    desc: 'A fully autonomous AI agent handling 50+ simultaneous customer inquiries on WhatsApp. Covers appointment booking, FAQ resolution, complaint handling, and smart escalation.',
-    duration: '2:47', tech: ['WhatsApp API', 'OpenAI GPT-4', 'LangChain', 'FastAPI', 'Python'],
-    metrics: [{ label: 'Customer satisfaction rate', value: '94%' }, { label: 'Response speed vs. human agents', value: '3× faster' }, { label: 'Ticket deflection rate', value: '78%' }, { label: 'Uptime availability', value: '24/7' }],
-    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-deeplearning-ugcPost-7450336307383554048-sBT2',
-    thumbBg: 'linear-gradient(135deg,#1a0832 0%,#4a1580 40%,#0d0120 100%)', thumbIcon: '🤖',
+    title: 'Driver Monitoring & Driver Assistant', category: 'Computer Vision · Automotive AI',
+    desc: 'A real-time computer vision system that monitors driver state and supports safer driving through intelligent assistance.',
+    duration: 'PROJECT 01', tech: ['Computer Vision', 'Deep Learning', 'Driver Monitoring', 'Python'],
+    metrics: [{ label: 'Driver-state monitoring', value: 'Real-time' }, { label: 'Vision-based assistance', value: 'CV' }, { label: 'System focus', value: 'Safety' }],
+    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-deeplearning-ugcPost-7450336307383554048-sBT2?utm_source=share&utm_medium=member_ios&rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU',
+    thumbBg: 'linear-gradient(135deg,#1a0832 0%,#4a1580 40%,#0d0120 100%)', thumbIcon: 'icon-driver',
   },
   'vid-2': {
-    title: 'AI Lead Qualification Bot', category: 'Lead Generation',
-    desc: 'Automatically qualifies, scores, and routes inbound leads based on custom criteria. Integrates with CRM platforms and syncs full conversation context.',
-    duration: '3:12', tech: ['n8n', 'OpenAI', 'CRM API', 'Webhook', 'Python'],
-    metrics: [{ label: 'Increase in qualified leads', value: '+340%' }, { label: 'Lead-to-close time reduction', value: '60% faster' }, { label: 'CRM data accuracy', value: '99.1%' }, { label: 'Hours saved per week', value: '22 hrs' }],
-    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-deeplearning-ugcPost-7450336307383554048-sBT2',
-    thumbBg: 'linear-gradient(135deg,#0a2a1a 0%,#1a6040 40%,#001408 100%)', thumbIcon: '🎯',
+    title: 'ADAS System', category: 'Advanced Driver Assistance',
+    desc: 'A vision-based driver assistance system for lane detection, obstacle awareness, and intelligent hazard alerts.',
+    duration: 'PROJECT 02', tech: ['OpenCV', 'Object Detection', 'Embedded AI', 'Python'],
+    metrics: [{ label: 'Lane detection', value: 'Vision' }, { label: 'Obstacle awareness', value: 'Real-time' }, { label: 'System focus', value: 'Road safety' }],
+    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-adas-ugcPost-7455307906163392512-opdL?utm_source=share&utm_medium=member_ios&rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU',
+    thumbBg: 'linear-gradient(135deg,#0a1a3e 0%,#0f3d6e 50%,#011420 100%)', thumbIcon: 'icon-adas',
   },
   'vid-3': {
-    title: 'ADAS Real-Time Vision System', category: 'Computer Vision',
-    desc: 'An Advanced Driver Assistance System built with real-time computer vision. Detects lanes, obstacles, and hazards at 30ms latency on edge hardware.',
-    duration: '4:05', tech: ['YOLOv8', 'OpenCV', 'TensorRT', 'Python', 'CUDA'],
-    metrics: [{ label: 'Object detection accuracy', value: '99.2%' }, { label: 'Inference latency', value: '30ms' }, { label: 'False positive rate', value: '< 0.4%' }, { label: 'Frames per second', value: '60 FPS' }],
-    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-adas-ugcPost-7455307906163392512-opdL',
-    thumbBg: 'linear-gradient(135deg,#0a1a3e 0%,#0f3d6e 50%,#011420 100%)', thumbIcon: '🚗',
+    title: 'Intelligent Requirements Chatbot', category: 'Enterprise AI · NLP',
+    desc: 'An intelligent chatbot that discovers business needs, asks focused follow-up questions, and structures client requirements.',
+    duration: 'PROJECT 03', tech: ['NLP', 'FastAPI', 'LLM', 'Requirements Analysis'],
+    metrics: [{ label: 'Requirement discovery', value: 'Guided' }, { label: 'Client intake', value: 'Structured' }, { label: 'Conversation design', value: 'Adaptive' }],
+    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-rag-fastapi-ugcPost-7461538370284879872-ZeeR?utm_medium=ios_app&rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU&utm_source=social_share_send&utm_campaign=whatsapp',
+    thumbBg: 'linear-gradient(135deg,#1a2a0a 0%,#3a6e0f 50%,#071400 100%)', thumbIcon: 'icon-chat',
   },
   'vid-4': {
-    title: 'E-Commerce AI Shopping Agent', category: 'E-Commerce Automation',
-    desc: 'A smart shopping assistant embedded in chat that delivers personalized product recommendations, handles objections, and auto-upsells.',
-    duration: '2:33', tech: ['RAG', 'GPT-4', 'Shopify API', 'LangChain', 'FastAPI'],
-    metrics: [{ label: 'Average order value increase', value: '+28%' }, { label: 'Cart abandonment reduction', value: '41% less' }, { label: 'Session duration increase', value: '+2.4 min' }, { label: 'Conversion rate lift', value: '+19%' }],
-    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-rag-fastapi-ugcPost-7461538370284879872-ZeeR',
-    thumbBg: 'linear-gradient(135deg,#2a1a0a 0%,#6e400f 50%,#140800 100%)', thumbIcon: '🛒',
+    title: 'Smart Self-Driving Car', category: 'Embedded AI · Autonomous Systems',
+    desc: 'A graduation project built from scratch: a smart car combining embedded systems and computer vision for autonomous driving.',
+    duration: 'PROJECT 04', tech: ['Embedded AI', 'Computer Vision', 'IoT', 'Autonomous Driving'],
+    metrics: [{ label: 'Project type', value: 'Graduation' }, { label: 'Development', value: 'From scratch' }, { label: 'Driving mode', value: 'Autonomous' }],
+    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-embeddedsystems-ugcPost-7466831647548706816-6F-6?utm_medium=ios_app&rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU&utm_source=social_share_send&utm_campaign=whatsapp',
+    thumbBg: 'linear-gradient(135deg,#2a0a1a 0%,#6e0f3a 50%,#140008 100%)', thumbIcon: 'icon-car',
   },
   'vid-5': {
     title: 'RAG Knowledge Base System', category: 'Enterprise AI',
@@ -2674,7 +3009,7 @@ const VIDEO_DATA = {
     duration: '5:18', tech: ['FastAPI', 'LangChain', 'Pinecone', 'OpenAI', 'Python'],
     metrics: [{ label: 'Answer accuracy', value: '99%' }, { label: 'Response time', value: '< 2 seconds' }, { label: 'Documents indexed', value: '10,000+' }, { label: 'Support ticket reduction', value: '65%' }],
     linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-rag-fastapi-ugcPost-7461538370284879872-ZeeR',
-    thumbBg: 'linear-gradient(135deg,#1a2a0a 0%,#3a6e0f 50%,#071400 100%)', thumbIcon: '📡',
+    thumbBg: 'linear-gradient(135deg,#1a2a0a 0%,#3a6e0f 50%,#071400 100%)', thumbIcon: 'icon-chat',
   },
   'vid-6': {
     title: 'Edge AI Embedded Vision', category: 'Embedded AI',
@@ -2682,7 +3017,7 @@ const VIDEO_DATA = {
     duration: '3:44', tech: ['TensorFlow Lite', 'ONNX', 'Raspberry Pi', 'OpenCV', 'C++'],
     metrics: [{ label: 'Inference latency', value: '< 5ms' }, { label: 'Cloud dependency', value: 'Zero' }, { label: 'Power consumption', value: '3W average' }, { label: 'Model size', value: '< 8MB' }],
     linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-embeddedsystems-ugcPost-7466831647548706816-6F-6',
-    thumbBg: 'linear-gradient(135deg,#2a0a1a 0%,#6e0f3a 50%,#140008 100%)', thumbIcon: '🔬',
+    thumbBg: 'linear-gradient(135deg,#2a0a1a 0%,#6e0f3a 50%,#140008 100%)', thumbIcon: 'icon-flow',
   }
 };
 
@@ -2711,7 +3046,7 @@ function openModalById(id) {
   player.style.cssText = `position:relative;width:100%;padding-top:56.25%;background:${data.thumbBg};overflow:hidden;`;
   player.innerHTML = `
     <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:1;padding:0 20px;">
-      <div style="font-size:4.5rem;filter:drop-shadow(0 0 28px rgba(139,61,255,0.8));">${data.thumbIcon}</div>
+      <div style="width:130px;height:130px;display:grid;place-items:center;filter:drop-shadow(0 0 28px rgba(139,61,255,0.8));">${projectIconSvg(data.thumbIcon)}</div>
       <div style="text-align:center;">
         <div style="font-size:1.05rem;font-weight:800;margin-bottom:8px;">${data.title}</div>
         <div style="font-size:0.83rem;color:#a89bc2;margin-bottom:18px;">Click below to watch the full project demo on LinkedIn</div>
@@ -2769,7 +3104,7 @@ document.querySelectorAll('.video-card').forEach(card => {
     const data = VIDEO_DATA[id];
     if (!data) return;
     document.getElementById('featured-bg').style.background = data.thumbBg;
-    document.getElementById('featured-icon').textContent = data.thumbIcon;
+    document.getElementById('featured-icon').innerHTML = projectIconSvg(data.thumbIcon);
     document.getElementById('featured-duration').textContent = data.duration;
     document.getElementById('featured-cat').textContent = '▶ ' + data.category;
     document.getElementById('featured-title').textContent = data.title;
@@ -2790,49 +3125,79 @@ let chatStep = 0;
 let chatData = {};
 let chatLang = 'en';
 
-const CHAT_FLOWS = {
-  en: [
-    {
-      trigger: /hello|hi|hey|start|مرحبا|مرحبً|اهلا/i,
-      response: "Welcome to Agentix! 🚀 I'm your AI business consultant. I'd love to show you how we can automate your operations.\n\nTo get started, what's your name?",
-      nextStep: 1,
-    },
-    { trigger: /.+/, collectKey: 'name', response: (v) => `Great to meet you, ${v}! 👋\n\nWhat company do you work for?`, nextStep: 2 },
-    { trigger: /.+/, collectKey: 'company', response: (v) => `${v} — exciting! 🏢\n\nWhat's the best phone number to reach you on?`, nextStep: 3 },
-    { trigger: /.+/, collectKey: 'phone', response: () => `Perfect. Last question — what type of business are you in? (e.g. e-commerce, healthcare, real estate…)`, nextStep: 4 },
-    { trigger: /.+/, collectKey: 'type', response: (v, d) => `Excellent! Here's what I've captured:\n\n👤 Name: ${d.name}\n🏢 Company: ${d.company}\n📞 Phone: ${d.phone}\n💼 Industry: ${v}\n\nAn AI specialist will be in touch soon. ✅\n\nWhatsApp: wa.me/201288694962`, nextStep: 99 },
-  ],
-  ar: [
-    {
-      trigger: /مرحبا|مرحبً|اهلا|hello|hi|hey|start/i,
-      response: "أهلاً وسهلاً بك في Agentix! 🚀 أنا مستشارك التجاري بالذكاء الاصطناعي.\n\nللبدء، ما اسمك الكريم؟",
-      nextStep: 1,
-    },
-    { trigger: /.+/, collectKey: 'name', response: (v) => `يسعدني التعرف عليك، ${v}! 👋\n\nما اسم شركتك؟`, nextStep: 2 },
-    { trigger: /.+/, collectKey: 'company', response: (v) => `${v} — رائع! 🏢\n\nما رقم هاتفك للتواصل؟`, nextStep: 3 },
-    { trigger: /.+/, collectKey: 'phone', response: () => `ممتاز. سؤال أخير — ما نوع نشاطك التجاري؟ (مثل: تجارة إلكترونية، رعاية صحية، عقارات…)`, nextStep: 4 },
-    { trigger: /.+/, collectKey: 'type', response: (v, d) => `رائع! إليك ما جمعته:\n\n👤 الاسم: ${d.name}\n🏢 الشركة: ${d.company}\n📞 الهاتف: ${d.phone}\n💼 المجال: ${v}\n\nسيتواصل معك أحد متخصصينا قريباً. ✅\n\nواتساب: wa.me/201288694962`, nextStep: 99 },
-  ]
+const CHAT_COPY = {
+  en: {
+    intro: "Welcome to Agentix Solutions. I'm here to understand what you need and suggest the right AI direction — no buzzword soup. What's your name?",
+    questions: [
+      "Nice to meet you, {name}. What's your company or project name? You can type 'skip' if you're still shaping the idea.",
+      "What is your role there? For example: founder, operations, marketing, engineering, or student.",
+      "Which industry are you in? For example: healthcare, retail, education, finance, manufacturing, logistics, automotive, sports, or real estate.",
+      "What is the main problem you want to solve? Give me the messy version — I'll help organize it.",
+      "Which direction feels closest: AI agent, chatbot, WhatsApp automation, computer vision, document processing, analytics, or full workflow automation?",
+      "Roughly what scale are we designing for — users, messages, documents, cameras, branches, or transactions per month?",
+      "When would you like the first working version: ASAP, within a month, 1–3 months, or still exploring?",
+      "Do you have a budget range in mind? You can say 'not set yet' — this only helps us recommend the right scope.",
+      "How do you prefer we contact you: WhatsApp, phone, or email?",
+      "Great. Share the phone number or email you'd like us to use."
+    ],
+    keys: ['name','company','role','industry','need','solution','scale','timeline','budget','contactMethod','contact'],
+    invalidName: "Let's use your real first name so the brief is useful. What should I call you?",
+    invalidContact: "That contact detail doesn't look complete yet. Please send a valid phone number or email, or type 'skip'.",
+    done: "Solid brief — you gave me enough to make the first conversation productive. Review the summary below, then send it to our team on WhatsApp.",
+    after: "Your brief is ready below. Use the WhatsApp button to send it, or type 'restart' to build a new one.",
+    send: 'Send brief on WhatsApp', restart: 'Starting fresh. What should I call you?'
+  },
+  ar: {
+    intro: 'أهلاً بيك في Agentix Solutions. أنا هنا أفهم احتياجك وأرشحلك اتجاه AI مناسب من غير كلام كبير وخلاص. نبدأ باسمك؟',
+    questions: [
+      'تشرفنا يا {name}. اسم الشركة أو المشروع إيه؟ ولو الفكرة لسه في أولها اكتب "تخطي" عادي.',
+      'ودورك إيه في الشركة؟ مثلاً: مؤسس، إدارة، تسويق، هندسة، أو طالب شغال على مشروع.',
+      'شغالين في مجال إيه؟ صحة، تجارة، تعليم، تمويل، تصنيع، لوجستيات، سيارات، رياضة، عقارات… ولا مجال تاني؟',
+      'إيه أكتر مشكلة عايز تحلها؟ احكيها زي ما هي حتى لو ملخبطة — أنا هرتبهالك.',
+      'أنهي اتجاه أقرب لاحتياجك: AI Agent، شات بوت، أتمتة واتساب، Computer Vision، معالجة مستندات، تحليل بيانات، ولا أتمتة Workflow كامل؟',
+      'الحجم المتوقع قد إيه تقريباً؟ عدد مستخدمين، رسايل، مستندات، كاميرات، فروع، أو معاملات في الشهر.',
+      'حابب أول نسخة شغالة تكون إمتى: في أسرع وقت، خلال شهر، من شهر لـ3 شهور، ولا لسه بتستكشف؟',
+      'في رينج ميزانية في دماغك؟ ينفع تقول "لسه محددتش" — السؤال بس عشان نرشح Scope واقعي.',
+      'تحب نتواصل معاك إزاي: واتساب، مكالمة، ولا إيميل؟',
+      'تمام يا بطل. ابعت رقم الموبايل أو الإيميل اللي تحب نتواصل عليه.'
+    ],
+    keys: ['name','company','role','industry','need','solution','scale','timeline','budget','contactMethod','contact'],
+    invalidName: 'خلينا نكتب اسم حقيقي عشان الملخص يطلع مظبوط. أحب أناديك بإيه؟',
+    invalidContact: 'بيانات التواصل شكلها ناقصة شوية. ابعت رقم صحيح أو إيميل، أو اكتب "تخطي".',
+    done: 'كده الكلام بقى تقيل ومفيد — عندي Brief محترم يخلي أول مكالمة تدخل في الموضوع على طول. راجع الملخص وابعتُه للفريق على واتساب.',
+    after: 'الـBrief جاهز تحت. ابعته من زر واتساب، أو اكتب "ابدأ من جديد" لو عايز نعمل واحد تاني.',
+    send: 'ابعت الملخص على واتساب', restart: 'حلو، نبدأ من الأول. أحب أناديك بإيه؟'
+  }
 };
+
+const CHAT_KNOWLEDGE = [
+  { test: /سعر|تكلف|ميزاني|price|cost|budget/i, en: 'Pricing depends on scope, integrations, data, and deployment. We can start with a focused MVP, then scale after proving value. I’ll collect your budget range later so we suggest something realistic.', ar: 'السعر بيتحدد حسب الـScope والتكاملات والداتا وطريقة التشغيل. نقدر نبدأ بـMVP مركز ونكبره بعد ما يثبت قيمته. هسألك عن الرينج بعد شوية عشان الترشيح يبقى واقعي.' },
+  { test: /رياض|لاعب|sport|player|football|كرة/i, en: 'Yes. We build computer-vision sports analytics for player tracking, movement, positioning, events, and performance dashboards from match or training video.', ar: 'أيوه، بنعمل تحليل أداء رياضي بالـComputer Vision: تتبع اللاعبين، الحركة والتمركز، أحداث المباراة، ومؤشرات أداء من فيديوهات الماتش أو التمرين.' },
+  { test: /واتساب|whatsapp/i, en: 'We build WhatsApp automation for support, lead qualification, booking, follow-ups, and workflow handoff. The right setup depends on conversation volume and the systems you already use.', ar: 'بنعمل أتمتة واتساب للدعم، تأهيل العملاء، الحجز، المتابعة، وربط المحادثة بالـWorkflow. التصميم الصح بيتحدد حسب حجم الرسايل والأنظمة اللي عندك.' },
+  { test: /computer vision|رؤية|كامير|object detection|face|ocr/i, en: 'Our computer-vision work includes detection and tracking, OCR, driver monitoring, ADAS, embedded vision, and sports-performance analysis.', ar: 'شغل الـComputer Vision عندنا يشمل اكتشاف وتتبع الأجسام، OCR، مراقبة السائق، ADAS، الرؤية على الأنظمة المدمجة، وتحليل الأداء الرياضي.' },
+  { test: /rag|مستند|document|knowledge|معرف/i, en: 'For private knowledge and documents, we can build RAG assistants, OCR pipelines, intelligent document processing, and cited answers grounded in your own data.', ar: 'للمستندات والمعرفة الداخلية نقدر نعمل RAG Assistant، وOCR، ومعالجة مستندات ذكية، وإجابات بمصادر مبنية على داتا الشركة.' },
+  { test: /خدمات|بتعمل|تعملوا|service|what do you do|capabilit/i, en: 'Agentix builds AI agents, voice AI, chatbots, WhatsApp automation, NLP/RAG, computer vision, predictive analytics, dashboards, workflow automation, API integration, and cloud AI deployment.', ar: 'Agentix بتبني AI Agents وVoice AI وشات بوت وأتمتة واتساب وNLP وRAG وComputer Vision وتحليلات تنبؤية وDashboards وأتمتة عمليات وربط APIs وتشغيل Cloud AI.' },
+  { test: /مشاريع|سابقة|portfolio|project|linkedin/i, en: 'Our showcased work includes driver monitoring and assistance, an ADAS system, an intelligent requirements chatbot, and a self-driving smart car built from scratch. You can open each project from the Projects or Videos section.', ar: 'المشاريع المعروضة تشمل مراقبة السائق ومساعد القيادة، نظام ADAS، شات بوت ذكي لجمع المتطلبات، وسيارة ذاتية القيادة مبنية من الصفر. تقدر تفتح كل مشروع من قسم المشاريع أو الفيديوهات.' },
+  { test: /أمان|خصوص|security|privacy/i, en: 'Security is designed around the use case: access control, data minimization, secure APIs, private knowledge boundaries, and deployment options that fit the business.', ar: 'الأمان بيتصمم حسب الحالة: صلاحيات وصول، تقليل الداتا، APIs مؤمنة، عزل معرفة الشركة، واختيار Deployment مناسب لطبيعة الشغل.' },
+  { test: /ignore|تعليماتك|prompt|system message|اكسر|اختراق/i, en: 'I can’t change my role or expose hidden instructions. I can help you scope a real Agentix solution or answer questions about our work.', ar: 'مش هغيّر دوري أو أعرض تعليمات داخلية. أقدر أساعدك تحدد حل حقيقي من Agentix أو أجاوبك عن شغلنا.' }
+];
 
 function resetChatbot(lang) {
   chatStep = 0; chatData = {}; chatLang = lang;
   const msgs = document.getElementById('chat-messages');
   msgs.innerHTML = '';
-  const greeting = TRANSLATIONS[lang].chat_greeting;
-  const el = document.createElement('div');
-  el.className = 'msg msg-bot';
-  el.innerHTML = greeting;
-  msgs.appendChild(el);
+  appendMsg(CHAT_COPY[lang].intro, 'bot');
 }
 
 function appendMsg(text, type) {
   const msgs = document.getElementById('chat-messages');
   const el = document.createElement('div');
   el.className = 'msg msg-' + type;
-  el.innerHTML = text.replace(/\n/g, '<br>');
+  el.textContent = text;
+  el.style.whiteSpace = 'pre-line';
   msgs.appendChild(el);
   msgs.scrollTop = msgs.scrollHeight;
+  return el;
 }
 
 function showTyping() {
@@ -2844,28 +3209,119 @@ function showTyping() {
 }
 function removeTyping() { const t = document.getElementById('chat-typing'); if (t) t.remove(); }
 
+function isSkip(value) {
+  return /^(skip|pass|not set|not sure|تخطي|مش عارف|مش محدد|لسه محددتش)$/i.test(value.trim());
+}
+
+function validName(value) {
+  return isSkip(value) || (value.trim().length >= 2 && value.trim().length <= 45 && !/\d{3,}/.test(value));
+}
+
+function validContact(value) {
+  if (isSkip(value)) return true;
+  const compact = value.replace(/[\s()-]/g, '');
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || /^\+?\d{8,15}$/.test(compact);
+}
+
+function getKnowledgeReply(value) {
+  const item = CHAT_KNOWLEDGE.find(entry => entry.test.test(value));
+  return item ? item[chatLang] : null;
+}
+
+function buildLeadSummary() {
+  const ar = chatLang === 'ar';
+  const labels = ar
+    ? { name:'الاسم', company:'الشركة/المشروع', role:'الدور', industry:'المجال', need:'المشكلة', solution:'الحل المطلوب', scale:'الحجم', timeline:'التوقيت', budget:'الميزانية', contactMethod:'طريقة التواصل', contact:'بيانات التواصل' }
+    : { name:'Name', company:'Company/Project', role:'Role', industry:'Industry', need:'Main challenge', solution:'Preferred solution', scale:'Scale', timeline:'Timeline', budget:'Budget', contactMethod:'Contact method', contact:'Contact details' };
+  const heading = ar ? 'ملخص احتياج عميل — Agentix Solutions' : 'Client Brief — Agentix Solutions';
+  return heading + '\n' + Object.entries(labels).map(([key,label]) => `${label}: ${chatData[key] || (ar ? 'غير محدد' : 'Not specified')}`).join('\n');
+}
+
+function appendLeadSummary() {
+  const summary = buildLeadSummary();
+  const el = appendMsg(summary, 'bot');
+  el.classList.add('lead-summary');
+  const link = document.createElement('a');
+  link.className = 'chat-lead-cta';
+  link.href = 'https://wa.me/201288694962?text=' + encodeURIComponent(summary);
+  link.target = '_blank';
+  link.rel = 'noopener';
+  link.textContent = CHAT_COPY[chatLang].send + ' →';
+  el.appendChild(document.createElement('br'));
+  el.appendChild(link);
+  try { localStorage.setItem('agentixLeadDraft', JSON.stringify({ ...chatData, createdAt: new Date().toISOString() })); } catch (_) {}
+}
+
+function replyLater(text, delay = 500, after) {
+  showTyping();
+  setTimeout(() => {
+    removeTyping();
+    appendMsg(text, 'bot');
+    if (after) after();
+  }, delay);
+}
+
 function handleChatInput() {
   const input = document.getElementById('chat-input');
   const val = input.value.trim();
   if (!val) return;
   appendMsg(val, 'user');
   input.value = '';
-  const flow = CHAT_FLOWS[chatLang] || CHAT_FLOWS.en;
+  const copy = CHAT_COPY[chatLang] || CHAT_COPY.en;
+
+  if (/^(restart|start over|ابدأ من جديد|إبدأ من جديد|من الأول)$/i.test(val)) {
+    chatStep = 0; chatData = {};
+    replyLater(copy.restart);
+    return;
+  }
+
+  if (chatStep === 0 && /^(hi|hello|hey|start|مرحبا|مرحباً|اهلا|أهلا|ابدأ|يلا)$/i.test(val)) {
+    replyLater(copy.intro);
+    return;
+  }
+
   if (chatStep === 99) {
-    showTyping();
-    setTimeout(() => { removeTyping(); appendMsg(chatLang === 'ar' ? 'تم تسجيل بياناتك بالفعل. سيتواصل فريقنا معك قريباً! 🙌' : "We've already captured your details. Our team will reach out soon! 🙌", 'bot'); }, 900);
+    const answer = getKnowledgeReply(val);
+    replyLater(answer || copy.after);
     return;
   }
-  const item = flow[chatStep];
-  if (chatStep === 0 && !item.trigger.test(val)) {
-    showTyping();
-    setTimeout(() => { removeTyping(); appendMsg(chatLang === 'ar' ? 'فقط اكتب <strong>"مرحبا"</strong> للبدء! 👋' : 'Just type <strong>"Hello"</strong> to kick things off! 👋', 'bot'); }, 700);
+
+  const knowledgeReply = getKnowledgeReply(val);
+  const looksLikeQuestion = /\?|؟|ايه|إيه|هل|how|what|can you|do you|tell me/i.test(val);
+  if (knowledgeReply && looksLikeQuestion) {
+    const reminder = chatStep === 0
+      ? (chatLang === 'ar' ? '\n\nونكمل الـBrief: أحب أناديك بإيه؟' : '\n\nTo continue your brief: what should I call you?')
+      : '\n\n' + copy.questions[chatStep - 1].replace('{name}', chatData.name || '');
+    replyLater(knowledgeReply + reminder, 550);
     return;
   }
-  if (item.collectKey) chatData[item.collectKey] = val;
-  const responseText = typeof item.response === 'function' ? item.response(val, chatData) : item.response;
-  showTyping();
-  setTimeout(() => { removeTyping(); appendMsg(responseText, 'bot'); chatStep = item.nextStep; }, 900 + Math.random() * 400);
+
+  if (chatStep === 0 && !validName(val)) {
+    replyLater(copy.invalidName);
+    return;
+  }
+  if (chatStep === 10 && !validContact(val)) {
+    replyLater(copy.invalidContact);
+    return;
+  }
+
+  const key = copy.keys[chatStep];
+  chatData[key] = isSkip(val) ? (chatLang === 'ar' ? 'غير محدد' : 'Not specified') : val;
+  chatStep += 1;
+
+  if (chatStep >= copy.keys.length) {
+    chatStep = 99;
+    showTyping();
+    setTimeout(() => {
+      removeTyping();
+      appendMsg(copy.done, 'bot');
+      appendLeadSummary();
+    }, 650);
+    return;
+  }
+
+  const nextQuestion = copy.questions[chatStep - 1].replace('{name}', chatData.name || '');
+  replyLater(nextQuestion, 450 + Math.random() * 250);
 }
 
 document.getElementById('chat-send').addEventListener('click', handleChatInput);
