@@ -843,6 +843,183 @@
     html[dir="rtl"] .card-glow { right: auto; left: -30px; }
 
     /* ============================================================
+       REAL PROJECTS & SOLUTIONS
+    ============================================================ */
+    #real-projects {
+      padding: 105px 0;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(139,61,255,0.16), transparent 34%),
+        linear-gradient(180deg, transparent, rgba(139,61,255,0.045) 48%, transparent);
+      overflow: hidden;
+    }
+    #real-projects::before {
+      content: '';
+      position: absolute;
+      inset: 10% -12% auto;
+      height: 360px;
+      background: radial-gradient(circle, rgba(191,95,255,0.18), transparent 68%);
+      filter: blur(38px);
+      pointer-events: none;
+      opacity: .8;
+    }
+    .real-projects-showcase {
+      position: relative;
+      border-radius: 28px;
+      padding: 12px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.13), rgba(139,61,255,0.08), rgba(94,234,212,0.06));
+      border: 1px solid rgba(192,132,252,0.28);
+      box-shadow: 0 30px 90px rgba(139,61,255,0.2), 0 0 85px rgba(191,95,255,0.13);
+      backdrop-filter: blur(20px);
+      margin-bottom: 30px;
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+    .real-projects-showcase::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.14) 35%, transparent 70%);
+      transform: translateX(-120%);
+      transition: transform .85s ease;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .real-projects-showcase:hover {
+      transform: translateY(-6px);
+      border-color: rgba(192,132,252,0.52);
+      box-shadow: 0 34px 110px rgba(139,61,255,0.28), 0 0 110px rgba(191,95,255,0.22);
+    }
+    .real-projects-showcase:hover::before { transform: translateX(120%); }
+    .real-projects-showcase img {
+      width: 100%;
+      height: auto;
+      border-radius: 22px;
+      object-fit: cover;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+      transition: transform .7s cubic-bezier(.2,.8,.2,1), filter .7s ease;
+    }
+    .real-projects-showcase:hover img {
+      transform: scale(1.015);
+      filter: saturate(1.08) contrast(1.04);
+    }
+    .real-feature-badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin: 30px auto 42px;
+      max-width: 980px;
+    }
+    .real-feature-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 15px;
+      border-radius: 50px;
+      border: 1px solid rgba(192,132,252,0.26);
+      background: rgba(18,10,40,0.64);
+      color: var(--purple-soft);
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: 0 10px 28px rgba(139,61,255,0.12);
+      backdrop-filter: blur(14px);
+      animation: badgeFadeUp .72s ease both;
+      animation-delay: var(--badge-delay, 0s);
+      transition: transform var(--transition), border-color var(--transition), background var(--transition), color var(--transition);
+    }
+    .real-feature-badge:hover {
+      transform: translateY(-3px);
+      border-color: rgba(192,132,252,0.58);
+      background: rgba(139,61,255,0.16);
+      color: var(--white);
+    }
+    .real-feature-badge .badge-check {
+      color: var(--cyan-trace);
+      filter: drop-shadow(0 0 8px rgba(94,234,212,.65));
+    }
+    @keyframes badgeFadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .real-projects-cta {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 34px;
+      border-radius: 24px;
+      border: 1px solid rgba(192,132,252,0.28);
+      background: linear-gradient(135deg, rgba(18,10,40,0.84), rgba(72,28,132,0.34));
+      box-shadow: 0 26px 80px rgba(139,61,255,0.18);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 24px;
+    }
+    .real-projects-cta::before {
+      content: '';
+      position: absolute;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(191,95,255,0.24), transparent 70%);
+      right: -90px; top: -120px;
+      filter: blur(18px);
+      pointer-events: none;
+    }
+    html[dir="rtl"] .real-projects-cta::before { right: auto; left: -90px; }
+    .real-projects-cta h3 {
+      position: relative;
+      font-size: clamp(1.35rem, 2vw, 2rem);
+      line-height: 1.15;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+    html[dir="rtl"] .real-projects-cta h3 { letter-spacing: 0; }
+    .real-projects-cta p {
+      position: relative;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.75;
+      max-width: 650px;
+    }
+    .real-projects-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 13px 24px;
+      border-radius: var(--radius-btn);
+      background: linear-gradient(135deg, var(--purple-core), var(--neon));
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.9rem;
+      box-shadow: 0 0 34px rgba(139,61,255,0.48);
+      transition: transform var(--transition), box-shadow var(--transition);
+      white-space: nowrap;
+    }
+    .real-projects-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 52px rgba(191,95,255,0.75);
+    }
+    @media (max-width: 768px) {
+      #real-projects { padding: 82px 0; }
+      .real-projects-showcase { border-radius: 22px; padding: 8px; }
+      .real-projects-showcase img { border-radius: 18px; }
+      .real-feature-badges { gap: 9px; margin: 24px auto 34px; }
+      .real-feature-badge { padding: 9px 12px; font-size: 0.76rem; }
+      .real-projects-cta {
+        grid-template-columns: 1fr;
+        padding: 26px 22px;
+        text-align: center;
+      }
+      .real-projects-cta p { margin: 0 auto; }
+      .real-projects-btn { width: 100%; white-space: normal; }
+    }
+
+    /* ============================================================
        PROJECTS / PORTFOLIO
     ============================================================ */
     #projects {
@@ -2175,6 +2352,45 @@
 </section>
 
 <!-- ============================================================
+     REAL PROJECTS & SOLUTIONS
+============================================================ -->
+<section id="real-projects">
+  <div class="container">
+    <div class="section-head centered reveal">
+      <div class="section-label" data-i18n="real_projects_label">Real Projects &amp; Solutions</div>
+      <div class="divider centered"></div>
+      <h2 class="section-title" data-i18n="real_projects_title">Real Projects. Real Impact.</h2>
+      <p class="section-desc" data-i18n="real_projects_desc">From AI Automation and Intelligent Systems to Smart Websites and Computer Vision, we build production-ready solutions for real businesses.</p>
+    </div>
+
+    <div class="real-projects-showcase reveal">
+      <img src="real.png" alt="Agentix real AI projects and production-ready solutions showcase" loading="lazy" />
+    </div>
+
+    <div class="real-feature-badges reveal" aria-label="Agentix project features">
+      <span class="real-feature-badge" style="--badge-delay:0.02s"><span class="badge-check">✓</span><span data-i18n="real_badge_1">AI Automation</span></span>
+      <span class="real-feature-badge" style="--badge-delay:0.07s"><span class="badge-check">✓</span><span data-i18n="real_badge_2">AI Agents</span></span>
+      <span class="real-feature-badge" style="--badge-delay:0.12s"><span class="badge-check">✓</span><span data-i18n="real_badge_3">Smart Websites</span></span>
+      <span class="real-feature-badge" style="--badge-delay:0.17s"><span class="badge-check">✓</span><span data-i18n="real_badge_4">Computer Vision</span></span>
+      <span class="real-feature-badge" style="--badge-delay:0.22s"><span class="badge-check">✓</span><span data-i18n="real_badge_5">NLP</span></span>
+      <span class="real-feature-badge" style="--badge-delay:0.27s"><span class="badge-check">✓</span><span data-i18n="real_badge_6">Chatbots</span></span>
+      <span class="real-feature-badge" style="--badge-delay:0.32s"><span class="badge-check">✓</span><span data-i18n="real_badge_7">WhatsApp Automation</span></span>
+      <span class="real-feature-badge" style="--badge-delay:0.37s"><span class="badge-check">✓</span><span data-i18n="real_badge_8">Voice AI</span></span>
+      <span class="real-feature-badge" style="--badge-delay:0.42s"><span class="badge-check">✓</span><span data-i18n="real_badge_9">Business Automation</span></span>
+      <span class="real-feature-badge" style="--badge-delay:0.47s"><span class="badge-check">✓</span><span data-i18n="real_badge_10">Intelligent Systems</span></span>
+    </div>
+
+    <div class="real-projects-cta reveal">
+      <div>
+        <h3 data-i18n="real_cta_title">Need a Custom AI Solution?</h3>
+        <p data-i18n="real_cta_text">We build intelligent websites, AI agents, automation systems, chatbots, computer vision applications, enterprise AI platforms, and custom software tailored to your business.</p>
+      </div>
+      <a href="#contact" class="real-projects-btn" data-i18n="real_cta_button">Let's Build Your Solution</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
      PROJECTS / PORTFOLIO
 ============================================================ -->
 <section id="projects">
@@ -2674,6 +2890,16 @@ const TRANSLATIONS = {
     svc4_desc: 'Computer vision systems that turn match and training footage into measurable player-performance insights.',
     svc4_f1: 'Player detection and tracking', svc4_f2: 'Movement and positioning analysis',
     svc4_f3: 'Performance metrics from video', svc4_f4: 'Tactical and event analysis', svc4_f5: 'Custom coaching dashboards',
+    real_projects_label: 'Real Projects & Solutions',
+    real_projects_title: 'Real Projects. Real Impact.',
+    real_projects_desc: 'From AI Automation and Intelligent Systems to Smart Websites and Computer Vision, we build production-ready solutions for real businesses.',
+    real_badge_1: 'AI Automation', real_badge_2: 'AI Agents', real_badge_3: 'Smart Websites',
+    real_badge_4: 'Computer Vision', real_badge_5: 'NLP', real_badge_6: 'Chatbots',
+    real_badge_7: 'WhatsApp Automation', real_badge_8: 'Voice AI', real_badge_9: 'Business Automation',
+    real_badge_10: 'Intelligent Systems',
+    real_cta_title: 'Need a Custom AI Solution?',
+    real_cta_text: 'We build intelligent websites, AI agents, automation systems, chatbots, computer vision applications, enterprise AI platforms, and custom software tailored to your business.',
+    real_cta_button: "Let's Build Your Solution",
     projects_label: 'Our Work', projects_title: 'Real AI Projects. Real Results.',
     projects_desc: "A selection of AI systems we've built across computer vision, NLP, and embedded intelligence.",
     proj1_title: 'Driver Monitoring & Driver Assistant',
@@ -2762,6 +2988,16 @@ const TRANSLATIONS = {
     svc4_desc: 'أنظمة رؤية حاسوبية تحوّل فيديوهات المباريات والتدريبات إلى مؤشرات واضحة لأداء اللاعبين.',
     svc4_f1: 'اكتشاف وتتبع اللاعبين', svc4_f2: 'تحليل الحركة والتمركز',
     svc4_f3: 'استخراج مؤشرات الأداء من الفيديو', svc4_f4: 'تحليل الأحداث والخطط', svc4_f5: 'لوحات متابعة مخصصة للمدربين',
+    real_projects_label: 'مشاريع وحلول حقيقية',
+    real_projects_title: 'مشاريع حقيقية. تأثير حقيقي.',
+    real_projects_desc: 'من أتمتة الذكاء الاصطناعي والأنظمة الذكية إلى المواقع الذكية ورؤية الحاسوب، نبني حلولا جاهزة للإنتاج لأعمال حقيقية.',
+    real_badge_1: 'أتمتة الذكاء الاصطناعي', real_badge_2: 'وكلاء ذكاء اصطناعي', real_badge_3: 'مواقع ذكية',
+    real_badge_4: 'رؤية حاسوبية', real_badge_5: 'معالجة اللغة', real_badge_6: 'شات بوت',
+    real_badge_7: 'أتمتة واتساب', real_badge_8: 'ذكاء صوتي', real_badge_9: 'أتمتة الأعمال',
+    real_badge_10: 'أنظمة ذكية',
+    real_cta_title: 'تحتاج حلا مخصصا بالذكاء الاصطناعي؟',
+    real_cta_text: 'نبني مواقع ذكية، ووكلاء ذكاء اصطناعي، وأنظمة أتمتة، وشات بوت، وتطبيقات رؤية حاسوبية، ومنصات ذكاء اصطناعي للمؤسسات، وبرمجيات مخصصة تناسب عملك.',
+    real_cta_button: 'لنبدأ بناء الحل الخاص بك',
     projects_label: 'أعمالنا', projects_title: 'مشاريع حقيقية. نتائج حقيقية.',
     projects_desc: 'مجموعة من أنظمة الذكاء الاصطناعي التي بنيناها في رؤية الحاسوب ومعالجة اللغة والأنظمة المدمجة.',
     proj1_title: 'مراقبة السائق ومساعد القيادة',
@@ -3127,7 +3363,7 @@ let chatLang = 'en';
 
 const CHAT_COPY = {
   en: {
-    intro: "Welcome to Agentix Solutions. I'm here to understand what you need and suggest the right AI direction — no buzzword soup. What's your name?",
+    intro: "Hi — I'm the Agentix AI consultant. Tell me what you want to build, or share your name and I'll guide you step by step.",
     questions: [
       "Nice to meet you, {name}. What's your company or project name? You can type 'skip' if you're still shaping the idea.",
       "What is your role there? For example: founder, operations, marketing, engineering, or student.",
@@ -3171,6 +3407,7 @@ const CHAT_COPY = {
 };
 
 const CHAT_KNOWLEDGE = [
+  { test: /chat ?bot|ai agent|voice agent|virtual assistant|مساعد ذكي|شات ?بوت|وكيل/i, en: 'Great direction. We build custom AI chatbots and agents that understand business context, answer customers, qualify leads, collect requirements, book appointments, and hand conversations to your team when needed.', ar: 'اختيار ممتاز. بنبني شات بوت وAI Agents مخصصين يفهموا سياق الشغل، يردوا على العملاء، يأهلوا الـLeads، يجمعوا المتطلبات، يحجزوا مواعيد، ويحوّلوا المحادثة للفريق وقت الحاجة.' },
   { test: /سعر|تكلف|ميزاني|price|cost|budget/i, en: 'Pricing depends on scope, integrations, data, and deployment. We can start with a focused MVP, then scale after proving value. I’ll collect your budget range later so we suggest something realistic.', ar: 'السعر بيتحدد حسب الـScope والتكاملات والداتا وطريقة التشغيل. نقدر نبدأ بـMVP مركز ونكبره بعد ما يثبت قيمته. هسألك عن الرينج بعد شوية عشان الترشيح يبقى واقعي.' },
   { test: /رياض|لاعب|sport|player|football|كرة/i, en: 'Yes. We build computer-vision sports analytics for player tracking, movement, positioning, events, and performance dashboards from match or training video.', ar: 'أيوه، بنعمل تحليل أداء رياضي بالـComputer Vision: تتبع اللاعبين، الحركة والتمركز، أحداث المباراة، ومؤشرات أداء من فيديوهات الماتش أو التمرين.' },
   { test: /واتساب|whatsapp/i, en: 'We build WhatsApp automation for support, lead qualification, booking, follow-ups, and workflow handoff. The right setup depends on conversation volume and the systems you already use.', ar: 'بنعمل أتمتة واتساب للدعم، تأهيل العملاء، الحجز، المتابعة، وربط المحادثة بالـWorkflow. التصميم الصح بيتحدد حسب حجم الرسايل والأنظمة اللي عندك.' },
@@ -3214,7 +3451,8 @@ function isSkip(value) {
 }
 
 function validName(value) {
-  return isSkip(value) || (value.trim().length >= 2 && value.trim().length <= 45 && !/\d{3,}/.test(value));
+  const notAName = /chat ?bot|ai agent|voice agent|whatsapp|computer vision|automation|website|app|system|service|project|sports?|healthcare|retail|finance|education|شات|بوت|واتساب|رؤية|أتمتة|موقع|تطبيق|خدمة|مشروع|رياض/i;
+  return isSkip(value) || (value.trim().length >= 2 && value.trim().length <= 45 && !/\d{3,}/.test(value) && !notAName.test(value));
 }
 
 function validContact(value) {
@@ -3288,7 +3526,7 @@ function handleChatInput() {
 
   const knowledgeReply = getKnowledgeReply(val);
   const looksLikeQuestion = /\?|؟|ايه|إيه|هل|how|what|can you|do you|tell me/i.test(val);
-  if (knowledgeReply && looksLikeQuestion) {
+  if (knowledgeReply && (looksLikeQuestion || chatStep === 0)) {
     const reminder = chatStep === 0
       ? (chatLang === 'ar' ? '\n\nونكمل الـBrief: أحب أناديك بإيه؟' : '\n\nTo continue your brief: what should I call you?')
       : '\n\n' + copy.questions[chatStep - 1].replace('{name}', chatData.name || '');
