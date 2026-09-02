@@ -1380,7 +1380,7 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 22px;
     }
-    .video-card[data-id="vid-5"], .video-card[data-id="vid-6"] { display: none; }
+    .video-card[data-id="vid-6"] { display: none; }
     @media (max-width: 900px) { .video-gallery-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 560px) { .video-gallery-grid { grid-template-columns: 1fr; } }
 
@@ -1403,6 +1403,40 @@
     .vc-thumb { position: relative; height: 175px; overflow: hidden; }
     .vc-thumb-bg { position: absolute; inset: 0; transition: transform 0.5s ease; }
     .video-card:hover .vc-thumb-bg { transform: scale(1.06); }
+    .vc-thumb-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.5s ease, filter 0.5s ease;
+      filter: saturate(0.94) contrast(1.04);
+    }
+    .vc-thumb-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #08040f;
+      transition: transform 0.5s ease, filter 0.5s ease;
+      filter: saturate(0.9) contrast(1.06) brightness(0.82);
+    }
+    .video-card:hover .vc-thumb-video {
+      transform: scale(1.04);
+      filter: saturate(1.08) contrast(1.06) brightness(0.95);
+    }
+    .video-card:hover .vc-thumb-image {
+      transform: scale(1.06);
+      filter: saturate(1.08) contrast(1.06);
+    }
+    .image-project-card { cursor: default; }
+    .image-project-card .vc-thumb-overlay {
+      background: linear-gradient(180deg, rgba(42,10,78,0.08) 0%, rgba(27,6,54,0.7) 100%);
+      box-shadow: inset 0 0 42px rgba(139,61,255,0.18);
+    }
+    .image-project-card:hover .vc-thumb-overlay {
+      background: linear-gradient(180deg, rgba(42,10,78,0.02) 0%, rgba(27,6,54,0.52) 100%);
+    }
     .vc-thumb-icon {
       position: absolute;
       inset: 0;
@@ -1597,6 +1631,7 @@
     .vm-close-btn:hover { background: rgba(139,61,255,0.2); border-color: var(--purple-glow); color: var(--white); }
     .vm-player-wrap { position: relative; width: 100%; background: #000; min-height: 180px; }
     .vm-player-wrap iframe, .vm-player-wrap video { width: 100%; display: block; border: none; }
+    .vm-demo-player { width: 100%; max-height: 56vh; aspect-ratio: 16 / 9; background: #000; object-fit: contain; }
     .vm-loader {
       position: absolute;
       inset: 0;
@@ -1642,6 +1677,21 @@
       transition: all var(--transition);
     }
     .vm-wa-btn:hover { box-shadow: 0 0 28px rgba(37,211,102,0.55); transform: translateY(-1px); }
+    .vm-nav-row { display: flex; justify-content: space-between; gap: 12px; padding: 0 26px 22px; }
+    .vm-nav-btn {
+      border: 1px solid var(--border); background: var(--glass); color: var(--white);
+      padding: 9px 16px; border-radius: 50px; cursor: pointer; font: inherit;
+      font-size: 0.78rem; font-weight: 700; transition: all var(--transition);
+    }
+    .vm-nav-btn:hover { border-color: var(--purple-mid); background: rgba(139,61,255,0.18); box-shadow: 0 0 18px rgba(139,61,255,0.22); }
+    @media (max-width: 600px) {
+      #video-modal { padding: 8px; }
+      .vm-container { max-height: 96vh; border-radius: 17px; }
+      .vm-top-bar { padding: 12px 14px; }
+      .vm-cat-pill { display: none; }
+      .vm-demo-player { max-height: 42vh; }
+      .vm-nav-row { padding: 0 18px 18px; }
+    }
 
     /* ============================================================
        CHATBOT DEMO
@@ -2525,8 +2575,7 @@
     <div class="video-gallery-grid" id="video-gallery">
       <div class="video-card reveal" data-id="vid-1" data-category="computer-vision" onclick="openModalById('vid-1')">
         <div class="vc-thumb">
-          <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#1a0832 0%,#4a1580 40%,#0d0120 100%);"></div>
-          <div class="vc-thumb-icon"><div class="project-scene scene-driver"><svg class="scene-art"><use href="#icon-driver"/></svg></div></div>
+          <video class="vc-thumb-video" src="./driver%20monitor.mp4" preload="metadata" muted playsinline aria-label="Driver Monitoring project preview"></video>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
           <div class="vc-category">Automotive AI</div>
@@ -2546,8 +2595,7 @@
 
       <div class="video-card reveal" data-id="vid-2" data-category="computer-vision" onclick="openModalById('vid-2')">
         <div class="vc-thumb">
-          <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#0a2a1a 0%,#1a6040 40%,#001408 100%);"></div>
-          <div class="vc-thumb-icon"><div class="project-scene scene-adas"><svg class="scene-art"><use href="#icon-adas"/></svg></div></div>
+          <video class="vc-thumb-video" src="./adas.mp4" preload="metadata" muted playsinline aria-label="ADAS project preview"></video>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
           <div class="vc-category">Advanced Driver Assistance</div>
@@ -2567,8 +2615,7 @@
 
       <div class="video-card reveal" data-id="vid-3" data-category="enterprise" onclick="openModalById('vid-3')">
         <div class="vc-thumb">
-          <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#0a1a3e 0%,#0f3d6e 50%,#011420 100%);"></div>
-          <div class="vc-thumb-icon"><div class="project-scene scene-chat"><svg class="scene-art"><use href="#icon-chat"/></svg></div></div>
+          <video class="vc-thumb-video" src="./ai%20assistant%20.mp4" preload="metadata" muted playsinline aria-label="AI Requirements Assistant project preview"></video>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
           <div class="vc-category">Computer Vision</div>
@@ -2588,43 +2635,60 @@
 
       <div class="video-card reveal" data-id="vid-4" data-category="computer-vision enterprise" onclick="openModalById('vid-4')">
         <div class="vc-thumb">
-          <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#2a1a0a 0%,#6e400f 50%,#140800 100%);"></div>
-          <div class="vc-thumb-icon"><div class="project-scene scene-car"><svg class="scene-art"><use href="#icon-car"/></svg></div></div>
+          <video class="vc-thumb-video" src="./goalkeeper.mp4" preload="metadata" muted playsinline aria-label="Goalkeeper Performance Analysis project preview"></video>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
-          <div class="vc-category">Self-Driving Car</div>
+          <div class="vc-category">Sports Computer Vision</div>
           <div class="vc-duration">PROJECT 04</div>
           <div class="vc-hover-info">
-            <div class="vc-hover-title">Smart Car Built From Scratch</div>
-            <div class="vc-hover-metrics"><span class="vc-hover-metric">Graduation project</span><span class="vc-hover-metric">Autonomous driving</span></div>
+            <div class="vc-hover-title">Goalkeeper Performance Analysis</div>
+            <div class="vc-hover-metrics"><span class="vc-hover-metric">Player tracking</span><span class="vc-hover-metric">Performance insights</span></div>
           </div>
         </div>
         <div class="vc-body">
-          <h3 data-i18n="vc4_title">Smart Self-Driving Car</h3>
-          <p data-i18n="vc4_desc">A graduation project built from scratch, combining embedded systems and computer vision.</p>
-          <div class="vc-tech-row"><span class="vc-tech-tag">Embedded AI</span><span class="vc-tech-tag">Computer Vision</span><span class="vc-tech-tag">IoT</span></div>
-          <div class="vc-footer"><span class="vc-impact">Built From Scratch</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
+          <h3 data-i18n="vc4_title">Goalkeeper Performance Analysis</h3>
+          <p data-i18n="vc4_desc">Computer vision analysis that turns match footage into measurable goalkeeper performance insights.</p>
+          <div class="vc-tech-row"><span class="vc-tech-tag">Computer Vision</span><span class="vc-tech-tag">Player Tracking</span><span class="vc-tech-tag">Sports AI</span></div>
+          <div class="vc-footer"><span class="vc-impact">Sports Performance AI</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
+        </div>
+      </div>
+
+      <div class="video-card image-project-card reveal" data-category="computer-vision" aria-label="Smart Car automotive project image">
+        <div class="vc-thumb">
+          <img class="vc-thumb-image" src="./smartcar.jpeg" alt="Smart Car automotive project developed by Agentix" loading="lazy" decoding="async"/>
+          <div class="vc-thumb-overlay"></div>
+          <div class="vc-category" data-i18n="smartcar_category">Automotive AI</div>
+          <div class="vc-duration" data-i18n="project_image_label">PROJECT IMAGE</div>
+          <div class="vc-hover-info">
+            <div class="vc-hover-title" data-i18n="proj4_title">Smart Self-Driving Car</div>
+            <div class="vc-hover-metrics"><span class="vc-hover-metric">Computer Vision</span><span class="vc-hover-metric">Automotive AI</span></div>
+          </div>
+        </div>
+        <div class="vc-body">
+          <h3 data-i18n="proj4_title">Smart Self-Driving Car</h3>
+          <p data-i18n="proj4_desc">A graduation project built from scratch, combining embedded systems and computer vision.</p>
+          <div class="vc-tech-row"><span class="vc-tech-tag">Embedded AI</span><span class="vc-tech-tag">Computer Vision</span><span class="vc-tech-tag">Automotive</span></div>
+          <div class="vc-footer"><span class="vc-impact" data-i18n="built_from_scratch">Built From Scratch</span><span class="vc-watch-btn" data-i18n="project_image_label">Project Image</span></div>
         </div>
       </div>
 
       <div class="video-card reveal" data-id="vid-5" data-category="enterprise" onclick="openModalById('vid-5')">
         <div class="vc-thumb">
-          <div class="vc-thumb-bg" style="background:linear-gradient(135deg,#1a2a0a 0%,#3a6e0f 50%,#071400 100%);"></div>
-          <div class="vc-thumb-icon">📡</div>
+          <video class="vc-thumb-video" src="./website.mp4" preload="metadata" muted playsinline aria-label="Smart Website project preview"></video>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
-          <div class="vc-category">Enterprise AI</div>
-          <div class="vc-duration">5:18</div>
+          <div class="vc-category">Smart Website</div>
+          <div class="vc-duration">PROJECT 05</div>
           <div class="vc-hover-info">
-            <div class="vc-hover-title">RAG Knowledge Base System</div>
-            <div class="vc-hover-metrics"><span class="vc-hover-metric">99% accuracy</span><span class="vc-hover-metric">Instant answers</span></div>
+            <div class="vc-hover-title">Intelligent Business Website</div>
+            <div class="vc-hover-metrics"><span class="vc-hover-metric">Responsive UX</span><span class="vc-hover-metric">AI-ready</span></div>
           </div>
         </div>
         <div class="vc-body">
-          <h3 data-i18n="vc5_title">RAG Knowledge Base System</h3>
-          <p data-i18n="vc5_desc">LLMs answering enterprise questions grounded in private documents — no hallucinations, full source citations.</p>
-          <div class="vc-tech-row"><span class="vc-tech-tag">FastAPI</span><span class="vc-tech-tag">LangChain</span><span class="vc-tech-tag">Pinecone</span></div>
-          <div class="vc-footer"><span class="vc-impact">99% answer accuracy</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
+          <h3 data-i18n="vc5_title">Smart Website</h3>
+          <p data-i18n="vc5_desc">A modern intelligent website built for a polished user experience, responsive performance, and business growth.</p>
+          <div class="vc-tech-row"><span class="vc-tech-tag">Smart Web</span><span class="vc-tech-tag">Responsive UI</span><span class="vc-tech-tag">Automation</span></div>
+          <div class="vc-footer"><span class="vc-impact">Intelligent Web Experience</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
         </div>
       </div>
 
@@ -2839,6 +2903,10 @@
         <div class="vm-metrics-list" id="vm-metrics-list"></div>
       </div>
     </div>
+    <div class="vm-nav-row">
+      <button class="vm-nav-btn" id="vm-prev" type="button" data-i18n="modal_prev">← Previous project</button>
+      <button class="vm-nav-btn" id="vm-next" type="button" data-i18n="modal_next">Next project →</button>
+    </div>
   </div>
 </div>
 
@@ -2917,6 +2985,7 @@ const TRANSLATIONS = {
     fv_desc: 'A real-time vision system designed to monitor driver state and provide intelligent assistance for safer driving.',
     fv_m1: 'driver-state monitoring', fv_m2: 'vision-based assistance', fv_m3: 'focused system design',
     watch_btn: 'Watch Full Demo', watch_short: 'Watch',
+    smartcar_category: 'Automotive AI', project_image_label: 'Project Image', built_from_scratch: 'Built From Scratch',
     filter_all: 'All Videos', filter_support: 'AI Customer Support', filter_wa: 'WhatsApp Automation',
     filter_lead: 'Lead Generation', filter_cv: 'Computer Vision', filter_ent: 'Enterprise AI', filter_ecom: 'E-Commerce',
     vc1_title: 'Driver Monitoring & Driver Assistant',
@@ -2925,10 +2994,10 @@ const TRANSLATIONS = {
     vc2_desc: 'Vision-based lane detection, obstacle awareness, and intelligent hazard alerts.',
     vc3_title: 'Intelligent Requirements Chatbot',
     vc3_desc: 'A smart conversational system that discovers, clarifies, and structures client requirements.',
-    vc4_title: 'Smart Self-Driving Car',
-    vc4_desc: 'A graduation project built from scratch, combining embedded systems and computer vision.',
-    vc5_title: 'RAG Knowledge Base System',
-    vc5_desc: 'LLMs answering enterprise questions grounded in private documents — no hallucinations, full source citations.',
+    vc4_title: 'Goalkeeper Performance Analysis',
+    vc4_desc: 'Computer vision analysis that turns match footage into measurable goalkeeper performance insights.',
+    vc5_title: 'Smart Website',
+    vc5_desc: 'A modern intelligent website built for responsive performance, polished user experience, and business growth.',
     vc6_title: 'Edge AI Embedded Vision',
     vc6_desc: 'Computer vision inference running entirely on embedded hardware — no cloud, no latency, no privacy risk.',
     demo_label: 'Try It Now', demo_title: 'Talk to Our AI Agent',
@@ -2947,6 +3016,7 @@ const TRANSLATIONS = {
     footer_rights: 'All rights reserved.',
     footer_credit: 'Built by Abdelrahman Elsherif · Powered by Imagination',
     modal_about: 'About this project', modal_results: 'Results achieved', modal_cta: 'Get This Built',
+    modal_prev: '← Previous project', modal_next: 'Next project →',
   },
   ar: {
     nav_about: 'من نحن', nav_services: 'خدماتنا', nav_projects: 'مشاريعنا',
@@ -3015,6 +3085,7 @@ const TRANSLATIONS = {
     fv_desc: 'نظام رؤية حاسوبية لحظي لمراقبة حالة السائق وتقديم مساعدة ذكية لقيادة أكثر أماناً.',
     fv_m1: 'مراقبة حالة السائق', fv_m2: 'مساعدة معتمدة على الرؤية', fv_m3: 'تصميم يركز على الأمان',
     watch_btn: 'مشاهدة العرض الكامل', watch_short: 'شاهد',
+    smartcar_category: 'ذكاء اصطناعي للسيارات', project_image_label: 'صورة المشروع', built_from_scratch: 'مبني من الصفر',
     filter_all: 'جميع الفيديوهات', filter_support: 'دعم العملاء', filter_wa: 'أتمتة واتساب',
     filter_lead: 'توليد العملاء', filter_cv: 'رؤية حاسوبية', filter_ent: 'ذكاء المؤسسات', filter_ecom: 'التجارة الإلكترونية',
     vc1_title: 'مراقبة السائق ومساعد القيادة',
@@ -3023,10 +3094,10 @@ const TRANSLATIONS = {
     vc2_desc: 'اكتشاف المسارات والعقبات وإرسال تنبيهات ذكية للمخاطر.',
     vc3_title: 'شات بوت ذكي لجمع المتطلبات',
     vc3_desc: 'نظام محادثة يكتشف احتياج العميل ويوضحه وينظمه.',
-    vc4_title: 'سيارة ذكية ذاتية القيادة',
-    vc4_desc: 'مشروع تخرج مبني من الصفر يجمع الأنظمة المدمجة والرؤية الحاسوبية.',
-    vc5_title: 'نظام قاعدة المعرفة RAG',
-    vc5_desc: 'نماذج لغة تجيب على أسئلة المؤسسات بناءً على مستندات خاصة — بدون هلوسة.',
+    vc4_title: 'تحليل أداء حارس المرمى',
+    vc4_desc: 'تحليل بالرؤية الحاسوبية يحول لقطات المباريات إلى مؤشرات قابلة للقياس لأداء حارس المرمى.',
+    vc5_title: 'موقع ذكي',
+    vc5_desc: 'موقع حديث وذكي مصمم لتجربة مستخدم احترافية وأداء متجاوب ودعم نمو الأعمال.',
     vc6_title: 'رؤية حاسوبية مدمجة على الحافة',
     vc6_desc: 'استنتاج رؤية حاسوبية يعمل كلياً على أجهزة مدمجة — بدون سحابة وبكمون أقل من 5 مللي ثانية.',
     demo_label: 'جربها الآن', demo_title: 'تحدث مع وكيلنا الذكي',
@@ -3045,6 +3116,7 @@ const TRANSLATIONS = {
     footer_rights: 'جميع الحقوق محفوظة.',
     footer_credit: 'بناء عبدالرحمن الشريف · بقوة الخيال',
     modal_about: 'عن هذا المشروع', modal_results: 'النتائج المحققة', modal_cta: 'ابنِ هذا لشركتك',
+    modal_prev: 'المشروع السابق →', modal_next: '← المشروع التالي',
   }
 };
 
@@ -3154,6 +3226,7 @@ function openMobileMenu() {
   hamburger.classList.add('open');
   hamburger.setAttribute('aria-expanded', 'true');
   menuOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
 function closeMobileMenu() {
@@ -3163,6 +3236,7 @@ function closeMobileMenu() {
   hamburger.classList.remove('open');
   hamburger.setAttribute('aria-expanded', 'false');
   menuOverlay.classList.remove('active');
+  if (!document.getElementById('video-modal').classList.contains('open')) document.body.style.overflow = '';
 }
 
 hamburger.addEventListener('click', (e) => {
@@ -3212,7 +3286,7 @@ const VIDEO_DATA = {
     desc: 'A real-time computer vision system that monitors driver state and supports safer driving through intelligent assistance.',
     duration: 'PROJECT 01', tech: ['Computer Vision', 'Deep Learning', 'Driver Monitoring', 'Python'],
     metrics: [{ label: 'Driver-state monitoring', value: 'Real-time' }, { label: 'Vision-based assistance', value: 'CV' }, { label: 'System focus', value: 'Safety' }],
-    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-deeplearning-ugcPost-7450336307383554048-sBT2?utm_source=share&utm_medium=member_ios&rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU',
+    videoSrc: './driver%20monitor.mp4',
     thumbBg: 'linear-gradient(135deg,#1a0832 0%,#4a1580 40%,#0d0120 100%)', thumbIcon: 'icon-driver',
   },
   'vid-2': {
@@ -3220,7 +3294,7 @@ const VIDEO_DATA = {
     desc: 'A vision-based driver assistance system for lane detection, obstacle awareness, and intelligent hazard alerts.',
     duration: 'PROJECT 02', tech: ['OpenCV', 'Object Detection', 'Embedded AI', 'Python'],
     metrics: [{ label: 'Lane detection', value: 'Vision' }, { label: 'Obstacle awareness', value: 'Real-time' }, { label: 'System focus', value: 'Road safety' }],
-    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-adas-ugcPost-7455307906163392512-opdL?utm_source=share&utm_medium=member_ios&rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU',
+    videoSrc: './adas.mp4',
     thumbBg: 'linear-gradient(135deg,#0a1a3e 0%,#0f3d6e 50%,#011420 100%)', thumbIcon: 'icon-adas',
   },
   'vid-3': {
@@ -3228,31 +3302,30 @@ const VIDEO_DATA = {
     desc: 'An intelligent chatbot that discovers business needs, asks focused follow-up questions, and structures client requirements.',
     duration: 'PROJECT 03', tech: ['NLP', 'FastAPI', 'LLM', 'Requirements Analysis'],
     metrics: [{ label: 'Requirement discovery', value: 'Guided' }, { label: 'Client intake', value: 'Structured' }, { label: 'Conversation design', value: 'Adaptive' }],
-    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-rag-fastapi-ugcPost-7461538370284879872-ZeeR?utm_medium=ios_app&rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU&utm_source=social_share_send&utm_campaign=whatsapp',
+    videoSrc: './ai%20assistant%20.mp4',
     thumbBg: 'linear-gradient(135deg,#1a2a0a 0%,#3a6e0f 50%,#071400 100%)', thumbIcon: 'icon-chat',
   },
   'vid-4': {
-    title: 'Smart Self-Driving Car', category: 'Embedded AI · Autonomous Systems',
-    desc: 'A graduation project built from scratch: a smart car combining embedded systems and computer vision for autonomous driving.',
-    duration: 'PROJECT 04', tech: ['Embedded AI', 'Computer Vision', 'IoT', 'Autonomous Driving'],
-    metrics: [{ label: 'Project type', value: 'Graduation' }, { label: 'Development', value: 'From scratch' }, { label: 'Driving mode', value: 'Autonomous' }],
-    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-embeddedsystems-ugcPost-7466831647548706816-6F-6?utm_medium=ios_app&rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU&utm_source=social_share_send&utm_campaign=whatsapp',
-    thumbBg: 'linear-gradient(135deg,#2a0a1a 0%,#6e0f3a 50%,#140008 100%)', thumbIcon: 'icon-car',
+    title: 'Goalkeeper Performance Analysis', category: 'Computer Vision · Sports AI',
+    desc: 'Computer vision analysis that turns match footage into measurable goalkeeper performance insights.',
+    duration: 'PROJECT 04', tech: ['Computer Vision', 'Player Tracking', 'Sports Analytics', 'Python'],
+    metrics: [{ label: 'Performance analysis', value: 'Video-based' }, { label: 'Player focus', value: 'Goalkeeper' }, { label: 'Insights', value: 'Measurable' }],
+    videoSrc: './goalkeeper.mp4',
+    thumbBg: 'linear-gradient(135deg,#2a1a0a 0%,#6e400f 50%,#140800 100%)', thumbIcon: 'icon-flow',
   },
   'vid-5': {
-    title: 'RAG Knowledge Base System', category: 'Enterprise AI',
-    desc: 'A Retrieval-Augmented Generation system powering enterprise Q&A over private documents. Zero hallucinations, full source citations, instant accurate answers.',
-    duration: '5:18', tech: ['FastAPI', 'LangChain', 'Pinecone', 'OpenAI', 'Python'],
-    metrics: [{ label: 'Answer accuracy', value: '99%' }, { label: 'Response time', value: '< 2 seconds' }, { label: 'Documents indexed', value: '10,000+' }, { label: 'Support ticket reduction', value: '65%' }],
-    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-rag-fastapi-ugcPost-7461538370284879872-ZeeR',
-    thumbBg: 'linear-gradient(135deg,#1a2a0a 0%,#3a6e0f 50%,#071400 100%)', thumbIcon: 'icon-chat',
+    title: 'Smart Website', category: 'Intelligent Web · Enterprise AI',
+    desc: 'A modern intelligent website built for responsive performance, polished user experience, and business growth.',
+    duration: 'PROJECT 05', tech: ['Smart Web', 'Responsive UI', 'Automation', 'Performance'],
+    metrics: [{ label: 'User experience', value: 'Responsive' }, { label: 'Business focus', value: 'Growth' }, { label: 'Interface', value: 'Modern' }],
+    videoSrc: './website.mp4',
+    thumbBg: 'linear-gradient(135deg,#081c32 0%,#30136e 50%,#090018 100%)', thumbIcon: 'icon-chat',
   },
   'vid-6': {
     title: 'Edge AI Embedded Vision', category: 'Embedded AI',
     desc: 'Computer vision inference running entirely on embedded hardware — no cloud dependency, no latency overhead, no data privacy risk.',
     duration: '3:44', tech: ['TensorFlow Lite', 'ONNX', 'Raspberry Pi', 'OpenCV', 'C++'],
     metrics: [{ label: 'Inference latency', value: '< 5ms' }, { label: 'Cloud dependency', value: 'Zero' }, { label: 'Power consumption', value: '3W average' }, { label: 'Model size', value: '< 8MB' }],
-    linkedinUrl: 'https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-embeddedsystems-ugcPost-7466831647548706816-6F-6',
     thumbBg: 'linear-gradient(135deg,#2a0a1a 0%,#6e0f3a 50%,#140008 100%)', thumbIcon: 'icon-flow',
   }
 };
@@ -3263,10 +3336,13 @@ const VIDEO_DATA = {
 const modal = document.getElementById('video-modal');
 const vmClose = document.getElementById('vm-close');
 const vmBackdrop = document.getElementById('vm-backdrop');
+const VIDEO_ORDER = ['vid-1', 'vid-2', 'vid-3', 'vid-4', 'vid-5'];
+let currentVideoId = VIDEO_ORDER[0];
 
 function openModalById(id) {
   const data = VIDEO_DATA[id];
-  if (!data) return;
+  if (!data || !data.videoSrc) return;
+  currentVideoId = id;
   document.getElementById('vm-title').textContent = data.title;
   document.getElementById('vm-cat').textContent = data.category;
   document.getElementById('vm-desc').textContent = data.desc;
@@ -3277,29 +3353,25 @@ function openModalById(id) {
   loader.classList.remove('hidden');
   const old = wrap.querySelector('.vm-demo-player');
   if (old) old.remove();
-  const player = document.createElement('div');
+  wrap.querySelectorAll('.vm-player-error').forEach(el => el.remove());
+  const player = document.createElement('video');
   player.className = 'vm-demo-player';
-  player.style.cssText = `position:relative;width:100%;padding-top:56.25%;background:${data.thumbBg};overflow:hidden;`;
-  player.innerHTML = `
-    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:1;padding:0 20px;">
-      <div style="width:130px;height:130px;display:grid;place-items:center;filter:drop-shadow(0 0 28px rgba(139,61,255,0.8));">${projectIconSvg(data.thumbIcon)}</div>
-      <div style="text-align:center;">
-        <div style="font-size:1.05rem;font-weight:800;margin-bottom:8px;">${data.title}</div>
-        <div style="font-size:0.83rem;color:#a89bc2;margin-bottom:18px;">Click below to watch the full project demo on LinkedIn</div>
-        <a href="${data.linkedinUrl}" target="_blank" rel="noopener"
-           style="display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:50px;background:linear-gradient(135deg,#8b3dff,#bf5fff);color:#fff;font-size:0.88rem;font-weight:700;text-decoration:none;box-shadow:0 0 28px rgba(139,61,255,0.55);transition:all 0.3s;"
-           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 44px rgba(191,95,255,0.8)'"
-           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 0 28px rgba(139,61,255,0.55)'">
-          ▶ &nbsp;Watch on LinkedIn
-        </a>
-      </div>
-    </div>
-    <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);pointer-events:none;z-index:0;"></div>
-    <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#8b3dff,#bf5fff,#5eead4);z-index:2;"></div>`;
+  player.controls = true;
+  player.autoplay = true;
+  player.playsInline = true;
+  player.preload = 'metadata';
+  player.setAttribute('controlsList', 'nodownload');
+  player.setAttribute('aria-label', `${data.title} project video`);
+  player.addEventListener('canplay', () => loader.classList.add('hidden'), { once: true });
+  player.addEventListener('error', () => {
+    loader.classList.add('hidden');
+    player.insertAdjacentHTML('afterend', '<p class="vm-player-error" style="padding:20px;text-align:center;color:#a89bc2;">This project video could not be loaded.</p>');
+  }, { once: true });
+  player.src = data.videoSrc;
   wrap.appendChild(player);
-  setTimeout(() => loader.classList.add('hidden'), 450);
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
+  player.play().catch(() => {});
 }
 
 function closeModal() {
@@ -3307,11 +3379,20 @@ function closeModal() {
   if (!menuOpen) document.body.style.overflow = '';
   const old = document.getElementById('vm-player-wrap').querySelector('.vm-demo-player');
   if (old) old.remove();
+  document.querySelectorAll('.vm-player-error').forEach(el => el.remove());
   document.getElementById('vm-loader').classList.remove('hidden');
 }
 
 vmClose.addEventListener('click', closeModal);
 vmBackdrop.addEventListener('click', closeModal);
+document.getElementById('vm-prev').addEventListener('click', () => {
+  const index = VIDEO_ORDER.indexOf(currentVideoId);
+  openModalById(VIDEO_ORDER[(index - 1 + VIDEO_ORDER.length) % VIDEO_ORDER.length]);
+});
+document.getElementById('vm-next').addEventListener('click', () => {
+  const index = VIDEO_ORDER.indexOf(currentVideoId);
+  openModalById(VIDEO_ORDER[(index + 1) % VIDEO_ORDER.length]);
+});
 
 /* ----------------------------------------------------------
    VIDEO FILTERS
