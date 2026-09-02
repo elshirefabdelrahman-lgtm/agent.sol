@@ -2645,34 +2645,6 @@
       <p class="section-desc" data-i18n="vid_desc">Real demos, real results. See how our AI agents perform in live environments across industries.</p>
     </div>
 
-    <!-- Featured Video Hero -->
-    <div class="featured-video-hero reveal" id="featured-video-hero">
-      <div class="featured-video-player" id="featured-player" onclick="openModalById('vid-1')">
-        <div class="fv-thumb-bg" id="featured-bg" style="background:linear-gradient(135deg,#1a0832 0%,#4a1580 40%,#0d0120 100%);"></div>
-        <div class="fv-thumb-icon" id="featured-icon"><div class="project-scene scene-driver"><svg class="scene-art"><use href="#icon-driver"/></svg></div></div>
-        <div class="fv-overlay"></div>
-        <div class="featured-play-btn"><div class="featured-play-circle">▶</div></div>
-        <div class="featured-duration-badge" id="featured-duration">PROJECT 01</div>
-      </div>
-      <div class="featured-video-info">
-        <div class="featured-category-badge" id="featured-cat">Computer Vision · Automotive AI</div>
-        <h3 class="featured-video-title" id="featured-title" data-i18n="fv_title">Driver Monitoring &amp; Driver Assistant</h3>
-        <p class="featured-video-desc" id="featured-desc" data-i18n="fv_desc">A real-time vision system designed to monitor driver state and provide intelligent assistance for safer driving.</p>
-        <div class="featured-metrics" id="featured-metrics">
-          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>Real-time</strong> &nbsp;<span data-i18n="fv_m1">driver-state monitoring</span></div>
-          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>CV</strong> &nbsp;<span data-i18n="fv_m2">vision-based assistance</span></div>
-          <div class="featured-metric-item"><span class="fmi-dot"></span><strong>Safety</strong> &nbsp;<span data-i18n="fv_m3">focused system design</span></div>
-        </div>
-        <div class="featured-tech-tags" id="featured-tags">
-          <span class="ftech-tag">Computer Vision</span>
-          <span class="ftech-tag">Deep Learning</span>
-          <span class="ftech-tag">Driver Monitoring</span>
-          <span class="ftech-tag">Python</span>
-        </div>
-        <button class="featured-watch-btn" id="featured-watch-btn" onclick="openModalById('vid-1')">▶ <span data-i18n="watch_btn">Watch Full Demo</span></button>
-      </div>
-    </div>
-
     <!-- Video Filters -->
     <div class="video-filters reveal">
       <button class="vf-btn active" data-filter="all" data-i18n="filter_all">All Videos</button>
@@ -2684,7 +2656,7 @@
     <div class="video-gallery-grid" id="video-gallery">
       <div class="video-card reveal" data-id="vid-1" data-category="computer-vision" onclick="openModalById('vid-1')">
         <div class="vc-thumb">
-          <video class="vc-thumb-video" src="./driver%20monitor.mp4" preload="metadata" muted playsinline aria-label="Driver Monitoring project preview"></video>
+          <video class="vc-thumb-video" src="./driver%20monitor.mp4" preload="metadata" muted loop playsinline webkit-playsinline aria-label="Driver Monitoring project preview"></video>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
           <div class="vc-category">Automotive AI</div>
@@ -2708,7 +2680,7 @@
 
       <div class="video-card reveal" data-id="vid-2" data-category="computer-vision" onclick="openModalById('vid-2')">
         <div class="vc-thumb">
-          <video class="vc-thumb-video" src="./adas.mp4" preload="metadata" muted playsinline aria-label="ADAS project preview"></video>
+          <video class="vc-thumb-video" src="./adas.mp4" preload="metadata" muted loop playsinline webkit-playsinline aria-label="ADAS project preview"></video>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
           <div class="vc-category">Advanced Driver Assistance</div>
@@ -2732,7 +2704,7 @@
 
       <div class="video-card reveal" data-id="vid-3" data-category="enterprise" onclick="openModalById('vid-3')">
         <div class="vc-thumb">
-          <video class="vc-thumb-video" src="./ai%20assistant%20.mp4" preload="metadata" muted playsinline aria-label="AI Requirements Assistant project preview"></video>
+          <video class="vc-thumb-video" src="./ai%20assistant%20.mp4" preload="metadata" muted loop playsinline webkit-playsinline aria-label="AI Requirements Assistant project preview"></video>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
           <div class="vc-category">Computer Vision</div>
@@ -2756,7 +2728,7 @@
 
       <div class="video-card reveal" data-id="vid-4" data-category="computer-vision enterprise" onclick="openModalById('vid-4')">
         <div class="vc-thumb">
-          <video class="vc-thumb-video" src="./goalkeeper.mp4" preload="metadata" muted playsinline aria-label="Goalkeeper Performance Analysis project preview"></video>
+          <video class="vc-thumb-video" src="./goalkeeper.mp4" preload="metadata" muted loop playsinline webkit-playsinline aria-label="Goalkeeper Performance Analysis project preview"></video>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
           <div class="vc-category">Sports Computer Vision</div>
@@ -2802,7 +2774,7 @@
 
       <div class="video-card reveal" data-id="vid-5" data-category="enterprise" onclick="openModalById('vid-5')">
         <div class="vc-thumb">
-          <video class="vc-thumb-video" src="./website.mp4" preload="metadata" muted playsinline aria-label="Smart Website project preview"></video>
+          <video class="vc-thumb-video" src="./website.mp4" preload="metadata" muted loop playsinline webkit-playsinline aria-label="Smart Website project preview"></video>
           <div class="vc-thumb-overlay"></div>
           <div class="vc-play-overlay"><div class="vc-play-btn">▶</div></div>
           <div class="vc-category">Smart Website</div>
@@ -3577,6 +3549,45 @@ document.getElementById('vm-next').addEventListener('click', () => {
 });
 
 /* ----------------------------------------------------------
+   GALLERY PREVIEWS — SILENT GIF-LIKE PLAYBACK ON ALL DEVICES
+---------------------------------------------------------- */
+const galleryPreviewVideos = [...document.querySelectorAll('.vc-thumb-video')];
+const videoGallery = document.getElementById('video-gallery');
+
+function playGalleryPreviews() {
+  galleryPreviewVideos.forEach(video => {
+    video.muted = true;
+    video.defaultMuted = true;
+    video.volume = 0;
+    video.loop = true;
+    video.playsInline = true;
+    video.play().catch(() => {});
+  });
+}
+
+function pauseGalleryPreviews() {
+  galleryPreviewVideos.forEach(video => video.pause());
+}
+
+if (videoGallery && galleryPreviewVideos.length) {
+  const galleryPreviewObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) playGalleryPreviews();
+      else pauseGalleryPreviews();
+    });
+  }, { threshold: 0.01, rootMargin: '280px 0px 280px 0px' });
+  galleryPreviewObserver.observe(videoGallery);
+
+  const retryGalleryPlayback = () => {
+    const rect = videoGallery.getBoundingClientRect();
+    if (rect.top < innerHeight + 280 && rect.bottom > -280) playGalleryPreviews();
+  };
+  document.addEventListener('touchstart', retryGalleryPlayback, { passive: true });
+  document.addEventListener('scroll', retryGalleryPlayback, { passive: true });
+  document.addEventListener('visibilitychange', () => document.hidden ? pauseGalleryPreviews() : retryGalleryPlayback());
+}
+
+/* ----------------------------------------------------------
    VIDEO FILTERS
 ---------------------------------------------------------- */
 document.querySelectorAll('.vf-btn').forEach(btn => {
@@ -3591,29 +3602,6 @@ document.querySelectorAll('.vf-btn').forEach(btn => {
         card.style.display = cats.includes(filter) ? '' : 'none';
       }
     });
-  });
-});
-
-/* ----------------------------------------------------------
-   FEATURED VIDEO — UPDATE ON HOVER
----------------------------------------------------------- */
-document.querySelectorAll('.video-card').forEach(card => {
-  card.addEventListener('mouseenter', () => {
-    const id = card.dataset.id;
-    const data = VIDEO_DATA[id];
-    if (!data) return;
-    document.getElementById('featured-bg').style.background = data.thumbBg;
-    document.getElementById('featured-icon').innerHTML = projectIconSvg(data.thumbIcon);
-    document.getElementById('featured-duration').textContent = data.duration;
-    document.getElementById('featured-cat').textContent = '▶ ' + data.category;
-    document.getElementById('featured-title').textContent = data.title;
-    document.getElementById('featured-desc').textContent = data.desc;
-    document.getElementById('featured-metrics').innerHTML = data.metrics.slice(0, 3).map(m =>
-      `<div class="featured-metric-item"><span class="fmi-dot"></span><strong>${m.value}</strong>&nbsp;${m.label}</div>`
-    ).join('');
-    document.getElementById('featured-tags').innerHTML = data.tech.map(t => `<span class="ftech-tag">${t}</span>`).join('');
-    document.getElementById('featured-player').onclick = () => openModalById(id);
-    document.getElementById('featured-watch-btn').onclick = () => openModalById(id);
   });
 });
 
