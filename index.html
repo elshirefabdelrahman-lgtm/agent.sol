@@ -547,9 +547,11 @@
       border: 1px solid rgba(191,95,255,0.28);
       box-shadow: 0 24px 65px rgba(4,1,10,0.76), 0 0 42px rgba(139,61,255,0.2);
       isolation: isolate;
-      animation: promoReveal 1.15s cubic-bezier(.2,.8,.2,1) both;
+      opacity: 0;
+      transform: translateY(16px) scale(.965);
       transition: opacity .42s ease, transform .42s ease, box-shadow .42s ease;
     }
+    .hero-promo-dashboard.is-visible .hero-promo-frame { animation: promoReveal 1.15s cubic-bezier(.2,.8,.2,1) both; }
     .hero-promo-frame::after {
       content: '';
       position: absolute;
@@ -723,7 +725,7 @@
       .hero-visual { margin-top: 40px; }
       .orb-wrapper { width: 260px; height: 260px; }
       .hero-promo-row { margin-top: 38px; }
-      .hero-promo-dashboard { grid-template-columns: 1fr; grid-template-areas: "video" "left" "right" "rail"; padding: 30px 24px 24px; gap: 20px; border-radius: 28px; }
+      .hero-promo-dashboard { grid-template-columns: 1fr; grid-template-areas: "rail" "video" "left" "right"; padding: 30px 24px 24px; gap: 20px; border-radius: 28px; }
       .promo-hud-column { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
       .promo-hud-column .promo-hud-chip { grid-column: 1 / -1; }
       .promo-hud-card::after { display: none; }
@@ -738,9 +740,9 @@
       .promo-hud-card { padding: 12px; border-radius: 13px; animation-duration: 10s; }
       .promo-stat-label { font-size: .67rem; }
       .promo-hud-column .promo-hud-chip { display: none; }
-      .promo-capability-rail { gap: 6px; }
+      .promo-capability-rail { gap: 7px; padding: 4px 0 8px; }
       .promo-capability-pill { padding: 6px 9px; font-size: .61rem; }
-      .promo-capability-pill:nth-child(n+5) { display: none; }
+      .promo-capability-pill:nth-child(n+7) { display: none; }
       .promo-particle.p2, .promo-particle.p4 { display: none; }
       .hero-promo-dashboard::before, .hero-promo-dashboard::after { opacity: .55; }
     }
@@ -2398,7 +2400,7 @@
       </div>
     </div>
     <div class="hero-promo-row">
-      <div class="hero-promo-dashboard">
+      <div class="hero-promo-dashboard" id="hero-promo-dashboard">
         <span class="promo-particle p1" aria-hidden="true"></span><span class="promo-particle p2" aria-hidden="true"></span>
         <span class="promo-particle p3" aria-hidden="true"></span><span class="promo-particle p4" aria-hidden="true"></span>
         <div class="promo-hud-column left">
@@ -2408,7 +2410,7 @@
         </div>
         <div class="promo-video-stage">
           <div class="hero-promo-frame" id="hero-promo-frame" aria-hidden="true">
-            <video id="hero-promo-video" src="./an.mp4" autoplay muted loop playsinline preload="metadata" disablepictureinpicture tabindex="-1"></video>
+            <video id="hero-promo-video" src="./an.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture tabindex="-1"></video>
           </div>
         </div>
         <div class="promo-hud-column right">
@@ -2417,10 +2419,12 @@
           <div class="promo-hud-chip" data-i18n="promo_smart_systems">Smart Systems</div>
         </div>
         <div class="promo-capability-rail">
-          <span class="promo-capability-pill" data-i18n="promo_ai_agents">AI Agents</span>
-          <span class="promo-capability-pill" data-i18n="promo_smart_websites">Smart Websites</span>
-          <span class="promo-capability-pill" data-i18n="promo_chatbots">Intelligent Chatbots</span>
+          <span class="promo-capability-pill" data-i18n="promo_ai_automation">AI Automation</span>
           <span class="promo-capability-pill" data-i18n="promo_cv">Computer Vision</span>
+          <span class="promo-capability-pill" data-i18n="promo_ai_agents">AI Agents</span>
+          <span class="promo-capability-pill" data-i18n="promo_chatbots">Intelligent Chatbots</span>
+          <span class="promo-capability-pill">RAG</span>
+          <span class="promo-capability-pill" data-i18n="promo_smart_websites">Smart Websites</span>
           <span class="promo-capability-pill">NLP</span>
           <span class="promo-capability-pill" data-i18n="promo_business_automation">Business Automation</span>
         </div>
@@ -3347,6 +3351,43 @@ document.getElementById('mobile-lang-btn').addEventListener('click', () => { clo
 /* ----------------------------------------------------------
    NAVBAR SCROLL
 ---------------------------------------------------------- */
+const heroPromoVideo = document.getElementById('hero-promo-video');
+const heroPromoFrame = document.getElementById('hero-promo-frame');
+const heroPromoDashboard = document.getElementById('hero-promo-dashboard');
+
+if (heroPromoVideo && heroPromoFrame && heroPromoDashboard) {
+  heroPromoVideo.muted = true;
+  heroPromoVideo.defaultMuted = true;
+  heroPromoVideo.volume = 0;
+
+  const startHeroPromo = () => {
+    heroPromoDashboard.classList.add('is-visible');
+    heroPromoVideo.muted = true;
+    heroPromoVideo.play().catch(() => {
+      const retry = () => heroPromoVideo.play().catch(() => {});
+      document.addEventListener('touchstart', retry, { once: true, passive: true });
+      document.addEventListener('scroll', retry, { once: true, passive: true });
+    });
+  };
+
+  const promoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) startHeroPromo();
+      else if (!heroPromoVideo.paused) heroPromoVideo.pause();
+    });
+  }, { threshold: 0.22 });
+  promoObserver.observe(heroPromoDashboard);
+
+  heroPromoVideo.addEventListener('timeupdate', () => {
+    const remaining = heroPromoVideo.duration - heroPromoVideo.currentTime;
+    heroPromoFrame.classList.toggle('is-ending', Number.isFinite(remaining) && remaining < 0.34);
+    if (heroPromoVideo.currentTime < 0.2) heroPromoFrame.classList.remove('is-ending');
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && heroPromoDashboard.getBoundingClientRect().top < innerHeight) startHeroPromo();
+  });
+}
+
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').style.background =
     window.scrollY > 40 ? 'rgba(5,3,13,0.97)' : 'rgba(5,3,13,0.7)';
