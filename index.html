@@ -1546,6 +1546,21 @@
       transition: all var(--transition);
     }
     .video-card:hover .vc-watch-btn { background: rgba(139,61,255,0.2); border-color: var(--purple-mid); color: var(--white); }
+    .vc-project-actions { display: grid; gap: 7px; margin-top: 13px; }
+    .vc-whatsapp-btn {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      width: 100%; padding: 9px 14px; border-radius: 10px;
+      background: linear-gradient(135deg,#25d366,#128c7e); color: #fff;
+      font-size: 0.75rem; font-weight: 800; box-shadow: 0 8px 22px rgba(37,211,102,0.18);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .vc-whatsapp-btn:hover { transform: translateY(-2px); box-shadow: 0 11px 28px rgba(37,211,102,0.34); }
+    .vc-linkedin-link {
+      display: inline-flex; justify-content: center; align-items: center; gap: 5px;
+      color: var(--purple-glow); font-size: 0.72rem; font-weight: 700;
+      padding: 3px; transition: color var(--transition);
+    }
+    .vc-linkedin-link:hover { color: var(--white); }
 
     /* ============================================================
        VIDEO MODAL
@@ -2105,7 +2120,7 @@
   <ul class="nav-links">
     <li><a href="#about" data-i18n="nav_about">About</a></li>
     <li><a href="#services" data-i18n="nav_services">Services</a></li>
-    <li><a href="#projects" data-i18n="nav_projects">Projects</a></li>
+    <li><a href="#video-showcase" data-i18n="nav_projects">Projects</a></li>
     <li><a href="#video-showcase" data-i18n="nav_videos">Videos</a></li>
     <li><a href="#demo" data-i18n="nav_demo">Demo</a></li>
     <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
@@ -2127,7 +2142,7 @@
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
   <a href="#about" data-i18n="nav_about">About</a>
   <a href="#services" data-i18n="nav_services">Services</a>
-  <a href="#projects" data-i18n="nav_projects">Projects</a>
+  <a href="#video-showcase" data-i18n="nav_projects">Projects</a>
   <a href="#video-showcase" data-i18n="nav_videos">Videos</a>
   <a href="#demo" data-i18n="nav_demo">Demo</a>
   <a href="#contact" data-i18n="nav_contact">Contact</a>
@@ -2156,7 +2171,7 @@
           Automate your business operations with intelligent AI systems that work 24/7, so you can focus on what actually matters.
         </p>
         <div class="hero-buttons">
-          <a href="#projects" class="btn-primary" data-i18n="hero_btn1">View Projects →</a>
+          <a href="#video-showcase" class="btn-primary" data-i18n="hero_btn1">View Projects →</a>
           <a href="https://wa.me/201288694962" target="_blank" class="btn-secondary">
             <span aria-hidden="true">WA</span> <span data-i18n="hero_btn2">Contact on WhatsApp</span>
           </a>
@@ -2441,90 +2456,6 @@
 </section>
 
 <!-- ============================================================
-     PROJECTS / PORTFOLIO
-============================================================ -->
-<section id="projects">
-  <div class="container">
-    <div class="section-head centered reveal">
-      <div class="section-label" data-i18n="projects_label">Our Work</div>
-      <div class="divider centered"></div>
-      <h2 class="section-title" data-i18n="projects_title">Real AI Projects. Real Results.</h2>
-      <p class="section-desc" data-i18n="projects_desc">A selection of AI systems we've built across computer vision, NLP, and embedded intelligence.</p>
-    </div>
-    <div class="projects-grid">
-      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-deeplearning-ugcPost-7450336307383554048-sBT2?utm_source=share&amp;utm_medium=member_ios&amp;rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU" target="_blank" rel="noopener" class="project-card reveal">
-        <div class="project-thumb">
-          <div class="project-thumb-bg" style="background:linear-gradient(135deg,#1a0a3e 0%,#3d0f6e 50%,#0d0120 100%);"></div>
-          <div class="project-thumb-icon"><div class="project-scene scene-driver"><svg class="scene-art"><use href="#icon-driver"/></svg></div></div>
-          <div class="project-thumb-overlay"></div>
-          <div class="project-play-overlay"><div class="project-play-circle">▶</div></div>
-          <div class="project-tag">Driver Monitoring · Driver Assistant</div>
-        </div>
-        <div class="project-body">
-          <h3 data-i18n="proj1_title">Driver Monitoring &amp; Driver Assistant</h3>
-          <p data-i18n="proj1_desc">A computer vision system that monitors driver state and supports safer driving with intelligent, real-time assistance.</p>
-          <div class="project-footer">
-            <span class="view-project-btn" data-i18n="proj_view">View on LinkedIn →</span>
-            <span class="project-ext">↗ linkedin.com</span>
-          </div>
-        </div>
-      </a>
-      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-adas-ugcPost-7455307906163392512-opdL?utm_source=share&amp;utm_medium=member_ios&amp;rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU" target="_blank" rel="noopener" class="project-card reveal">
-        <div class="project-thumb">
-          <div class="project-thumb-bg" style="background:linear-gradient(135deg,#0a1a3e 0%,#0f3d6e 50%,#011420 100%);"></div>
-          <div class="project-thumb-icon"><div class="project-scene scene-adas"><svg class="scene-art"><use href="#icon-adas"/></svg></div></div>
-          <div class="project-thumb-overlay"></div>
-          <div class="project-play-overlay"><div class="project-play-circle">▶</div></div>
-          <div class="project-tag">ADAS · Autonomous Systems</div>
-        </div>
-        <div class="project-body">
-          <h3 data-i18n="proj2_title">ADAS System</h3>
-          <p data-i18n="proj2_desc">An Advanced Driver Assistance System powered by real-time computer vision for lane detection, obstacle awareness, and hazard alerts.</p>
-          <div class="project-footer">
-            <span class="view-project-btn" data-i18n="proj_view">View on LinkedIn →</span>
-            <span class="project-ext">↗ linkedin.com</span>
-          </div>
-        </div>
-      </a>
-      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-rag-fastapi-ugcPost-7461538370284879872-ZeeR?utm_medium=ios_app&amp;rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU&amp;utm_source=social_share_send&amp;utm_campaign=whatsapp" target="_blank" rel="noopener" class="project-card reveal">
-        <div class="project-thumb">
-          <div class="project-thumb-bg" style="background:linear-gradient(135deg,#1a2a0a 0%,#3a6e0f 50%,#071400 100%);"></div>
-          <div class="project-thumb-icon"><div class="project-scene scene-chat"><svg class="scene-art"><use href="#icon-chat"/></svg></div></div>
-          <div class="project-thumb-overlay"></div>
-          <div class="project-play-overlay"><div class="project-play-circle">▶</div></div>
-          <div class="project-tag">Intelligent Chatbot · Requirements</div>
-        </div>
-        <div class="project-body">
-          <h3 data-i18n="proj3_title">Intelligent Requirements Chatbot</h3>
-          <p data-i18n="proj3_desc">An intelligent chatbot that understands business requirements, asks focused questions, and organizes client needs into actionable inputs.</p>
-          <div class="project-footer">
-            <span class="view-project-btn" data-i18n="proj_view">View on LinkedIn →</span>
-            <span class="project-ext">↗ linkedin.com</span>
-          </div>
-        </div>
-      </a>
-      <a href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-embeddedsystems-ugcPost-7466831647548706816-6F-6?utm_medium=ios_app&amp;rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU&amp;utm_source=social_share_send&amp;utm_campaign=whatsapp" target="_blank" rel="noopener" class="project-card reveal">
-        <div class="project-thumb">
-          <div class="project-thumb-bg" style="background:linear-gradient(135deg,#2a0a1a 0%,#6e0f3a 50%,#140008 100%);"></div>
-          <div class="project-thumb-icon"><div class="project-scene scene-car"><svg class="scene-art"><use href="#icon-car"/></svg></div></div>
-          <div class="project-thumb-overlay"></div>
-          <div class="project-play-overlay"><div class="project-play-circle">▶</div></div>
-          <div class="project-tag">Self-Driving · Built From Scratch</div>
-        </div>
-        <div class="project-body">
-          <h3 data-i18n="proj4_title">Smart Self-Driving Car</h3>
-          <p data-i18n="proj4_desc">A graduation project built from scratch: a smart car combining embedded systems and computer vision for autonomous driving.</p>
-          <div class="project-footer">
-            <span class="view-project-btn" data-i18n="proj_view">View on LinkedIn →</span>
-            <span class="project-ext">↗ linkedin.com</span>
-          </div>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
      VIDEO SHOWCASE
 ============================================================ -->
 <section id="video-showcase">
@@ -2590,6 +2521,10 @@
           <p data-i18n="vc1_desc">Real-time computer vision for driver-state monitoring and intelligent driving assistance.</p>
           <div class="vc-tech-row"><span class="vc-tech-tag">Computer Vision</span><span class="vc-tech-tag">Deep Learning</span><span class="vc-tech-tag">Python</span></div>
           <div class="vc-footer"><span class="vc-impact">Driver Safety AI</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
+          <div class="vc-project-actions">
+            <a class="vc-whatsapp-btn" href="https://wa.me/201288694962" target="_blank" rel="noopener" onclick="event.stopPropagation()">WA <span data-i18n="video_wa_cta">Build a Similar Solution</span></a>
+            <a class="vc-linkedin-link" href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-deeplearning-ugcPost-7450336307383554048-sBT2?utm_source=share&amp;utm_medium=member_ios&amp;rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span data-i18n="video_linkedin">View on LinkedIn</span> ↗</a>
+          </div>
         </div>
       </div>
 
@@ -2610,6 +2545,10 @@
           <p data-i18n="vc2_desc">Vision-based lane detection, obstacle awareness, and intelligent hazard alerts.</p>
           <div class="vc-tech-row"><span class="vc-tech-tag">OpenCV</span><span class="vc-tech-tag">Object Detection</span><span class="vc-tech-tag">Embedded AI</span></div>
           <div class="vc-footer"><span class="vc-impact">Road Safety AI</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
+          <div class="vc-project-actions">
+            <a class="vc-whatsapp-btn" href="https://wa.me/201288694962" target="_blank" rel="noopener" onclick="event.stopPropagation()">WA <span data-i18n="video_wa_cta">Build a Similar Solution</span></a>
+            <a class="vc-linkedin-link" href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-adas-ugcPost-7455307906163392512-opdL?utm_source=share&amp;utm_medium=member_ios&amp;rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span data-i18n="video_linkedin">View on LinkedIn</span> ↗</a>
+          </div>
         </div>
       </div>
 
@@ -2630,6 +2569,10 @@
           <p data-i18n="vc3_desc">A smart conversational system that discovers, clarifies, and structures client requirements.</p>
           <div class="vc-tech-row"><span class="vc-tech-tag">NLP</span><span class="vc-tech-tag">FastAPI</span><span class="vc-tech-tag">LLM</span></div>
           <div class="vc-footer"><span class="vc-impact">Smart Discovery</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
+          <div class="vc-project-actions">
+            <a class="vc-whatsapp-btn" href="https://wa.me/201288694962" target="_blank" rel="noopener" onclick="event.stopPropagation()">WA <span data-i18n="video_wa_cta">Build a Similar Solution</span></a>
+            <a class="vc-linkedin-link" href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-rag-fastapi-ugcPost-7461538370284879872-ZeeR?utm_medium=ios_app&amp;rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU&amp;utm_source=social_share_send&amp;utm_campaign=whatsapp" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span data-i18n="video_linkedin">View on LinkedIn</span> ↗</a>
+          </div>
         </div>
       </div>
 
@@ -2650,6 +2593,9 @@
           <p data-i18n="vc4_desc">Computer vision analysis that turns match footage into measurable goalkeeper performance insights.</p>
           <div class="vc-tech-row"><span class="vc-tech-tag">Computer Vision</span><span class="vc-tech-tag">Player Tracking</span><span class="vc-tech-tag">Sports AI</span></div>
           <div class="vc-footer"><span class="vc-impact">Sports Performance AI</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
+          <div class="vc-project-actions">
+            <a class="vc-whatsapp-btn" href="https://wa.me/201288694962" target="_blank" rel="noopener" onclick="event.stopPropagation()">WA <span data-i18n="video_wa_cta">Build a Similar Solution</span></a>
+          </div>
         </div>
       </div>
 
@@ -2669,6 +2615,10 @@
           <p data-i18n="proj4_desc">A graduation project built from scratch, combining embedded systems and computer vision.</p>
           <div class="vc-tech-row"><span class="vc-tech-tag">Embedded AI</span><span class="vc-tech-tag">Computer Vision</span><span class="vc-tech-tag">Automotive</span></div>
           <div class="vc-footer"><span class="vc-impact" data-i18n="built_from_scratch">Built From Scratch</span><span class="vc-watch-btn" data-i18n="project_image_label">Project Image</span></div>
+          <div class="vc-project-actions">
+            <a class="vc-whatsapp-btn" href="https://wa.me/201288694962" target="_blank" rel="noopener" onclick="event.stopPropagation()">WA <span data-i18n="video_wa_cta">Build a Similar Solution</span></a>
+            <a class="vc-linkedin-link" href="https://www.linkedin.com/posts/abdelrahman-elsherif-944a52337_ai-computervision-embeddedsystems-ugcPost-7466831647548706816-6F-6?utm_medium=ios_app&amp;rcm=ACoAAFSxz8QBvhRAZvw9OGYUVi6MCNoITfEKAbU&amp;utm_source=social_share_send&amp;utm_campaign=whatsapp" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span data-i18n="video_linkedin">View on LinkedIn</span> ↗</a>
+          </div>
         </div>
       </div>
 
@@ -2689,6 +2639,9 @@
           <p data-i18n="vc5_desc">A modern intelligent website built for a polished user experience, responsive performance, and business growth.</p>
           <div class="vc-tech-row"><span class="vc-tech-tag">Smart Web</span><span class="vc-tech-tag">Responsive UI</span><span class="vc-tech-tag">Automation</span></div>
           <div class="vc-footer"><span class="vc-impact">Intelligent Web Experience</span><span class="vc-watch-btn">▶ <span data-i18n="watch_short">Watch</span></span></div>
+          <div class="vc-project-actions">
+            <a class="vc-whatsapp-btn" href="https://wa.me/201288694962" target="_blank" rel="noopener" onclick="event.stopPropagation()">WA <span data-i18n="video_wa_cta">Build a Similar Solution</span></a>
+          </div>
         </div>
       </div>
 
@@ -2851,7 +2804,7 @@
         <h4 data-i18n="footer_company">Company</h4>
         <ul>
           <li><a href="#about" data-i18n="nav_about">About Us</a></li>
-          <li><a href="#projects" data-i18n="nav_projects">Projects</a></li>
+          <li><a href="#video-showcase" data-i18n="nav_projects">Projects</a></li>
           <li><a href="#video-showcase" data-i18n="nav_videos">Videos</a></li>
           <li><a href="#demo" data-i18n="nav_demo">Live Demo</a></li>
         </ul>
@@ -2985,6 +2938,7 @@ const TRANSLATIONS = {
     fv_desc: 'A real-time vision system designed to monitor driver state and provide intelligent assistance for safer driving.',
     fv_m1: 'driver-state monitoring', fv_m2: 'vision-based assistance', fv_m3: 'focused system design',
     watch_btn: 'Watch Full Demo', watch_short: 'Watch',
+    video_wa_cta: 'Build a Similar Solution', video_linkedin: 'View on LinkedIn',
     smartcar_category: 'Automotive AI', project_image_label: 'Project Image', built_from_scratch: 'Built From Scratch',
     filter_all: 'All Videos', filter_support: 'AI Customer Support', filter_wa: 'WhatsApp Automation',
     filter_lead: 'Lead Generation', filter_cv: 'Computer Vision', filter_ent: 'Enterprise AI', filter_ecom: 'E-Commerce',
@@ -3085,6 +3039,7 @@ const TRANSLATIONS = {
     fv_desc: 'نظام رؤية حاسوبية لحظي لمراقبة حالة السائق وتقديم مساعدة ذكية لقيادة أكثر أماناً.',
     fv_m1: 'مراقبة حالة السائق', fv_m2: 'مساعدة معتمدة على الرؤية', fv_m3: 'تصميم يركز على الأمان',
     watch_btn: 'مشاهدة العرض الكامل', watch_short: 'شاهد',
+    video_wa_cta: 'ابنِ حلاً مشابهاً', video_linkedin: 'عرض على لينكدإن',
     smartcar_category: 'ذكاء اصطناعي للسيارات', project_image_label: 'صورة المشروع', built_from_scratch: 'مبني من الصفر',
     filter_all: 'جميع الفيديوهات', filter_support: 'دعم العملاء', filter_wa: 'أتمتة واتساب',
     filter_lead: 'توليد العملاء', filter_cv: 'رؤية حاسوبية', filter_ent: 'ذكاء المؤسسات', filter_ecom: 'التجارة الإلكترونية',
