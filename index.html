@@ -468,6 +468,129 @@
       align-items: center;
       position: relative;
     }
+    .hero-promo-row {
+      width: 100%;
+      margin-top: 64px;
+    }
+    .hero-promo-dashboard {
+      position: relative;
+      width: min(1080px, 100%);
+      margin: 0 auto;
+      padding: 44px 34px 30px;
+      display: grid;
+      grid-template-columns: minmax(155px,1fr) minmax(320px,430px) minmax(155px,1fr);
+      grid-template-areas: "left video right" "rail rail rail";
+      align-items: center;
+      gap: 30px;
+      border: 1px solid rgba(148,85,255,.18);
+      border-radius: 36px;
+      background: radial-gradient(circle at 50% 42%,rgba(126,45,220,.13),transparent 43%), linear-gradient(145deg,rgba(17,8,34,.72),rgba(5,3,13,.4));
+      box-shadow: inset 0 0 70px rgba(139,61,255,.045), 0 30px 90px rgba(3,1,9,.35);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero-promo-dashboard::before,
+    .hero-promo-dashboard::after {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      pointer-events: none;
+      border: 1px solid rgba(168,85,247,.11);
+      border-radius: 50%;
+      animation: hudOrbit 28s linear infinite;
+    }
+    .hero-promo-dashboard::before { width: 570px; height: 570px; left: calc(50% - 285px); top: -76px; }
+    .hero-promo-dashboard::after { width: 690px; height: 300px; left: calc(50% - 345px); top: 68px; animation-duration: 38s; animation-direction: reverse; }
+    .promo-hud-column { display: grid; gap: 22px; position: relative; z-index: 2; }
+    .promo-hud-column.left { grid-area: left; }
+    .promo-hud-column.right { grid-area: right; }
+    .promo-hud-card {
+      position: relative;
+      padding: 16px 17px;
+      border-radius: 17px;
+      border: 1px solid rgba(168,85,247,.24);
+      background: rgba(13,7,27,.66);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 14px 36px rgba(3,1,9,.3), inset 0 0 20px rgba(139,61,255,.045);
+      animation: hudFloat 7.5s ease-in-out infinite;
+    }
+    .promo-hud-column .promo-hud-card:nth-child(2) { animation-duration: 9.2s; animation-delay: -3.1s; }
+    .promo-hud-column.right .promo-hud-card:first-child { animation-duration: 8.4s; animation-delay: -1.7s; }
+    .promo-hud-column.right .promo-hud-card:nth-child(2) { animation-duration: 10.1s; animation-delay: -5.2s; }
+    .promo-hud-card::after {
+      content: ''; position: absolute; top: 50%; width: 28px; height: 1px;
+      background: linear-gradient(90deg,rgba(168,85,247,.45),transparent);
+    }
+    .promo-hud-column.left .promo-hud-card::after { left: 100%; }
+    .promo-hud-column.right .promo-hud-card::after { right: 100%; transform: rotate(180deg); }
+    .promo-stat-value {
+      display: block; font: 800 clamp(1.35rem,2.3vw,2rem)/1 var(--font-main);
+      color: var(--white); text-shadow: 0 0 18px rgba(191,95,255,.55); margin-bottom: 6px;
+    }
+    .promo-stat-label { display: block; color: var(--muted); font-size: .72rem; font-weight: 650; line-height: 1.35; }
+    .promo-hud-chip {
+      display: flex; align-items: center; gap: 8px; padding: 10px 13px; border-radius: 13px;
+      border: 1px solid rgba(94,234,212,.15); background: rgba(8,9,24,.55);
+      color: var(--purple-glow); font-size: .7rem; font-weight: 700;
+      animation: hudFade 6.8s ease-in-out infinite;
+    }
+    .promo-hud-chip::before { content: ''; width: 6px; height: 6px; flex: 0 0 6px; border-radius: 50%; background: var(--cyan-trace); box-shadow: 0 0 9px var(--cyan-trace); animation: hudPulse 2.8s ease-in-out infinite; }
+    .promo-hud-column.right .promo-hud-chip { animation-delay: -2.5s; }
+    html[dir="rtl"] .promo-hud-card, html[dir="rtl"] .promo-hud-chip { text-align: right; }
+    .promo-video-stage { grid-area: video; position: relative; z-index: 3; display: flex; justify-content: center; }
+    .hero-promo-frame {
+      position: relative;
+      width: 100%;
+      border-radius: 30px;
+      overflow: hidden;
+      background: transparent;
+      border: 1px solid rgba(191,95,255,0.28);
+      box-shadow: 0 24px 65px rgba(4,1,10,0.76), 0 0 42px rgba(139,61,255,0.2);
+      isolation: isolate;
+      animation: promoReveal 1.15s cubic-bezier(.2,.8,.2,1) both;
+      transition: opacity .42s ease, transform .42s ease, box-shadow .42s ease;
+    }
+    .hero-promo-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      border-radius: inherit;
+      background: radial-gradient(circle at center, transparent 63%, rgba(9,2,18,0.2) 100%), linear-gradient(145deg, rgba(168,85,247,0.035), transparent 42%);
+      box-shadow: inset 0 0 24px rgba(11,3,25,0.22);
+    }
+    .hero-promo-frame video {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      background: transparent;
+      transform: translateZ(0);
+    }
+    .hero-promo-frame.is-ending { opacity: .86; transform: scale(.995); }
+    @keyframes promoReveal {
+      from { opacity: 0; transform: translateY(16px) scale(.965); filter: saturate(.85); }
+      to { opacity: 1; transform: translateY(0) scale(1); filter: saturate(1); }
+    }
+    @keyframes hudFloat { 0%,100%{transform:translate3d(0,0,0)} 50%{transform:translate3d(0,-7px,0)} }
+    @keyframes hudFade { 0%,100%{opacity:.72} 50%{opacity:1} }
+    @keyframes hudPulse { 0%,100%{opacity:.5;transform:scale(.86)} 50%{opacity:1;transform:scale(1.08)} }
+    @keyframes hudOrbit { to { transform: rotate(360deg); } }
+    .promo-capability-rail {
+      grid-area: rail; display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 8px; padding-top: 4px; position: relative; z-index: 3;
+    }
+    .promo-capability-pill {
+      padding: 7px 11px; border-radius: 999px; border: 1px solid rgba(168,85,247,.17);
+      background: rgba(16,8,31,.58); color: #b9accf; font-size: .65rem; font-weight: 650;
+      animation: hudFade 8s ease-in-out infinite;
+    }
+    .promo-capability-pill:nth-child(2n) { animation-delay: -2.2s; }
+    .promo-capability-pill:nth-child(3n) { animation-delay: -4.7s; }
+    .promo-particle { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: var(--purple-glow); box-shadow: 0 0 8px var(--purple-glow); opacity: .45; animation: particleDrift 9s ease-in-out infinite; }
+    .promo-particle.p1{left:9%;top:18%}.promo-particle.p2{left:19%;bottom:13%;animation-delay:-3s}.promo-particle.p3{right:11%;top:22%;animation-delay:-5s}.promo-particle.p4{right:20%;bottom:18%;animation-delay:-7s}
+    @keyframes particleDrift { 0%,100%{transform:translate(0,0);opacity:.25} 50%{transform:translate(8px,-11px);opacity:.7} }
     .orb-wrapper {
       position: relative;
       width: 380px;
@@ -599,9 +722,31 @@
       .hero-stats { justify-content: center; }
       .hero-visual { margin-top: 40px; }
       .orb-wrapper { width: 260px; height: 260px; }
+      .hero-promo-row { margin-top: 38px; }
+      .hero-promo-dashboard { grid-template-columns: 1fr; grid-template-areas: "video" "left" "right" "rail"; padding: 30px 24px 24px; gap: 20px; border-radius: 28px; }
+      .promo-hud-column { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+      .promo-hud-column .promo-hud-chip { grid-column: 1 / -1; }
+      .promo-hud-card::after { display: none; }
+      .hero-promo-frame { width: min(430px, 100%); border-radius: 23px; box-shadow: 0 18px 48px rgba(4,1,10,.72), 0 0 28px rgba(139,61,255,.16); }
       .brain-icon { font-size: 5rem; }
       .tag-1, .tag-2, .tag-3, .tag-4 { display: none; }
       .agentix-bot { width: 165px; height: 200px; }
+    }
+    @media (max-width: 560px) {
+      .hero-promo-dashboard { width: 100%; padding: 18px 14px; border-radius: 22px; gap: 14px; }
+      .hero-promo-frame { width: 100%; border-radius: 18px; }
+      .promo-hud-card { padding: 12px; border-radius: 13px; animation-duration: 10s; }
+      .promo-stat-label { font-size: .67rem; }
+      .promo-hud-column .promo-hud-chip { display: none; }
+      .promo-capability-rail { gap: 6px; }
+      .promo-capability-pill { padding: 6px 9px; font-size: .61rem; }
+      .promo-capability-pill:nth-child(n+5) { display: none; }
+      .promo-particle.p2, .promo-particle.p4 { display: none; }
+      .hero-promo-dashboard::before, .hero-promo-dashboard::after { opacity: .55; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-promo-frame, .promo-hud-card, .promo-hud-chip, .promo-capability-pill, .promo-particle,
+      .hero-promo-dashboard::before, .hero-promo-dashboard::after { animation: none; transition: none; }
     }
 
     /* ============================================================
@@ -2252,6 +2397,35 @@
         <div class="floating-tag tag-4">◉ Computer Vision</div>
       </div>
     </div>
+    <div class="hero-promo-row">
+      <div class="hero-promo-dashboard">
+        <span class="promo-particle p1" aria-hidden="true"></span><span class="promo-particle p2" aria-hidden="true"></span>
+        <span class="promo-particle p3" aria-hidden="true"></span><span class="promo-particle p4" aria-hidden="true"></span>
+        <div class="promo-hud-column left">
+          <div class="promo-hud-card"><strong class="promo-stat-value">24/7</strong><span class="promo-stat-label" data-i18n="promo_stat_availability">AI Availability</span></div>
+          <div class="promo-hud-card"><strong class="promo-stat-value">5</strong><span class="promo-stat-label" data-i18n="promo_stat_demos">Real Project Demos</span></div>
+          <div class="promo-hud-chip" data-i18n="promo_ai_automation">AI Automation</div>
+        </div>
+        <div class="promo-video-stage">
+          <div class="hero-promo-frame" id="hero-promo-frame" aria-hidden="true">
+            <video id="hero-promo-video" src="./an.mp4" autoplay muted loop playsinline preload="metadata" disablepictureinpicture tabindex="-1"></video>
+          </div>
+        </div>
+        <div class="promo-hud-column right">
+          <div class="promo-hud-card"><strong class="promo-stat-value">3×</strong><span class="promo-stat-label" data-i18n="promo_stat_faster">Faster Operations</span></div>
+          <div class="promo-hud-card"><strong class="promo-stat-value">100%</strong><span class="promo-stat-label" data-i18n="promo_stat_automated">Automated</span></div>
+          <div class="promo-hud-chip" data-i18n="promo_smart_systems">Smart Systems</div>
+        </div>
+        <div class="promo-capability-rail">
+          <span class="promo-capability-pill" data-i18n="promo_ai_agents">AI Agents</span>
+          <span class="promo-capability-pill" data-i18n="promo_smart_websites">Smart Websites</span>
+          <span class="promo-capability-pill" data-i18n="promo_chatbots">Intelligent Chatbots</span>
+          <span class="promo-capability-pill" data-i18n="promo_cv">Computer Vision</span>
+          <span class="promo-capability-pill">NLP</span>
+          <span class="promo-capability-pill" data-i18n="promo_business_automation">Business Automation</span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -2880,6 +3054,12 @@ const TRANSLATIONS = {
     hero_sub: 'Automate your business operations with intelligent AI systems that work 24/7, so you can focus on what actually matters.',
     hero_btn1: 'View Projects →', hero_btn2: 'Contact on WhatsApp',
     stat1: 'AI Availability', stat2: 'Faster Operations', stat3: 'Automated',
+    promo_stat_availability: 'AI Availability', promo_stat_demos: 'Real Project Demos',
+    promo_stat_faster: 'Faster Operations', promo_stat_automated: 'Automated',
+    promo_ai_automation: 'AI Automation', promo_smart_systems: 'Smart Systems',
+    promo_ai_agents: 'AI Agents', promo_smart_websites: 'Smart Websites',
+    promo_chatbots: 'Intelligent Chatbots', promo_cv: 'Computer Vision',
+    promo_business_automation: 'Business Automation',
     ftag1: 'AI Agent Active', ftag2: 'Automating…',
     marquee_label: 'Technologies & Integrations',
     about_label: 'About Agentix',
@@ -2981,6 +3161,12 @@ const TRANSLATIONS = {
     hero_sub: 'أتمت عمليات شركتك بأنظمة ذكاء اصطناعي تعمل على مدار الساعة، حتى تتفرغ لما يهمك حقاً.',
     hero_btn1: 'استعرض المشاريع ←', hero_btn2: 'تواصل عبر واتساب',
     stat1: 'توافر الذكاء الاصطناعي', stat2: 'عمليات أسرع', stat3: 'مؤتمت بالكامل',
+    promo_stat_availability: 'توفر الذكاء الاصطناعي', promo_stat_demos: 'عروض مشاريع حقيقية',
+    promo_stat_faster: 'عمليات أسرع', promo_stat_automated: 'أتمتة كاملة',
+    promo_ai_automation: 'أتمتة بالذكاء الاصطناعي', promo_smart_systems: 'أنظمة ذكية',
+    promo_ai_agents: 'وكلاء ذكاء اصطناعي', promo_smart_websites: 'مواقع ذكية',
+    promo_chatbots: 'مساعدات ذكية', promo_cv: 'رؤية حاسوبية',
+    promo_business_automation: 'أتمتة الأعمال',
     ftag1: 'وكيل الذكاء نشط', ftag2: 'جارٍ الأتمتة…',
     marquee_label: 'التقنيات والتكاملات',
     about_label: 'عن Agentix',
